@@ -1,5 +1,5 @@
 <<<<<<< HEAD
-# Stormtrader
+# Project Stormtrader
 
 To start your Phoenix server:
 
