@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Stormtrader
 
 To start your Phoenix server:
@@ -18,3 +19,6 @@ Ready to run in production? Please [check our deployment guides](http://www.phoe
   * Docs: https://hexdocs.pm/phoenix
   * Mailing list: http://groups.google.com/group/phoenix-talk
   * Source: https://github.com/phoenixframework/phoenix
+=======
+# stormtrader
+>>>>>>> af11eba3c8fc79f4b52b19c949ca0125b7ca09d2
