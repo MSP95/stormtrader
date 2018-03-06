@@ -1,0 +1,12 @@
+<h2>Hello New User!</h2>
+<div class="row justify-content-center">
+  <div class="col-md-5">
+    <div class="card">
+      <h2 class="card-header">Register</h2>
+      <div class="card-body">
+      <%= render "form.html", Map.put(assigns, :action, user_path(@conn, :create)) %>
+      <span><%= link "Back", to: page_path(@conn, :index) %></span>
+      </div>
+    </div>
+  </div>
+</div>

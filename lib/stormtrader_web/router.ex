@@ -4,6 +4,7 @@ defmodule StormtraderWeb.Router do
   pipeline :browser do
     plug :accepts, ["html"]
     plug :fetch_session
+    plug SessionUserFetcher
     plug :fetch_flash
     plug :protect_from_forgery
     plug :put_secure_browser_headers
@@ -15,8 +16,11 @@ defmodule StormtraderWeb.Router do
 
   scope "/", StormtraderWeb do
     pipe_through :browser # Use the default browser stack
-
+    resources "/users", UserController
     get "/", PageController, :index
+    get "/home", PageController, :home
+    post "/session", SessionController, :create
+    delete "/session", SessionController, :delete
   end
 
   # Other scopes may use custom stacks.
