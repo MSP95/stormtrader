@@ -14,6 +14,8 @@ defmodule Stormtrader.Application do
       supervisor(StormtraderWeb.Endpoint, []),
       # Start your own worker by calling: Stormtrader.Worker.start_link(arg1, arg2, arg3)
       # worker(Stormtrader.Worker, [arg1, arg2, arg3]),
+      worker(StormtraderWeb.ChannelMonitor, [%{}]),
+      # supervisor(Registry, [:unique, :game_register]),
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html

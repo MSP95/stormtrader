@@ -21,6 +21,8 @@ defmodule StormtraderWeb.Router do
     get "/home", PageController, :home
     post "/session", SessionController, :create
     delete "/session", SessionController, :delete
+    post "/", PageController, :create
+    get "/:game_id", PageController, :show
   end
 
   # Other scopes may use custom stacks.

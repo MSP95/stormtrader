@@ -1,1 +1,21 @@
+<script>
+window.current_user = "<%= @current_user.id %>";
+
+</script>
+  <%= form_tag("/") do %>
 <h1> welcome home <%= @current_user.name %>!</h1>
+<div class="row">
+  <div class="col card card-body">
+    <h3> Join a Game: </h3>
+    <div class="game-list">
+      <%= for keys <- Map.keys(@game_list) do %>
+      <li> <%= keys %> </li>
+      <% end %>
+    </div>
+  </div>
+  <div class="col card card-body">
+  <%= submit "Create Game", class: "btn btn-primary create_game" %>
+      <!-- <button class="btn btn-primary create_game"> Create Game</button> -->
+  </div>
+</div>
+<% end %>

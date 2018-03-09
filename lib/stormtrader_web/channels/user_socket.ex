@@ -1,9 +1,11 @@
 defmodule StormtraderWeb.UserSocket do
   use Phoenix.Socket
-
+  alias Stormtrader.Repo
+  alias Stormtrader.Accounts.User
   ## Channels
   # channel "room:*", StormtraderWeb.RoomChannel
-
+  channel "game:lobby", StormtraderWeb.LobbyChannel
+  channel "games:*", StormtraderWeb.GameChannel
   ## Transports
   transport :websocket, Phoenix.Transports.WebSocket
   # transport :longpoll, Phoenix.Transports.LongPoll
@@ -19,7 +21,9 @@ defmodule StormtraderWeb.UserSocket do
   #
   # See `Phoenix.Token` documentation for examples in
   # performing token verification on connect.
-  def connect(_params, socket) do
+  def connect(%{"currentUser" => currentUser}, socket) do
+    socket = assign(socket, :current_user, Repo.get!(User, currentUser))
+    IO.inspect socket
     {:ok, socket}
   end
 
