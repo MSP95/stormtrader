@@ -23,54 +23,58 @@ import game_init from "./game";
 const game_id = window.game_id
 const current_user = window.current_user
 // const game_container = document.getElementById('game_container')
-
-
-
+// const game_list = document.getElementById('game_list')
+// ///////////////////////////////////////////////////////////////////////////
 
 function start_game(){
-  if (current_user){socket.connect()}
+  // $(".game_list").append("<li>jdfhsdfhksj</li>");
+  if (current_user){
+    socket.connect()
+    let lobby = socket.channel('games:lobby')
+    lobby.join().receive('ok', resp => {
+      console.log('joined lobby');
+      let html = ""
+      $.each(resp.game_list, function (index1, item1) {
+        html += "<li>" + item1 + "</li>";
+
+      });
+      $(".game-list").empty().append(html);
+
+      $(lobby_listener(lobby))
+    })
+  }
   if (game_id && current_user) {
     const channel = socket.channel('games:' + game_id)
-    channel.on('lobby_update', function(response) {
-      console.log(JSON.stringify(response.users));
-      $(get_state(channel))
-    });
+    // join channel
     channel.join()
     .receive('ok', resp => {
       console.log(current_user + ' Joined game ' + game_id, resp)
-      $(get_state(channel))
-      // ReactDOM.render(<Game id={game_id} channel={channel} />, game_container)
+      $(change_listener(channel))
     })
     .receive('error', resp => {
       if (resp.reason == 'in_progress') {
         game_container.innerHTML = 'You cannot join a game already in progress.'
       } else {
         game_container.innerHTML = 'An unexpected error occurred. Please try refreshing.'
-      }
-    })
-  }
-}
-function get_state(channel){
-  channel.push("get_state", {game_id: game_id,}).receive("ok", function(resp){
-    if(game_id){
-      // let channel = socket.channel("games:"+window.gameName, {});
+      }})
 
-      game_init(resp, channel);
-      console.log(resp);
+    }
+  }
+  function get_state(channel, users){
+    channel.push("get_state", {game_id: game_id,}).receive("ok", function(resp){
+      if(game_id){
+        game_init(resp, channel, users)
+        // console.log(resp);
+      }
     });
   }
-
+  // ///////////////////////////////////////////////////////////////////////////
   function leave_game(){
     const channel = socket.channel('games:' + game_id)
     channel.leave()
     .receive('ok', resp => {
-      console.log(current_user + ' Left game ' + game_id, resp)
-      $(get_state(channel))
-      // ReactDOM.render(<Game id={game_id} channel={channel} />, game_container)
     })
-    channel.on('lobby_update', function(response) {
-      console.log(JSON.stringify(response.users));
-    });
+
   }
   function end_game() {
     if(!$('.end_game')) {
@@ -78,9 +82,32 @@ function get_state(channel){
     }
     $(".end_game").click(leave_game);
   }
-  function maintain_gamelist(){
-    // let gamelist =
-  }
-  $(end_game)
-  $(start_game)
-  $(maintain_gamelist)
+  function change_listener(channel){
+    if (game_id && current_user){
+      // const channel = socket.channel('games:' + game_id)
+      channel.on('state_update', function(response) {
+        console.log(JSON.stringify(response.users));
+        if (response.users.length == 2){
+          $(get_state(channel, response.users))
+        }
+      });}
+    }
+    function lobby_listener(lobby){
+      //  const channel = socket.channel('games:' + game_id)
+      lobby.on('lobby_update', function(resp) {
+        console.log(resp);
+        let html = ""
+        $.each(resp.game_list, function (index1, item1) {
+          html += "<li>" + item1 + "</li>";
+
+        });
+        $(".game-list").empty().append(html);
+        // if (response.users.length == 2){
+        // $(get_state(channel, response.users))
+        // }
+      });
+    }
+
+    // ///////////////////////////////////////////////////////////////////////////
+    $(start_game)
+    $(end_game)

@@ -6,36 +6,59 @@ defmodule StormtraderWeb.GameChannel do
   use StormtraderWeb, :channel
 
   alias Stormtrader.GameServer
-
+  def join("games:lobby",_params,socket) do
+    # IO.inspect "shakalaboooomboom"
+    gamelist = ChannelMonitor.games_list() |> Map.keys()
+    {:ok, %{ game_list: gamelist}, socket}
+  end
   def join("games:" <> game_id,_params, socket) do
     current_user = socket.assigns.current_user
     users = ChannelMonitor.user_joined("game:" <> game_id, current_user)["game:" <> game_id]
     send self,{:after_join, users}
+    send self, :after_join_lobby
     {:ok, socket}
   end
   def handle_in("get_state", payload, socket) do
     %{"game_id" => game_id} = payload
     payload = ChannelMonitor.users_in_channel("game:" <> game_id)
     |> Enum.map(fn(user) -> %{user.id => user.name} end)
-    IO.inspect "&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&"
-    IO.inspect payload
+
+    # IO.inspect payload
     {:reply, {:ok, %{"gamestate"=> payload}}, socket}
   end
 
   def terminate(_reason, socket) do
     "games:" <> game_id = socket.topic
     user_id = socket.assigns.current_user.id
-    users = ChannelMonitor.user_left("game:" <> game_id, user_id)["game:" <> game_id]
-    lobby_update(socket, users)
+    if game_id == "lobby" do
+      # lobby_update(socket)
+    else
+      users = ChannelMonitor.user_left("game:" <> game_id, user_id)["game:" <> game_id]
+      state_update(socket, users)
+      lobby_update(socket)
+    end
+
     {:ok, socket}
   end
   def handle_info({:after_join, users}, socket) do
-    lobby_update(socket, users)
+    state_update(socket, users)
     {:noreply, socket}
   end
-  defp lobby_update(socket, users) do
+  defp state_update(socket, users) do
     # gamelist_update()
-    broadcast! socket, "lobby_update", %{ users: get_usernames(users) }
+    broadcast! socket, "state_update", %{ users: get_usernames(users) }
+  end
+  def handle_info(:after_join_lobby, socket) do
+    lobby_update(socket)
+    {:noreply, socket}
+  end
+  def lobby_update(socket) do
+    gamelist = ChannelMonitor.games_list() |> Map.keys()
+    IO.inspect "&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&"
+    IO.inspect gamelist
+    IO.inspect "&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&"
+    StormtraderWeb.Endpoint.broadcast "games:lobby", "lobby_update", %{ game_list: gamelist }
+    # broadcast! socket, "lobby_update", %{ game_list: gamelist }
   end
   # def games_list() do
   #   ChannelMonitor.games_list()
