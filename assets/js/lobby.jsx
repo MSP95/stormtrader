@@ -1,8 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import classnames from 'classnames';
-import { ListGroup, ListGroupItem } from 'reactstrap';
-import { UncontrolledTooltip } from 'reactstrap';
+// import { ListGroup, ListGroupItem } from 'reactstrap';
+// import { UncontrolledTooltip } from 'reactstrap';
 
 
 export default function lobby_init(root, lobby) {
@@ -41,14 +41,14 @@ class Games extends React.Component {
       if (value.length < 2){
         joinlink = <a href={key.slice(5)}>Join</a>
       }
-      return <ListGroupItem key={key}> {key} | Players: {value.toString()} | {joinlink} </ListGroupItem>
+      return <li key={key}> {key} | Players: {value.toString()} | {joinlink} </li>
   })
 
     return (
       <div>
-        <ListGroup>
+        <ul>
           {torender}
-        </ListGroup>
+        </ul>
 
 
       </div>
