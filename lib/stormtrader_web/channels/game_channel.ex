@@ -7,16 +7,21 @@ defmodule StormtraderWeb.GameChannel do
 
   alias Stormtrader.GameServer
   def join("games:lobby",_params,socket) do
-    # IO.inspect "shakalaboooomboom"
-    gamelist = ChannelMonitor.games_list() |> Map.keys()
-    {:ok, %{ game_list: gamelist}, socket}
+    gamelist0 = ChannelMonitor.games_list()
+    |> Enum.map(fn{k, v} ->
+      v = Enum.map(v, fn(user) -> user.name end)
+      {k, v}
+    end)
+    |> Enum.into(%{})
+
+    {:ok, %{ game_list: gamelist0}, socket}
   end
   def join("games:" <> game_id,_params, socket) do
     current_user = socket.assigns.current_user
     users = ChannelMonitor.user_joined("game:" <> game_id, current_user)["game:" <> game_id]
     send self,{:after_join, users}
     send self, :after_join_lobby
-    {:ok, socket}
+    {:ok, %{ users: get_usernames(users) }, socket}
   end
   def handle_in("get_state", payload, socket) do
     %{"game_id" => game_id} = payload
@@ -53,11 +58,14 @@ defmodule StormtraderWeb.GameChannel do
     {:noreply, socket}
   end
   def lobby_update(socket) do
-    gamelist = ChannelMonitor.games_list() |> Map.keys()
-    IO.inspect "&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&"
-    IO.inspect gamelist
-    IO.inspect "&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&"
-    StormtraderWeb.Endpoint.broadcast "games:lobby", "lobby_update", %{ game_list: gamelist }
+    gamelist = ChannelMonitor.games_list()
+    |> Enum.map(fn{k, v} ->
+      v = Enum.map(v, fn(user) -> user.name end)
+      {k, v}
+    end)
+    |> Enum.into(%{})
+
+    StormtraderWeb.Endpoint.broadcast "games:lobby", "lobby_update", %{game_list: gamelist}
     # broadcast! socket, "lobby_update", %{ game_list: gamelist }
   end
   # def games_list() do
