@@ -1,19 +1,19 @@
 <script>
 window.current_user = "<%= @current_user.id %>";
-
 </script>
-  <%= form_tag("/") do %>
-<h1> welcome home <%= @current_user.name %>!</h1>
+<%= form_tag("/") do %>
 <div class="row">
-  <div class="col card card-body">
-    <h3> Join a Game: </h3>
-    <div class="game-list">
-
+  <h1 class="col-md-5 offset-md-1 col-sm-12"> welcome home <%= @current_user.name %>!</h1>
+  <div class="col-md-6 offset-md-5 col-sm-12">
+  <div class="card">
+    <h3 class="card-header"> Join a Game: </h3>
+    <div class="card-body">
+      <div class="game-list">
+      </div>
+      <hr>
+      <%= submit "Create Game", class: "btn btn-success create_game" %>
     </div>
   </div>
-  <div class="col card card-body">
-  <%= submit "Create Game", class: "btn btn-primary create_game" %>
-      <!-- <button class="btn btn-primary create_game"> Create Game</button> -->
-  </div>
+</div>
 </div>
 <% end %>
