@@ -3,18 +3,33 @@ import ReactDOM from 'react-dom';
 import classnames from 'classnames';
 
 export default function game_init(root, state, channel, users) {
+  //console.log(users)
   ReactDOM.render(<Game channel={channel} users={users}/>, root);
 }
 
 class Game extends React.Component {
   constructor(props) {
     super(props);
+    let playerStatus = "";
+    this.playerStatus = this.getPlayerStatus();
   }
+  getPlayerStatus() {
+    if (current_user == this.props.users[this.props.users.length - 1]) {
+      return "player1";
+    }
+    if (current_user == this.props.users[this.props.users.length - 2]) {
+      return "player2";
+    }
+    else {
+      return "spectator";
+    }
+  }
+
   render() {
     return(<div>
       <div className="title-grid">
         <div className="account">Account</div>
-        <div className="win-status">Leading</div>
+        <div className="win-status">{this.playerStatus}</div>
         <div className="wallet-status">Money</div>
         <div className="timer">Timer</div>
       </div>
