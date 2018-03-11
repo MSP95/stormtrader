@@ -20,7 +20,13 @@ body { font-size: 20pt; }
 }
 
 .win-status {
-  background-color: #ddd;
+  background-color: #1e88e5;
+  height: 2em;
+  color: white;
+  display: flex;
+  align-items: center;
+  text-align: center;
+  justify-content: center;
 }
 
 .wallet-status {

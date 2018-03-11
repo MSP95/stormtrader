@@ -25,6 +25,10 @@ class Game extends React.Component {
     }
   }
 
+  componentDidMount() {
+    //Place socket.on call here
+  }
+
   render() {
     return(<div>
       <div className="title-grid">
