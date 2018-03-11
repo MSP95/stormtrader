@@ -6,6 +6,5 @@ window.logo_src = '<%= static_path(@conn, "/images/sengoku.svg") %>'
 
 <div id="game-container">
 </div>
-  <h1> Welcome to Stormtrader!! hurray!! </h1>
-    <%= link "EndGame", to: page_path(@conn, :home), class: "end_game btn btn-danger btn-block" %>
+    
   <!-- <button class="end_game btn btn-danger">End game</button> -->

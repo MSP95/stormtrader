@@ -13,17 +13,19 @@
 
 <body>
 
-  <div class="container-fluid p-3">
+  <div class="container-fluid">
     <div class="row">
       <div class="col-md-10">
         <h1> Storm Trader </h1>
       </div>
-      <div class="col-md-2">
+      <div class="col-sm-2">
         <%= if @current_user do %>
-        <div class="">
+        <div class="h6">
           Player: <%= @current_user.name %>
-        </div>
+
         <%= link "Log Out", to: "/session", method: :delete, class: "" %>
+        </div>
+        <%= link "End Game", to: page_path(@conn, :home), class: "end_game btn btn-danger btn-block" %>
 
         <% else %>
         <div class="">Not logged in.</div>
@@ -32,7 +34,7 @@
     </div>
   </div>
   <hr>
-  <div class="container">
+  <div class="">
     <%= if get_flash(@conn, :info) do %>
     <p class="alert alert-info" role="alert"><%= get_flash(@conn, :info) %></p>
     <% end %>

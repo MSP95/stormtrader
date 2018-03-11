@@ -93,7 +93,6 @@ defmodule StormtraderWeb.GameChannel do
   #   end)update
   # end
   # /////////////////////////////////////////////////////////////////////////
-  def handle_out
 
 
 
