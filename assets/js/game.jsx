@@ -12,6 +12,7 @@ class Game extends React.Component {
     super(props);
     let playerStatus = "";
     this.playerStatus = this.getPlayerStatus();
+    this.channel = props.channel;
   }
   getPlayerStatus() {
     if (current_user == this.props.users[this.props.users.length - 1]) {
@@ -27,6 +28,9 @@ class Game extends React.Component {
 
   componentDidMount() {
     //Place socket.on call here
+    this.channel.on('start_timer', function(response) {
+      console.log(response.time);
+    });
   }
 
   render() {
@@ -71,7 +75,7 @@ function OtherPlayer() {
 function Trending() {
   return(<div className="trending">
   <div className="header">
-  <h5>Trending</h5>
+    <h5>Trending</h5>
   </div>
 </div>);
 }

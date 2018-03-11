@@ -41,12 +41,12 @@ class Games extends React.Component {
       if (value.length < 2){
         joinlink = <a href={key.slice(5)}>Join</a>
       }
-      return <li key={key}> {key} | Players: {value.toString()} | {joinlink} </li>
+      return <li className="list-group-item" key={key}> {key} | Players: {value.toString()} | {joinlink} </li>
   })
 
     return (
       <div>
-        <ul>
+        <ul className="list-group">
           {torender}
         </ul>
 

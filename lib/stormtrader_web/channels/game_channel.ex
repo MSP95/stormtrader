@@ -1,11 +1,8 @@
 defmodule StormtraderWeb.GameChannel do
-  @moduledoc """
-  The interface between the browser and the GameServer.
-  """
+
   alias StormtraderWeb.ChannelMonitor
   use StormtraderWeb, :channel
-
-  alias Stormtrader.GameServer
+# Lobby channel
   def join("games:lobby",_params,socket) do
     gamelist0 = ChannelMonitor.games_list()
     |> Enum.map(fn{k, v} ->
@@ -16,9 +13,14 @@ defmodule StormtraderWeb.GameChannel do
 
     {:ok, %{ game_list: gamelist0}, socket}
   end
+
   def join("games:" <> game_id,_params, socket) do
     current_user = socket.assigns.current_user
     users = ChannelMonitor.user_joined("game:" <> game_id, current_user)["game:" <> game_id]
+
+    if length(users) == 2 do
+      send self, {:start_timer, 10}
+    end
     send self,{:after_join, users}
     send self, :after_join_lobby
     {:ok, %{ users: get_usernames(users) }, socket}
@@ -94,7 +96,22 @@ defmodule StormtraderWeb.GameChannel do
   # end
   # /////////////////////////////////////////////////////////////////////////
 
+  def handle_info({:start_timer, time}, socket) do
+    # Do the work you desire here
+    if time == 0 do
+      IO.inspect "hurrrYYYYYYYY"
+    else
+    schedule_work(time) # Reschedule once more
+    end
+    broadcast! socket, "start_timer", %{ time: time }
+    IO.inspect time
+    {:noreply, socket}
+  end
 
+  defp schedule_work(time) do
+    time = time - 1
+    Process.send_after(self(), {:start_timer, time}, 1000) # In 2 hours
+  end
 
 
 
