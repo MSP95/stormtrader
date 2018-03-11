@@ -34,7 +34,13 @@ body { font-size: 20pt; }
 }
 
 .timer {
-  background-color: #ddd;
+  background-color: #c2185b;
+  height: 2em;
+  color: white;
+  display: flex;
+  align-items: center;
+  text-align: center;
+  justify-content: center;
 }
 
 .trade {

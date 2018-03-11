@@ -19,7 +19,7 @@ defmodule StormtraderWeb.GameChannel do
     users = ChannelMonitor.user_joined("game:" <> game_id, current_user)["game:" <> game_id]
 
     if length(users) == 2 do
-      send self, {:start_timer, 10}
+      send self, {:start_timer, 300}
     end
     send self,{:after_join, users}
     send self, :after_join_lobby

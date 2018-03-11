@@ -28,9 +28,13 @@ class Game extends React.Component {
 
   componentDidMount() {
     //Place socket.on call here
-    this.channel.on('start_timer', function(response) {
-      console.log(response.time);
-    });
+    // this.channel.on('start_timer', function(response) {
+    //   //console.log(response.time);
+    //   let minutes = Math.floor(response.time / 60);
+    //   let seconds = response.time - minutes * 60;
+    //   let time_left = minutes+" : "+seconds;
+    //   console.log(time_left)
+    // });
   }
 
   render() {
@@ -39,7 +43,7 @@ class Game extends React.Component {
         <div className="account">Account</div>
         <div className="win-status">{this.playerStatus}</div>
         <div className="wallet-status">Money</div>
-        <div className="timer">Timer</div>
+        <Timer channel={this.channel}/>
       </div>
       <div className="padding"></div>
       <div className="grid">
@@ -51,6 +55,30 @@ class Game extends React.Component {
         <Chat />
       </div>
     </div>);
+  }
+}
+
+class Timer extends React.Component {
+  constructor(props) {
+    super(props);
+    this.channel = props.channel;
+    this.state = {
+      timer: "",
+    }
+  }
+
+  componentDidMount() {
+      this.channel.on('start_timer', (response) => {
+      //console.log(response.time);
+      let minutes = Math.floor(response.time / 60);
+      let seconds = response.time - minutes * 60;
+      let time_left = minutes+" : "+seconds;
+      this.setState({timer: time_left});
+    });
+  }
+
+  render() {
+    return(<div className="timer">{this.state.timer}</div>)
   }
 }
 
