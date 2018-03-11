@@ -73,7 +73,7 @@ defmodule StormtraderWeb.GameChannel do
   # end
   defp get_usernames(nil), do: []
   defp get_usernames(users) do
-    Enum.map users, &(&1.name)
+    Enum.map users, &(&1.id)
   end
   def new() do
     game_id = generate_token(8)
@@ -92,4 +92,35 @@ defmodule StormtraderWeb.GameChannel do
   #
   #   end)update
   # end
+  # /////////////////////////////////////////////////////////////////////////
+  def handle_out
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 end

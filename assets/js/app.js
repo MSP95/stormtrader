@@ -24,7 +24,7 @@ import lobby_init from "./lobby";
 const game_id = window.game_id
 const current_user = window.current_user
 let classgamelist = document.getElementsByClassName("game-list")[0];
-// const game_container = document.getElementById('game_container')
+const gamecontainer = document.getElementById('game-container');
 // const game_list = document.getElementById('game_list')
 // ///////////////////////////////////////////////////////////////////////////
 
@@ -54,9 +54,9 @@ function start_game() {
 function get_state(channel, users) {
   channel.push("get_state", {
     game_id: game_id,
-  }).receive("ok", function(resp) {
+  }).receive("ok", function(state) {
     if (game_id) {
-      game_init(resp, channel, users)
+      game_init(gamecontainer, state, channel, users)
     }
   });
 }
