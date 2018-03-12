@@ -44,7 +44,6 @@ body { font-size: 20pt; }
 }
 
 .trade {
-  background-color: #eee;
   grid-row: 1/3;
 }
 
@@ -81,4 +80,47 @@ body { font-size: 20pt; }
   align-items: center;
   text-align: center;
   justify-content: center;
+}
+
+.trade-operations {
+  margin: 0 auto;
+  width: 75%;
+}
+
+.buy-btn {
+  width: 100%;
+}
+
+.trade-grid {
+  display: grid;
+  grid-template-rows: 0.5fr 1fr 0.5fr 0.5fr 1fr 1fr 1fr;
+}
+
+.buy-error {
+  width: 75%;
+  font-size: 0.6em;
+  color: red;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  text-align: center;
+  justify-content: center;
+}
+
+.buy-invoice {
+  width: 75%;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  text-align: center;
+  justify-content: center;
+  color: #808080;
+}
+
+.width-p5em {
+  margin-right: 0.5em;
+}
+
+.height-p4em {
+  height: 0.4em;
 }
