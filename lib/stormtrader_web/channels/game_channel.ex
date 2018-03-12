@@ -1,5 +1,5 @@
 defmodule StormtraderWeb.GameChannel do
-
+  alias StormtraderWeb.GameServer
   alias StormtraderWeb.ChannelMonitor
   use StormtraderWeb, :channel
 # Lobby channel
@@ -15,20 +15,20 @@ defmodule StormtraderWeb.GameChannel do
   end
 
   def join("games:" <> game_id,_params, socket) do
+    # users_in_channel = ChannelMonitor.users_in_channel("game:" <> game_id)
     current_user = socket.assigns.current_user
     users = ChannelMonitor.user_joined("game:" <> game_id, current_user)["game:" <> game_id]
-
+    GameServer.new(get_usernames(users), game_id)
     if length(users) == 2 do
-      send self, {:start_timer, 300}
+      # GameServer.start_timer(game_id)
     end
-    send self,{:after_join, users}
+    send self,{:after_join, users, game_id}
     send self, :after_join_lobby
     {:ok, %{ users: get_usernames(users) }, socket}
   end
   def handle_in("get_state", payload, socket) do
     %{"game_id" => game_id} = payload
-    payload = ChannelMonitor.users_in_channel("game:" <> game_id)
-    |> Enum.map(fn(user) -> %{user.id => user.name} end)
+    payload = GameServer.get_state(game_id)
 
     # IO.inspect payload
     {:reply, {:ok, %{"gamestate"=> payload}}, socket}
@@ -41,19 +41,23 @@ defmodule StormtraderWeb.GameChannel do
       # lobby_update(socket)
     else
       users = ChannelMonitor.user_left("game:" <> game_id, user_id)["game:" <> game_id]
-      state_update(socket, users)
+      state_update(socket, users, game_id)
       lobby_update(socket)
     end
 
     {:ok, socket}
   end
-  def handle_info({:after_join, users}, socket) do
-    state_update(socket, users)
+  def handle_info({:after_join, users, game_id}, socket) do
+    state_update(socket, users, game_id)
     {:noreply, socket}
   end
-  defp state_update(socket, users) do
-    # gamelist_update()
-    broadcast! socket, "state_update", %{ users: get_usernames(users) }
+  defp state_update(socket, users, game_id) do
+    gamestate = GameServer.get_state(game_id)
+    IO.inspect "================================="
+    IO.inspect gamestate
+    IO.inspect "================================="
+
+    broadcast! socket, "state_update", %{ gamestate: gamestate }
   end
   def handle_info(:after_join_lobby, socket) do
     lobby_update(socket)
@@ -87,31 +91,10 @@ defmodule StormtraderWeb.GameChannel do
     |> :crypto.strong_rand_bytes
     |> Base.encode16(case: :lower)
   end
-  # def list_all_games() do
-  #   Supervisor.which_children(:game_register)
-  #   |> Enum.map(fn {_,account_proc_pid, _, _} ->
-  #     Registry.keys(:game_register, account_proc_pid)
-  #
-  #   end)update
-  # end
+
   # /////////////////////////////////////////////////////////////////////////
 
-  def handle_info({:start_timer, time}, socket) do
-    # Do the work you desire here
-    if time == 0 do
-      IO.inspect "hurrrYYYYYYYY"
-    else
-    schedule_work(time) # Reschedule once more
-    end
-    broadcast! socket, "start_timer", %{ time: time }
-    IO.inspect time
-    {:noreply, socket}
-  end
 
-  defp schedule_work(time) do
-    time = time - 1
-    Process.send_after(self(), {:start_timer, time}, 1000) # In 2 hours
-  end
 
 
 

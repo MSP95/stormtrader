@@ -78,9 +78,10 @@ function change_listener(channel) {
   if (game_id && current_user) {
     // const channel = socket.channel('games:' + game_id)
     channel.on('state_update', function(response) {
-      console.log(JSON.stringify(response.users));
-      if (response.users.length == 2) {
-        $(get_state(channel, response.users))
+      console.log("huryr");
+      console.log(JSON.stringify(response.gamestate));
+      if (response.gamestate.users.length == 2) {
+        $(get_state(channel, response.gamestate.users))
       }
     });
   }
