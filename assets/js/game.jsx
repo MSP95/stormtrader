@@ -14,9 +14,10 @@ class Game extends React.Component {
     this.playerStatus = this.getPlayerStatus();
     this.channel = props.channel;
     this.state = {
-      stocks_names: ["APPL", "GOOG", "FB"],
-      stocks_price: [100, 200, 300],
-      stocks_qty: [50, 50, 50],
+      old_stocks_price: [],
+      stocks_names: ["AMZN", "APPL", "BABA", "CSCO", "FB", "GOOG", "GPRO", "IBM", "INTC", "MSFT", "NVDA", "ORCL", "SNAP", "TSLA", "VZ"],
+      stocks_price: [100, 200, 300, 400, 500, 600, 700, 800, 900, 1000, 1100, 1200, 1300, 1400, 1500],
+      stocks_qty: [50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50],
       player1: {wallet: "", own: []},
       player2: {wallet: "", own: []},
     }
@@ -35,13 +36,10 @@ class Game extends React.Component {
 
   componentDidMount() {
     //Place socket.on call here
-    // this.channel.on('start_timer', function(response) {
-    //   //console.log(response.time);
-    //   let minutes = Math.floor(response.time / 60);
-    //   let seconds = response.time - minutes * 60;
-    //   let time_left = minutes+" : "+seconds;
-    //   console.log(time_left)
-    // });
+    this.channel.on('get_stocks', (response) => {
+      this.setState({old_stocks_price: this.state.stocks_price})
+      this.setState({stocks_price: response.stocks})
+    });
   }
 
   render() {
@@ -58,7 +56,7 @@ class Game extends React.Component {
         <StocksDB />
         <OtherPlayer />
         <News />
-        <Trending />
+        <Trending stocksNames={this.state.stocks_names} stocksPrice={this.state.stocks_price} stocksQty={this.state.stocks_qty} stocksOldPrice={this.state.old_stocks_price}/>
         <Chat />
       </div>
     </div>);
@@ -142,9 +140,7 @@ class Trade extends React.Component {
     else {
       this.setState({stock_qty_incart: "", cart_total: "", symbols: [], input_mismatch_error: "Demand exceeding the available quantity"})
     }
-
   }
-
 
   render() {
     return(<div className="trade">
@@ -181,11 +177,30 @@ function OtherPlayer() {
 </div>);
 }
 
-function Trending() {
+function Trending(params) {
+  let stocks_names = params["stocksNames"]
+  let stocks_price = params["stocksPrice"]
+  let stocks_quantity = params["stocksQty"]
+  let old_stocks_price = params["stocksOldPrice"]
+  let obj = []
+  for(let i = 0; i < stocks_names.length; i++) {
+    obj.push({id: i, name: stocks_names[i], price: stocks_price[i], quantity: stocks_quantity, change: stocks_price[i] - old_stocks_price[i]})
+  }
+  obj.sort((a,b) => {
+    return a.price < b.price;
+  })
+  let topFive = obj.slice(0,5)
   return(<div className="trending">
   <div className="header">
     <h5>Trending</h5>
   </div>
+  <div className="trending-block">
+  <div className="trending-table">
+    {topFive.map((data) => {
+      return(<tr key={data.id}><td>{data.name}</td><td>{data.price}</td><td>{data.change > 0 && <div className="arrow-up"></div>}{data.change < 0 && <div className="arrow-down"></div>}</td></tr>)
+    })}
+  </div>
+</div>
 </div>);
 }
 

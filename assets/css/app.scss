@@ -57,7 +57,7 @@ body { font-size: 20pt; }
 }
 
 .trending {
-  background-color: #ddd;
+  
 }
 
 .news {
@@ -76,6 +76,16 @@ body { font-size: 20pt; }
 
 .header {
   background-color: #3949ab;
+  height: 2em;
+  color: white;
+  display: flex;
+  align-items: center;
+  text-align: center;
+  justify-content: center;
+}
+
+.otherplayer-header {
+  background-color: #8e24aa;
   height: 2em;
   color: white;
   display: flex;
@@ -125,4 +135,35 @@ body { font-size: 20pt; }
 
 .height-p4em {
   height: 0.4em;
+}
+
+.trending-table {
+  font-size: 0.7em;
+  border-spacing: 1.2em;
+}
+
+.trending-block {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.trending-row {
+  background-color: #eee;
+}
+
+.arrow-up {
+  width: 0.8em;
+  height: 0.8em;
+  border-right: 0.3em solid green;
+  border-top: 0.3em solid green;
+  transform: rotate(-45deg);
+}
+
+.arrow-down {
+  width: 0.8em;
+  height: 0.8em;
+  border-right: 0.3em solid red;
+  border-bottom: 0.3em solid red;
+  transform: rotate(45deg);
 }
