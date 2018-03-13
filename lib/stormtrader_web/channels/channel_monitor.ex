@@ -3,7 +3,7 @@ defmodule StormtraderWeb.ChannelMonitor do
 
   def start_link(initial_state) do
     initial_state0 = %{
-      stock_price: Enum.take_random(1..1_00, 10),
+      stock_price: Enum.take_random(50..1000, 15),
       channels: %{},
     }
     {stat, pid} = GenServer.start_link(__MODULE__, initial_state0, name: __MODULE__)
@@ -36,7 +36,7 @@ defmodule StormtraderWeb.ChannelMonitor do
   # GenServer implementation
   # ////////////////////////////////////////////////////////////////////////////
   def handle_call({:send_stocks}, _from, state) do
-    Process.send_after(self(), {:generate_stocks}, 5000) # In 2 hours
+    Process.send_after(self(), {:generate_stocks}, 3000) # In 2 hours
     {:reply, state, state}
   end
   def handle_info({:generate_stocks}, state) do
@@ -45,16 +45,16 @@ defmodule StormtraderWeb.ChannelMonitor do
       IO.inspect channel
     StormtraderWeb.Endpoint.broadcast! channel, "get_stocks", %{stocks: state.stock_price}
      end)
-    IO.inspect state.stock_price
-    state = Map.replace!(state, :stock_price, Enum.take_random(1..100, 10))
-    Process.send_after(self(), {:generate_stocks}, 5000)
+    #IO.inspect state.stock_price
+    state = Map.replace!(state, :stock_price, Enum.take_random(50..1000, 15))
+    Process.send_after(self(), {:generate_stocks}, 3000)
     {:noreply, state}
   end
   # ////////////////////////////////////////////////////////////////////////////
 
   def handle_call({:user_joined, channel, user}, _from, state) do
-    IO.inspect "---------------STATE------------------"
-    IO.inspect state
+    #IO.inspect "---------------STATE------------------"
+    #IO.inspect state
     # IO.inspect "-----------------CHANNEL--------------"
     # IO.inspect channel
     new_channelist = case Map.get(state.channels, channel) do
@@ -64,8 +64,8 @@ defmodule StormtraderWeb.ChannelMonitor do
           Map.put(state.channels, channel, Enum.uniq([user | users]))
         end
         new_state = Map.replace!(state, :channels, new_channelist)
-        IO.inspect "-----------------NEW_STATE------------"
-        IO.inspect new_state
+        #IO.inspect "-----------------NEW_STATE------------"
+        #IO.inspect new_state
         {:reply, new_channelist, new_state}
       end
 
