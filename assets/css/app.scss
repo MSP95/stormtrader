@@ -66,6 +66,8 @@ body { font-size: 20pt; }
 
 .chat {
   background-color: #ddd;
+  height:auto;
+  overflow-y: scroll;
 }
 
 .padding {

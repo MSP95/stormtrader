@@ -104,7 +104,7 @@ class Trade extends React.Component {
       stock_current_price: "",
     }
   }
-  
+
   buyStock(event) {
     event.preventDefault();
     let stock_name = event.target.stock_name.value;
@@ -196,7 +196,8 @@ function News() {
 }
 
 function Chat() {
-  return(<div className="chat">
-  <h5>Chat</h5>
+  return(<div className="card chat">
+  <h5 className="card-header">Chat</h5>
+
 </div>);
 }
