@@ -2,6 +2,7 @@ defmodule StormtraderWeb.ChannelMonitor do
   use GenServer
 
   def start_link(initial_state) do
+
     initial_state0 = %{
       stock_price: Enum.take_random(50..1000, 15),
       channels: %{},
