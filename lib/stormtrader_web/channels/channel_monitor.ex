@@ -3,7 +3,7 @@ defmodule StormtraderWeb.ChannelMonitor do
 
   def start_link(initial_state) do
     initial_state0 = %{
-      stock_price: Enum.take_random(1..100, 10),
+      stock_price: Enum.take_random(1..1_00, 10),
       channels: %{},
     }
     {stat, pid} = GenServer.start_link(__MODULE__, initial_state0, name: __MODULE__)
@@ -36,11 +36,15 @@ defmodule StormtraderWeb.ChannelMonitor do
   # GenServer implementation
   # ////////////////////////////////////////////////////////////////////////////
   def handle_call({:send_stocks}, _from, state) do
-    StormtraderWeb.Endpoint.broadcast! "games:_", "get_stocks", %{stocks: state.stock_price}
     Process.send_after(self(), {:generate_stocks}, 5000) # In 2 hours
     {:reply, state, state}
   end
   def handle_info({:generate_stocks}, state) do
+    Map.keys(state.channels)
+    |> Enum.each(fn(channel) ->
+      IO.inspect channel
+    StormtraderWeb.Endpoint.broadcast! channel, "get_stocks", %{stocks: state.stock_price}
+     end)
     IO.inspect state.stock_price
     state = Map.replace!(state, :stock_price, Enum.take_random(1..100, 10))
     Process.send_after(self(), {:generate_stocks}, 5000)

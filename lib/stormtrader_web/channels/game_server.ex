@@ -46,6 +46,7 @@ defmodule StormtraderWeb.GameServer do
       state = Map.replace!(state, :timer, time)
       timerx = Process.send_after(self(), {:work}, 1000)
     end
+
     StormtraderWeb.Endpoint.broadcast! "games:"<>state.id, "start_timer", %{time: time}
 
     {:noreply, state}

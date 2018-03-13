@@ -39,7 +39,7 @@ class Games extends React.Component {
     let torender = $.map(this.state.game_list, function(value, key){
       var joinlink = "Game Full";
       if (value.length < 2){
-        joinlink = <a href={key.slice(5)}>Join</a>
+        joinlink = <a href={key.slice(6)}>Join</a>
       }
       return <li className="list-group-item" key={key}> {key} | Players: {value.toString()} | {joinlink} </li>
   })

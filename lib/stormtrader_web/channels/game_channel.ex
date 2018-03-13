@@ -17,7 +17,7 @@ defmodule StormtraderWeb.GameChannel do
   def join("games:" <> game_id,_params, socket) do
     # users_in_channel = ChannelMonitor.users_in_channel("game:" <> game_id)
     current_user = socket.assigns.current_user
-    users = ChannelMonitor.user_joined("game:" <> game_id, current_user)["game:" <> game_id]
+    users = ChannelMonitor.user_joined("games:" <> game_id, current_user)["games:" <> game_id]
     GameServer.new(get_usernames(users), game_id)
     if length(users) == 2 do
       # GameServer.start_timer(game_id)
@@ -40,7 +40,7 @@ defmodule StormtraderWeb.GameChannel do
     if game_id == "lobby" do
       # lobby_update(socket)
     else
-      users = ChannelMonitor.user_left("game:" <> game_id, user_id)["game:" <> game_id]
+      users = ChannelMonitor.user_left("games:" <> game_id, user_id)["games:" <> game_id]
       state_update(socket, users, game_id)
       lobby_update(socket)
     end
