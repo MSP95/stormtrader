@@ -4,34 +4,22 @@ import classnames from 'classnames';
 
 export default function game_init(root, state, channel, users) {
   //console.log(users)
-  ReactDOM.render(<Game channel={channel} users={users}/>, root);
+  ReactDOM.render(<Game serverState={state} channel={channel} users={users}/>, root);
 }
 
 class Game extends React.Component {
   constructor(props) {
     super(props);
-    let playerStatus = "";
-    this.playerStatus = this.getPlayerStatus();
     this.channel = props.channel;
     this.users = props.users;
+    this.serverState = props.serverState;
     this.state = {
       old_stocks_price: [],
       stocks_names: ["AMZN", "APPL", "BABA", "CSCO", "FB", "GOOG", "GPRO", "IBM", "INTC", "MSFT", "NVDA", "ORCL", "SNAP", "TSLA", "VZ"],
-      stocks_price: [100, 200, 300, 400, 500, 600, 700, 800, 900, 1000, 1100, 1200, 1300, 1400, 1500],
-      stocks_qty: [50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50],
-      player1: {wallet: "", own: []},
-      player2: {wallet: "", own: []},
-    }
-  }
-  getPlayerStatus() {
-    if (current_user == this.props.users[this.props.users.length - 1]) {
-      return "player1";
-    }
-    if (current_user == this.props.users[this.props.users.length - 2]) {
-      return "player2";
-    }
-    else {
-      return "spectator";
+      stocks_price: new Array(15).fill(0),
+      stocks_qty: this.serverState.gamestate.stocks_qty,
+      player1: this.serverState.player1,
+      player2: this.serverState.player2,
     }
   }
 
@@ -44,7 +32,6 @@ class Game extends React.Component {
   }
 
   render() {
-    let player = this.getPlayerStatus()
     return(<div>
       <div className="title-grid">
         <div>Account</div>
@@ -54,8 +41,8 @@ class Game extends React.Component {
       </div>
       <div className="padding"></div>
       <div className="grid">
-        <Trade stocksNames={this.state.stocks_names} stocksPrice={this.state.stocks_price} stocksQty={this.state.stocks_qty}/>
-        <Account stocksPrice={this.state.stocks_price} player={player}/>
+        <Trade player1={this.serverState.gamestate.player1.user_id} player2={this.serverState.gamestate.player2.user_id} stocksNames={this.state.stocks_names} stocksPrice={this.state.stocks_price} stocksQty={this.state.stocks_qty} channel={this.channel}/>
+        <Account stocksPrice={this.state.stocks_price} />
         <StocksDB />
         <OtherPlayer />
         <Graph />
@@ -85,16 +72,16 @@ class Account extends React.Component {
   }
 
   componentWillReceiveProps(newProps) {
-    if (newProps.player === "player1") {
-      //Add logic to set the stock that player one owns
-      let a = [12, 15, 17]
-      this.getCurrentWorth(a, this.state.own)
-    }
-    if (newProps.player === "player2") {
-      //Add logic to set the stock that player two owns
-      let a = [12, 15, 17]
-      this.getCurrentWorth(a, this.state.own)
-    }
+    // if (newProps.player === "player1") {
+    //   //Add logic to set the stock that player one owns
+    //   let a = [12, 15, 17]
+    //   this.getCurrentWorth(a, this.state.own)
+    // }
+    // if (newProps.player === "player2") {
+    //   //Add logic to set the stock that player two owns
+    //   let a = [12, 15, 17]
+    //   this.getCurrentWorth(a, this.state.own)
+    // }
   }
 
   render() {
@@ -104,14 +91,14 @@ class Account extends React.Component {
     </div>
     <div><tr>Current Market Worth</tr><tr>{this.state.sum}</tr></div>
     <div className="account-block">
-    <div className="account-table">
-    {this.state.own.map((data) => {
-      return(<tr key={data.id}><td>{data.name}</td><td>{data.quantity}</td><td>{data.bought_at}</td></tr>)
-    })}
-  </div>
-</div>
+      <div className="account-table">
+        {this.state.own.map((data) => {
+          return(<tr key={data.id}><td>{data.name}</td><td>{data.quantity}</td><td>{data.bought_at}</td></tr>)
+        })}
+      </div>
+    </div>
   </div>)
-  }
+}
 }
 
 class Timer extends React.Component {
@@ -144,6 +131,7 @@ class Trade extends React.Component {
     this.buyStock = this.buyStock.bind(this);
     this.handleStockName = this.handleStockName.bind(this);
     this.handleStockQty = this.handleStockQty.bind(this);
+    this.channel = this.props.channel;
     this.state = {
       input_mismatch_error: "",
       stock_incart: "",
@@ -158,7 +146,23 @@ class Trade extends React.Component {
     event.preventDefault();
     let stock_name = event.target.stock_name.value;
     let stock_quantity = event.target.stock_quantity.value;
-    this.setState({input_mismatch_error: "You cannot buy this"})
+    // VALIDATE NAME FIRST
+    let stock_id = this.props.stocksNames.indexOf(stock_name)
+    let buy_object = {stock_id: stock_id, qty: stock_quantity, bought_at: this.props.stocksPrice[stock_id]}
+    let player = 0
+    if(parseInt(current_user) === this.props.player1) {
+      player = 1
+    }
+    if(parseInt(current_user) === this.props.player2) {
+      player = 2
+    }
+    let send_object = {player: player, own: buy_object}
+    this.channel.push("buy_request", {
+      buy: send_object,
+    }).receive("ok", (payload) => {
+      console.log("payload")
+    })
+    console.log("sent")
   }
 
   handleStockName(event) {
@@ -260,9 +264,9 @@ function Trending(params) {
 
 class Graph extends React.Component {
   render() {
-  return(<div className="graph">
-  <h5>Graph</h5>
-</div>)
+    return(<div className="graph">
+    <h5>Graph</h5>
+  </div>)
 }
 }
 
