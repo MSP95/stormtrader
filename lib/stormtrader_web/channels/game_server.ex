@@ -9,7 +9,7 @@ defmodule StormtraderWeb.GameServer do
       player1: nil,
       player2: nil,
       timer: 300,
-      stocks_qty: Enum.take_random(50..100, 15),
+      stocks_qty: Enum.take_random(1..100, 15),
       # stocks: Enum.take_random(1..100, 10),
     }
     game_id = String.to_atom(game_id)
@@ -22,7 +22,6 @@ defmodule StormtraderWeb.GameServer do
     user_joined(current_user, users, game_id0)
     start_timer(game_id0)
   end
-
 
   def user_joined(current_user, users, game_id) do
     GenServer.call(game_id, {:user_joined, current_user, users, game_id})
@@ -41,9 +40,49 @@ defmodule StormtraderWeb.GameServer do
     GenServer.call(game_id, {:timer})
   end
 
+  def buy(payload, game_id) do
+    game_id = String.to_atom(game_id)
+    GenServer.call(game_id, {:buy, payload})
+  end
   # /////////////////////////////////////////////////////////////////////////////
 
   # GenServer implementation
+  def handle_call({:buy, payload}, _from, state) do
+    amount = payload["own"]["bought_at"]*payload["own"]["qty"]
+    IO.inspect payload["own"]["stock_id"]
+    available_qty = Enum.at(state.stocks_qty, payload["own"]["stock_id"])
+    if payload["own"]["qty"] <= available_qty do
+      #////////////////////////////////////////////////////////////////////////
+      if payload["player"] == 1 do
+
+        if state.player1.wallet >= amount do
+          state = put_in(state.player1.own, state.player1.own++[payload["own"]])
+          state = put_in(state.player1.wallet, state.player1.wallet-amount)
+          new_list = List.replace_at(state.stocks_qty, payload["own"]["stock_id"], available_qty-payload["own"]["qty"])
+          state = Map.replace!(state, :stocks_qty, new_list)
+          status = "successfull"
+        else
+          status = "Not enough money"
+        end
+      else
+        if state.player2.wallet >= payload["own"]["bought_at"]*payload["own"]["qty"] do
+          state = put_in(state.player2.own, state.player2.own++[payload["own"]])
+          state = put_in(state.player2.wallet, state.player2.wallet-amount)
+          new_list = List.replace_at(state.stocks_qty, payload["own"]["stock_id"], available_qty-payload["own"]["qty"])
+          state = Map.replace!(state, :stocks_qty, new_list)
+          status = "successfull"
+        else
+          status = "Not enough money"
+        end
+      end
+    else
+      status = "No stocks left"
+      #////////////////////////////////////////////////////////////////////////
+    end
+
+    IO.inspect state
+    {:reply, %{status: status, gamestate: state}, state}
+  end
   def handle_call({:user_joined,current_user, users, game_id}, _from, state) do
     IO.inspect state
     new_state = Map.replace!(state, :users, users)
@@ -68,14 +107,14 @@ defmodule StormtraderWeb.GameServer do
       state = Map.replace!(state, :timer, time)
       timerx = Process.send_after(self(), {:work}, 1000)
     end
-    IO.inspect state
+    # IO.inspect state
 
     StormtraderWeb.Endpoint.broadcast! "games:"<>state.id, "start_timer", %{time: time}
     {:noreply, state}
   end
 
   def handle_call({:timer}, _from, state) do
-    IO.inspect state
+    # IO.inspect state
     if state.status == "ready" and state.player1 != nil and state.player2 != nil do
       state = Map.replace!(state, :status, "started")
       timerx = Process.send_after(self(), {:work}, 1000) # In 2 hours

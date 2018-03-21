@@ -43,7 +43,7 @@ defmodule StormtraderWeb.ChannelMonitor do
   def handle_info({:generate_stocks}, state) do
     Map.keys(state.channels)
     |> Enum.each(fn(channel) ->
-      IO.inspect channel
+      # IO.inspect channel
     StormtraderWeb.Endpoint.broadcast! channel, "get_stocks", %{stocks: state.stock_price}
      end)
     #IO.inspect state.stock_price

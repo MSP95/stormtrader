@@ -37,7 +37,6 @@ defmodule StormtraderWeb.GameChannel do
   end
 
   def terminate(_reason, socket) do
-
     "games:" <> game_id = socket.topic
     user_id = socket.assigns.current_user.id
     if game_id == "lobby" do
@@ -83,12 +82,21 @@ defmodule StormtraderWeb.GameChannel do
   def handle_in("new_chat_send", payload, socket) do
      %{"body" => msg, "user"=> current_user} = payload
      user = Accounts.get_user(current_user).name
-     IO.inspect user
+     # IO.inspect socket
     broadcast! socket, "new_chat_receive", %{body: msg, user: user}
     {:reply, {:ok, %{body: msg, user: user}}, socket}
   end
   # /////////////////////////////////////////////////////////////////////////
-
+  # Buy module
+  def handle_in("buy_request", payload, socket) do
+    IO.inspect payload["buy"]["own"]
+    # %{"stock_id" => stock_id, "qty"=> qty, "bought_at"=>bought_at} = payload
+    "games:" <> game_id = socket.topic
+    result = GameServer.buy(payload["buy"], game_id)
+    broadcast socket, "transaction", result.gamestate
+    IO.inspect result
+    {:reply, {:ok, %{status: result.status}}, socket}
+  end
 
 
 
