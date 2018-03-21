@@ -25,7 +25,7 @@ defmodule StormtraderWeb.GameChannel do
   def join("games:" <> game_id,_params, socket) do
     current_user = socket.assigns.current_user
     users = ChannelMonitor.user_joined("games:" <> game_id, current_user)["games:" <> game_id]
-    GameServer.new(get_usernames(users), game_id)
+    GameServer.addnew(current_user.id, get_usernames(users), game_id)
     send self,{:after_join, users, game_id}
     send self, :after_join_lobby
     {:ok, %{ users: get_usernames(users) }, socket}

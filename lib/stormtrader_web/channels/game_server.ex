@@ -1,27 +1,31 @@
 defmodule StormtraderWeb.GameServer do
   use GenServer
-  def new(users, game_id) do
+  def new(player1, users, game_id) do
 
     initial_state = %{
       status: "ready",
       id: game_id,
       users: [],
+      player1: nil,
+      player2: nil,
       timer: 300,
+      stocks_qty: Enum.take_random(50..100, 15),
       # stocks: Enum.take_random(1..100, 10),
     }
     game_id = String.to_atom(game_id)
-    if length(users) == 1 do
-      start_link(initial_state, game_id)
-      user_joined(users, game_id)
-    else
-      user_joined(users, game_id)
-      start_timer(game_id)
-      # send_stocks(game_id)
-    end
+    start_link(initial_state, game_id)
+
+
+  end
+  def addnew(current_user, users, game_id) do
+    game_id0 = String.to_atom(game_id)
+    user_joined(current_user, users, game_id0)
+    start_timer(game_id0)
   end
 
-  def user_joined(users, game_id) do
-    GenServer.call(game_id, {:user_joined, users, game_id})
+
+  def user_joined(current_user, users, game_id) do
+    GenServer.call(game_id, {:user_joined, current_user, users, game_id})
 
   end
 
@@ -37,12 +41,19 @@ defmodule StormtraderWeb.GameServer do
     GenServer.call(game_id, {:timer})
   end
 
-# /////////////////////////////////////////////////////////////////////////////
+  # /////////////////////////////////////////////////////////////////////////////
 
   # GenServer implementation
-  def handle_call({:user_joined, users, game_id}, _from, state) do
+  def handle_call({:user_joined,current_user, users, game_id}, _from, state) do
+    IO.inspect state
     new_state = Map.replace!(state, :users, users)
-
+    if new_state.player1 == nil do
+      new_state = Map.replace!(new_state, :player1, %{user_id: current_user, wallet: 1000, own: []})
+    else
+      if new_state.player2 == nil do
+        new_state = Map.replace!(new_state, :player2, %{user_id: current_user, wallet: 1000, own: []})
+      end
+    end
     {:reply, new_state, new_state}
   end
 
@@ -57,16 +68,19 @@ defmodule StormtraderWeb.GameServer do
       state = Map.replace!(state, :timer, time)
       timerx = Process.send_after(self(), {:work}, 1000)
     end
+    IO.inspect state
+
     StormtraderWeb.Endpoint.broadcast! "games:"<>state.id, "start_timer", %{time: time}
     {:noreply, state}
   end
 
   def handle_call({:timer}, _from, state) do
-    if state.status == "ready" do
+    IO.inspect state
+    if state.status == "ready" and state.player1 != nil and state.player2 != nil do
       state = Map.replace!(state, :status, "started")
       timerx = Process.send_after(self(), {:work}, 1000) # In 2 hours
     end
     {:reply, state, state}
   end
-# /////////////////////////////////////////////////////////////////////////////
+  # /////////////////////////////////////////////////////////////////////////////
 end

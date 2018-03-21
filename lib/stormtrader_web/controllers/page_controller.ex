@@ -14,7 +14,7 @@ defmodule StormtraderWeb.PageController do
   def create(conn, _params) do
     current_user = conn.assigns[:current_user]
     {:ok, game_id} = TokenGenerator.new()
-    GameServer.new([current_user.name], game_id)
+    GameServer.new(current_user.id, [], game_id)
     redirect conn, to: "/#{game_id}"
   end
 
