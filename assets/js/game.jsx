@@ -44,9 +44,10 @@ class Game extends React.Component {
   }
 
   render() {
+    let player = this.getPlayerStatus()
     return(<div>
       <div className="title-grid">
-        <div className="account">Account</div>
+        <div>Account</div>
         <div className="win-status">{this.playerStatus}</div>
         <div className="wallet-status">Money</div>
         <Timer channel={this.channel}/>
@@ -54,13 +55,62 @@ class Game extends React.Component {
       <div className="padding"></div>
       <div className="grid">
         <Trade stocksNames={this.state.stocks_names} stocksPrice={this.state.stocks_price} stocksQty={this.state.stocks_qty}/>
+        <Account stocksPrice={this.state.stocks_price} player={player}/>
         <StocksDB />
         <OtherPlayer />
-        <News />
+        <Graph />
         <Trending stocksNames={this.state.stocks_names} stocksPrice={this.state.stocks_price} stocksQty={this.state.stocks_qty} stocksOldPrice={this.state.old_stocks_price}/>
         <Chat channel={this.channel} users={this.users}/>
       </div>
     </div>);
+  }
+}
+
+class Account extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      sum: 0,
+      own: [{id: 0, "name": "APPL", "quantity": 1, "bought_at": 100}, {id: 1, "name": "GOOG", "quantity": 2, "bought_at": 200}, {id: 2, "name": "FB", "quantity": 3, "bought_at": 300}]
+    }
+  }
+
+  getCurrentWorth(stocks_price, own) {
+    let sum = 0
+    for(let i = 0; i < own.length; i++) {
+      let owned = own[i]
+      sum = sum + owned["quantity"] * stocks_price[owned.id]
+    }
+    this.setState({sum: sum})
+  }
+
+  componentWillReceiveProps(newProps) {
+    if (newProps.player === "player1") {
+      //Add logic to set the stock that player one owns
+      let a = [12, 15, 17]
+      this.getCurrentWorth(a, this.state.own)
+    }
+    if (newProps.player === "player2") {
+      //Add logic to set the stock that player two owns
+      let a = [12, 15, 17]
+      this.getCurrentWorth(a, this.state.own)
+    }
+  }
+
+  render() {
+    return(<div className="account">
+    <div className="header">
+      <h5>Stocks You Own</h5>
+    </div>
+    <div><tr>Current Market Worth</tr><tr>{this.state.sum}</tr></div>
+    <div className="account-block">
+    <div className="account-table">
+    {this.state.own.map((data) => {
+      return(<tr key={data.id}><td>{data.name}</td><td>{data.quantity}</td><td>{data.bought_at}</td></tr>)
+    })}
+  </div>
+</div>
+  </div>)
   }
 }
 
@@ -150,8 +200,10 @@ class Trade extends React.Component {
       <div className="trade-operations">
         <form onSubmit={this.buyStock}>
           <div className="input-group">
-            <input onChange={this.handleStockName} className="form-control" name="stock_name" type="text" placeholder="Stock Name"></input>
-            <input onChange={this.handleStockQty} className="form-control" name="stock_quantity" type="number" placeholder="Quantity"></input>
+            {/*<input onChange={this.handleStockName} className="form-control" name="stock_name" type="text" placeholder="Stock Name"></input>*/}
+            <input className="form-control" name="stock_name" type="text" placeholder="Stock Name"></input>
+            {/*<input onChange={this.handleStockQty} className="form-control" name="stock_quantity" type="number" placeholder="Quantity"></input>*/}
+            <input className="form-control" name="stock_quantity" type="number" placeholder="Quantity"></input>
           </div>
           <div className="height-p4em"></div>
           <input className="buy-btn btn-success" type="submit" value="BUY"></input>
@@ -206,11 +258,12 @@ function Trending(params) {
 </div>);
 }
 
-function News() {
-  return(<div className="news">
-  <h5>News</h5>
-  Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s,
+class Graph extends React.Component {
+  render() {
+  return(<div className="graph">
+  <h5>Graph</h5>
 </div>)
+}
 }
 
 class Chat extends React.Component {
