@@ -1,7 +1,8 @@
 defmodule StormtraderWeb.PageController do
   use StormtraderWeb, :controller
-  alias StormtraderWeb.GameChannel
+  alias StormtraderWeb.TokenGenerator
   alias StormtraderWeb.ChannelMonitor
+  alias StormtraderWeb.GameServer
   def index(conn, _params) do
     render conn, "login.html"
   end
@@ -12,7 +13,8 @@ defmodule StormtraderWeb.PageController do
   end
   def create(conn, _params) do
     current_user = conn.assigns[:current_user]
-    {:ok, game_id} = GameChannel.new()
+    {:ok, game_id} = TokenGenerator.new()
+    GameServer.new([current_user.name], game_id)
     redirect conn, to: "/#{game_id}"
   end
 

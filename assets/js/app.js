@@ -29,24 +29,33 @@ const gamecontainer = document.getElementById('game-container');
 // ///////////////////////////////////////////////////////////////////////////
 
 function start_game() {
-  if (current_user) {
-    socket.connect()
-    let lobby = socket.channel('games:lobby')
-    if (classgamelist){
-      lobby_init(classgamelist, lobby);
-    }
-
-  }
+$(join_lobby())
   if (game_id && current_user) {
     const channel = socket.channel('games:' + game_id)
     // join channel
     channel.join()
     .receive("ok", resp => {
       console.log(current_user + ' Joined game ' + game_id, resp)
-      // if (resp.users.length==2){
-      //     $(get_state(channel, resp.users))
-      // }
       $(change_listener(channel))
+    });
+  }
+}
+function join_lobby(){
+  if (current_user) {
+    socket.connect()
+    let lobby = socket.channel('games:lobby')
+    if (classgamelist){
+      lobby_init(classgamelist, lobby);
+    }
+  }
+}
+function change_listener(channel) {
+  if (game_id && current_user) {
+    channel.on('state_update', function(response) {
+      // console.log(JSON.stringify(response));
+      if (response.gamestate.users.length > 1) {
+        $(get_state(channel, response.gamestate.users))
+      }
     });
   }
 }
@@ -61,33 +70,6 @@ function get_state(channel, users) {
   });
 }
 // ///////////////////////////////////////////////////////////////////////////
-function leave_game() {
-  const channel = socket.channel('games:' + game_id)
-  channel.leave()
-  .receive('ok', resp => {})
-}
-
-function end_game() {
-  if (!$('.end_game')) {
-    return;
-  }
-  $(".end_game").click(leave_game);
-}
-
-function change_listener(channel) {
-  if (game_id && current_user) {
-    // const channel = socket.channel('games:' + game_id)
-    channel.on('state_update', function(response) {
-      console.log("huryr");
-      console.log(JSON.stringify(response.gamestate));
-      if (response.gamestate.users.length == 2) {
-        $(get_state(channel, response.gamestate.users))
-      }
-    });
-  }
-}
-
 
 // ///////////////////////////////////////////////////////////////////////////
 $(start_game)
-$(end_game)

@@ -13,6 +13,7 @@ class Game extends React.Component {
     let playerStatus = "";
     this.playerStatus = this.getPlayerStatus();
     this.channel = props.channel;
+    this.users = props.users;
     this.state = {
       old_stocks_price: [],
       stocks_names: ["AMZN", "APPL", "BABA", "CSCO", "FB", "GOOG", "GPRO", "IBM", "INTC", "MSFT", "NVDA", "ORCL", "SNAP", "TSLA", "VZ"],
@@ -57,7 +58,7 @@ class Game extends React.Component {
         <OtherPlayer />
         <News />
         <Trending stocksNames={this.state.stocks_names} stocksPrice={this.state.stocks_price} stocksQty={this.state.stocks_qty} stocksOldPrice={this.state.old_stocks_price}/>
-        <Chat />
+        <Chat channel={this.channel} users={this.users}/>
       </div>
     </div>);
   }
@@ -167,6 +168,7 @@ class Trade extends React.Component {
 
 function StocksDB() {
   return(<div className="stocksdb">
+
   <h5>Stocks</h5>
 </div>);
 }
@@ -195,24 +197,75 @@ function Trending(params) {
     <h5>Trending</h5>
   </div>
   <div className="trending-block">
-  <div className="trending-table">
-    {topFive.map((data) => {
-      return(<tr key={data.id}><td>{data.name}</td><td>{data.price}</td><td>{data.change > 0 && <div className="arrow-up"></div>}{data.change < 0 && <div className="arrow-down"></div>}</td></tr>)
-    })}
+    <div className="trending-table">
+      {topFive.map((data) => {
+        return(<tr key={data.id}><td>{data.name}</td><td>{data.price}</td><td>{data.change > 0 && <div className="arrow-up"></div>}{data.change < 0 && <div className="arrow-down"></div>}</td></tr>)
+      })}
+    </div>
   </div>
-</div>
 </div>);
 }
 
 function News() {
   return(<div className="news">
   <h5>News</h5>
+  Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s,
 </div>)
 }
 
-function Chat() {
-  return(<div className="card chat">
-  <h5 className="card-header">Chat</h5>
+class Chat extends React.Component {
+  constructor(props) {
+    super(props);
+    this.channel = props.channel
+    this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleChange = this.handleChange.bind(this);
+    this.state = {
+      msgs: [],
+      current_msg: "",
+    }
+  }
 
-</div>);
-}
+  // onChange={this.textChangeHandler}
+  // value={this.state.chatInput}
+  handleChange(event){
+    let input = event.target.value
+    this.setState({current_msg: input})
+
+  }
+  handleSubmit(event) {
+    this.refs.chatinput.value = "";
+    this.channel.push("new_chat_send", {body: this.state.current_msg, user: current_user })
+    event.preventDefault();
+  }
+  componentDidMount(){
+    let messagesContainer = $("#chatbox")
+    this.channel.on("new_chat_receive", payload => {
+      console.log(payload);
+      let messageItem = `[${payload.user}] ${payload.body}`
+      console.log(messageItem)
+      this.setState({msgs: this.state.msgs.concat([messageItem])})
+      console.log(this.state.msgs);
+    })
+  }
+  render() {
+    return(
+      <div className="chat">
+        <h5 className="header chat-header">Chat</h5>
+
+        <form onSubmit={this.handleSubmit}>
+          <div id="chatbox">
+            {this.state.msgs.map(function(comp,i){
+              return <div key={'msg' + i}>{comp}</div>
+            })}
+
+          </div>
+          <div className="input-group chat-input-group">
+            <input type="text" ref="chatinput" onChange={this.handleChange} className="form-control" id="input-box"
+              placeholder="Write a msg."
+              required />
+            <input type="submit" className="btn btn-success" value = "send"/>
+          </div>
+        </form>
+      </div>);
+    }
+  }
