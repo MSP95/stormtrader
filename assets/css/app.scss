@@ -17,6 +17,9 @@ body { font-size: 20pt; }
 
 .account {
   background-color: #eee;
+  min-height: 0px;
+  min-width: 0px;
+  overflow-y: auto;
 }
 
 .win-status {
@@ -44,7 +47,7 @@ body { font-size: 20pt; }
 }
 
 .trade {
-  grid-row: 1/3;
+  grid-row: 1/2;
 }
 
 .stocksdb {
@@ -60,8 +63,8 @@ body { font-size: 20pt; }
 
 }
 
-.news {
-  background-color: #eee;
+.graph {
+
 }
 
 .chat {
@@ -180,4 +183,17 @@ body { font-size: 20pt; }
   border-right: 0.3em solid red;
   border-bottom: 0.3em solid red;
   transform: rotate(45deg);
+}
+
+.account-table {
+  margin-left: auto;
+  margin-right: auto;
+  font-size: 0.8em;
+  border-spacing: 1.2em;
+}
+
+.account-block {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
