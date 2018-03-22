@@ -81,7 +81,7 @@ defmodule StormtraderWeb.GameServer do
     end
 
     IO.inspect state
-    {:reply, %{status: status, gamestate: state}, state}
+    {:reply, %{status: status, gamestate: %{player1: state.player1, player2: state.player2, stocks_qty: state.stocks_qty}}, state}
   end
   def handle_call({:user_joined,current_user, users, game_id}, _from, state) do
     IO.inspect state
