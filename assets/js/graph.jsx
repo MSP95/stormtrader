@@ -6,33 +6,36 @@ export default class Graph extends React.Component {
     super(props)
     this.state = {
       stocks: {
-        labels:[5, 10, 15, 20],
-        datasets: [{
-          data: [100, 200, 300, 400],
-          label: "Google",
-        }]
+        labels:[0],
+        datasets: [
+          {data: [], label: "AMZN"}]
+        }
       }
     }
+
+    componentWillReceiveProps(newProps) {
+      let stocks = this.state.stocks;
+      let currentPrice = newProps.stocksPrice
+      stocks.datasets[0].data.push(currentPrice[0])
+      this.setState({stocks: stocks})
+      //console.log(stocks.labels[stocks.labels.length - 1])
+      // for(let i = 0; i < currentPrice.length; i++) {
+      //   stocks.datasets[i].data.push(currentPrice[i])
+      // }
+      // stocks.labels.push(stocks.labels[stocks.labels.length - 1] + 5)
+      // this.setState({stocks: stocks})
+      // console.log(this.state.stocks)
+      //stocks.datasets[0].data.push(zero)
+      //console.log(stocks)
+
+    }
+
+    render() {
+      return(<div className="graph">
+      <div className="subheader">
+        <h5>Graph</h5>
+      </div>
+      <Line data={this.state.stocks} />
+    </div>)
   }
-
-  componentWillReceiveProps(newProps) {
-      // let google = this.state.stocks.datasets[0].data.push(newProps.stocksPrice[0])
-      // let newdata = [{data: google, label: "Google"}]
-      // // let data = this.state.stocks
-      // // data.datasets[0].data = google
-      // // this.setState({stocks: data})
-      // let current = this.state.stocks;
-      // current.datasets = newdata
-      // this.setState({stocks: current})
-
-  }
-
-  render() {
-    return(<div className="graph">
-    <div className="subheader">
-    <h5>Graph</h5>
-    </div>
-    <Line data={this.state.stocks}/>
-  </div>)
-}
 }

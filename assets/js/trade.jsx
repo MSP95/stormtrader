@@ -97,7 +97,7 @@ export default class Trade extends React.Component {
     let stock_quantity = event.target.sell_quantity.value;
     let stock_id = this.state.selected;
     let stock_name = this.props.stocksNames[stock_id]
-    let sell_object = {id: stock_id, name: stock_name, qty: parseInt(stock_quantity), sold_at: this.props.stocksPrice[stock_id]}
+    let sell_object = {stock_id: parseInt(stock_id), stock_name: stock_name, qty: parseInt(stock_quantity), sold_at: this.props.stocksPrice[stock_id]}
     let player = this.props.playerNumber
     let send_object = {player: player, own: sell_object}
     this.channel.push("sell_request", {
