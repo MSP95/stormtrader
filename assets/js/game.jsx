@@ -65,7 +65,7 @@ class Game extends React.Component {
         <Account playerNumber={this.props.playerNumber} player={this.props.playerNumber === 1 ? this.state.player1 : this.state.player2} stocksPrice={this.state.stocks_price} />
         <StocksDB stocksNames={this.state.stocks_names} stocksPrice={this.state.stocks_price} stocksQty={this.state.stocks_qty} stocksOldPrice={this.state.old_stocks_price}/>
         <OtherPlayer player={this.props.playerNumber === 1 ? this.state.player2 : this.state.player1}/>
-        <Graph stocksPrice={this.state.stocks_price}/>
+        <Graph channel={this.channel} />
         <Trending stocksNames={this.state.stocks_names} stocksPrice={this.state.stocks_price} stocksQty={this.state.stocks_qty} stocksOldPrice={this.state.old_stocks_price}/>
         <Chat channel={this.channel} users={this.users}/>
       </div>
