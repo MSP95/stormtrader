@@ -33,7 +33,12 @@ body { font-size: 20pt; }
 }
 
 .wallet-status {
-  background-color: #eee;
+  background-color: #fbc02d;
+  height: 2em;
+  display: flex;
+  align-items: center;
+  text-align: center;
+  justify-content: center;
 }
 
 .timer {
@@ -195,5 +200,27 @@ body { font-size: 20pt; }
 .account-block {
   display: flex;
   align-items: center;
+  justify-content: center;
+}
+
+.otherplayer-table {
+  font-size: 0.7em;
+  border-spacing: 1.2em;
+}
+
+.otherplayer-block {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.subheader {
+  background-color: #1976d2;
+  height: 1.5em;
+  font-size: 0.8em;
+  color: white;
+  display: flex;
+  align-items: center;
+  text-align: center;
   justify-content: center;
 }

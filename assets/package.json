@@ -7,11 +7,13 @@
   },
   "dependencies": {
     "bootstrap": "^4.0.0",
+    "chart.js": "^2.7.2",
     "jquery": "^3.3.1",
     "phoenix": "file:../deps/phoenix",
     "phoenix_html": "file:../deps/phoenix_html",
     "popper.js": "^1.12.9",
     "react": "^16.2.0",
+    "react-chartjs-2": "^2.7.0",
     "react-dom": "^16.2.0",
     "reactstrap": "^5.0.0-beta.2",
     "underscore": "^1.8.3"
