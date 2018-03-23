@@ -63,7 +63,7 @@ class Game extends React.Component {
       <div className="grid">
         <Trade playerNumber={this.props.playerNumber} player={this.props.playerNumber === 1 ? this.state.player1 : this.state.player2} stocksNames={this.state.stocks_names} stocksPrice={this.state.stocks_price} stocksQty={this.state.stocks_qty} channel={this.channel}/>
         <Account playerNumber={this.props.playerNumber} player={this.props.playerNumber === 1 ? this.state.player1 : this.state.player2} stocksPrice={this.state.stocks_price} />
-        <StocksDB />
+        <StocksDB stocksNames={this.state.stocks_names} stocksPrice={this.state.stocks_price} stocksQty={this.state.stocks_qty} stocksOldPrice={this.state.old_stocks_price}/>
         <OtherPlayer player={this.props.playerNumber === 1 ? this.state.player2 : this.state.player1}/>
         <Graph stocksPrice={this.state.stocks_price}/>
         <Trending stocksNames={this.state.stocks_names} stocksPrice={this.state.stocks_price} stocksQty={this.state.stocks_qty} stocksOldPrice={this.state.old_stocks_price}/>
@@ -91,11 +91,13 @@ function Trending(params) {
     <h5>Trending</h5>
   </div>
   <div className="trending-block">
-    <div className="trending-table">
+    <table className="trending-table">
+      <tbody>
       {topFive.map((data) => {
-        return(<tr key={data.id}><td>{data.name}</td><td>{data.price}</td><td>{data.change > 0 && <div className="arrow-up"></div>}{data.change < 0 && <div className="arrow-down"></div>}</td></tr>)
+        return(<tr className="spaceunder" key={data.id}><td className="tdspace">{data.name}</td><td className="tdspace">{data.price}</td><td className="tdspace">{data.change > 0 && <div className="arrow-up"></div>}{data.change < 0 && <div className="arrow-down"></div>}</td></tr>)
       })}
-    </div>
+    </tbody>
+    </table>
   </div>
 </div>);
 }

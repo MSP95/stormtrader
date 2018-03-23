@@ -13,13 +13,16 @@ export default class OtherPlayer extends React.Component {
     <div className="subheader">
       Wallet : ${this.props.player.wallet}
     </div>
-    <div className="otherplayer-table">
-      <div>
+    <div className="otherplayer-block">
+    <table className="otherplayer-table">
+      <tbody>
+      <tr className="spaceunder"><td className="tdspace">Name</td><td className="tdspace">Qty.</td><td className="tdspace">Price</td></tr>
       {this.props.player.own.map((data) => {
-        return(<tr key={data.id}><td>{data.name}</td><td>{data.qty}</td><td>{data.bought_at}</td></tr>)
+        return(<tr className="spaceunder" key={data.id}><td className="tdspace">{data.stock_name}</td><td className="tdspace">{data.qty}</td><td className="tdspace">{data.bought_at}</td></tr>)
       })}
-  </div>
-  </div>
+    </tbody>
+  </table>
+</div>
 </div>);
   }
 }

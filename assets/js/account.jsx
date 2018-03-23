@@ -18,7 +18,7 @@ export default class Account extends React.Component {
     }
     this.setState({sum: sum})
   }
-  
+
   componentWillReceiveProps(newProps) {
     this.setState({own: newProps.player.own})
     this.getCurrentWorth(newProps.stocksPrice, newProps.player.own)
@@ -31,11 +31,14 @@ export default class Account extends React.Component {
     </div>
     <div className="subheader">Current Market Worth : {this.state.sum}</div>
     <div className="account-block">
-      <div className="account-table">
+      <table className="account-table">
+        <tbody>
+        <tr><td className="tdspace">Name</td><td className="tdspace">Qty.</td><td className="tdspace">Price</td></tr>
         {this.state.own.map((data) => {
-          return(<tr key={data.id}><td>{data.name}</td><td>{data.qty}</td><td>{data.bought_at}</td></tr>)
+          return(<tr key={data.id}><td className="tdspace">{data.stock_name}</td><td className="tdspace">{data.qty}</td><td className="tdspace">{data.bought_at}</td></tr>)
         })}
-      </div>
+      </tbody>
+      </table>
     </div>
   </div>)
 }
