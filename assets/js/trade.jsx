@@ -6,6 +6,7 @@ export default class Trade extends React.Component {
     super(props);
     this.buyStock = this.buyStock.bind(this);
     this.sellStock = this.sellStock.bind(this);
+    this.sellSelect = this.sellSelect.bind(this);
     this.handleStockName = this.handleStockName.bind(this);
     this.handleStockQty = this.handleStockQty.bind(this);
     this.channel = this.props.channel;
@@ -13,6 +14,7 @@ export default class Trade extends React.Component {
       stocks_array: [],
       stocks_qty: [],
       own: [],
+      selected: 999,
       input_mismatch_error: "",
       stock_incart: "",
       symbols: [],
@@ -92,7 +94,19 @@ export default class Trade extends React.Component {
 
   sellStock(event) {
     event.preventDefault();
-    console.log(event)
+    let stock_quantity = event.target.sell_quantity.value;
+    let stock_id = this.state.selected;
+    let stock_name = this.props.stocksNames[stock_id]
+    let sell_object = {id: stock_id, name: stock_name, qty: parseInt(stock_quantity), sold_at: this.props.stocksPrice[stock_id]}
+    let player = this.props.playerNumber
+    let send_object = {player: player, own: sell_object}
+    this.channel.push("sell_request", {
+      sell: send_object,
+    })
+  }
+
+  sellSelect(event) {
+    this.setState({selected: event.target.value})
   }
 
   render() {
@@ -117,7 +131,7 @@ export default class Trade extends React.Component {
       <div className="trade-operations">
         <form onSubmit={this.sellStock}>
           <div className="input-group">
-          <select className="form-control">
+          <select className="form-control" onChange={this.sellSelect}>
             <option default>Select Stock</option>
             {this.state.own.map((data) => {
               return(<option key={data.id} value={data.id}>{data.name}</option>)
