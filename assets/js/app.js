@@ -29,7 +29,7 @@ const gamecontainer = document.getElementById('game-container');
 // ///////////////////////////////////////////////////////////////////////////
 
 function start_game() {
-$(join_lobby())
+  $(join_lobby())
   if (game_id && current_user) {
     const channel = socket.channel('games:' + game_id)
     // join channel
@@ -52,14 +52,28 @@ function join_lobby(){
 function change_listener(channel) {
   if (game_id && current_user) {
     channel.on('state_update', function(response) {
-      // console.log(JSON.stringify(response));
-      if (response.gamestate.users.length > 1) {
-        $(get_state(channel, response.gamestate.users))
+      let p1 = response.gamestate.player1;
+      let p2 = response.gamestate.player2;
+      if (response.winner != null){
+          console.log(response);
+      }
+      else{
+        // console.log(JSON.stringify(response));
+        if (p1!=null && p2!=null) {
+          if (p1.user_id==current_user || p2.user_id==current_user){
+            $(get_state(channel, response.gamestate.users))
+          }
+          else{
+            $(spectate(channel))
+          }
+        }
       }
     });
   }
 }
-
+function spectate(channel){
+  console.log("you are a spectator");
+}
 function get_state(channel, users) {
   channel.push("get_state", {
     game_id: game_id,

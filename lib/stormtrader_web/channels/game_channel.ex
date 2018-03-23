@@ -39,22 +39,29 @@ defmodule StormtraderWeb.GameChannel do
   def terminate(_reason, socket) do
     "games:" <> game_id = socket.topic
     user_id = socket.assigns.current_user.id
-    if game_id == "lobby" do
-    else
+    if game_id != "lobby" do
       users = ChannelMonitor.user_left("games:" <> game_id, user_id)["games:" <> game_id]
-      state_update(socket, users, game_id)
+      winner = GameServer.user_left(user_id, game_id)
+      if winner != nil do
+        ChannelMonitor.delete_game("games:" <> game_id)
+      end
+      state_update(socket, users, game_id, %{winner: winner})
       lobby_update(socket)
+      # GameServer.on_leave(user_id, game_id)
     end
-
     {:ok, socket}
   end
+
   def handle_info({:after_join, users, game_id}, socket) do
-    state_update(socket, users, game_id)
+    state_update(socket, users, game_id,  %{winner: nil})
     {:noreply, socket}
   end
-  defp state_update(socket, users, game_id) do
+
+  defp state_update(socket, users, game_id, result) do
+
     gamestate = GameServer.get_state(game_id)
-    broadcast! socket, "state_update", %{ gamestate: gamestate }
+    broadcast! socket, "state_update", %{ gamestate: gamestate, winner: result.winner}
+
   end
   def handle_info(:after_join_lobby, socket) do
     lobby_update(socket)
@@ -80,9 +87,9 @@ defmodule StormtraderWeb.GameChannel do
   # /////////////////////////////////////////////////////////////////////////
   # chat module
   def handle_in("new_chat_send", payload, socket) do
-     %{"body" => msg, "user"=> current_user} = payload
-     user = Accounts.get_user(current_user).name
-     # IO.inspect socket
+    %{"body" => msg, "user"=> current_user} = payload
+    user = Accounts.get_user(current_user).name
+    # IO.inspect socket
     broadcast! socket, "new_chat_receive", %{body: msg, user: user}
     {:reply, {:ok, %{body: msg, user: user}}, socket}
   end
@@ -97,7 +104,17 @@ defmodule StormtraderWeb.GameChannel do
     IO.inspect result
     {:reply, {:ok, %{status: result.status}}, socket}
   end
-
+  # /////////////////////////////////////////////////////////////////////////
+  # Sell module
+  def handle_in("sell_request", payload, socket) do
+    # IO.inspect payload["buy"]["own"]
+    # %{"stock_id" => stock_id, "qty"=> qty, "bought_at"=>bought_at} = payload
+    "games:" <> game_id = socket.topic
+    result = GameServer.sell(payload["sell"], game_id)
+    broadcast socket, "transaction", result.gamestate
+    # IO.inspect result
+    {:reply, {:ok, %{status: result.status}}, socket}
+  end
 
 
 

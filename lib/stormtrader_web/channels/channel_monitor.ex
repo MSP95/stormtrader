@@ -15,6 +15,9 @@ defmodule StormtraderWeb.ChannelMonitor do
     {stat, pid}
     # Process.send_after(self(), send_stocks(), 5000)
   end
+  def delete_game(channel) do
+    GenServer.call(__MODULE__, {:delete_game, channel})
+  end
 
   def send_stocks() do
     GenServer.call(__MODULE__, {:send_stocks})
@@ -36,6 +39,13 @@ defmodule StormtraderWeb.ChannelMonitor do
 
   # GenServer implementation
   # ////////////////////////////////////////////////////////////////////////////
+  def handle_call({:delete_game, channel}, _from, state) do
+    state = update_in(state.channels, fn channels ->
+      Map.delete(channels, channel)
+    end)
+    IO.inspect state
+    {:reply, state, state}
+  end
   def handle_call({:send_stocks}, _from, state) do
     Process.send_after(self(), {:generate_stocks}, 3000) # In 2 hours
     {:reply, state, state}
@@ -44,8 +54,8 @@ defmodule StormtraderWeb.ChannelMonitor do
     Map.keys(state.channels)
     |> Enum.each(fn(channel) ->
       # IO.inspect channel
-    StormtraderWeb.Endpoint.broadcast! channel, "get_stocks", %{stocks: state.stock_price}
-     end)
+      StormtraderWeb.Endpoint.broadcast! channel, "get_stocks", %{stocks: state.stock_price}
+    end)
     #IO.inspect state.stock_price
     state = Map.replace!(state, :stock_price, Enum.take_random(50..1000, 15))
     Process.send_after(self(), {:generate_stocks}, 3000)
