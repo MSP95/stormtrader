@@ -22,6 +22,7 @@ import socket from "./socket"
 import game_init from "./game";
 import spectate_init from './spectate';
 import lobby_init from "./lobby";
+import wait_init from './waiting';
 const game_id = window.game_id
 const current_user = window.current_user
 let classgamelist = document.getElementsByClassName("game-list")[0];
@@ -67,6 +68,9 @@ function change_listener(channel) {
           else{
             $(spectate(channel, response.gamestate.users))
           }
+        }
+        else {
+          wait_init(gamecontainer);
         }
       }
     });
