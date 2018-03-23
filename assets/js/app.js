@@ -20,6 +20,7 @@ import "phoenix_html"
 
 import socket from "./socket"
 import game_init from "./game";
+import spectate_init from './spectate';
 import lobby_init from "./lobby";
 const game_id = window.game_id
 const current_user = window.current_user
@@ -64,15 +65,21 @@ function change_listener(channel) {
             $(get_state(channel, response.gamestate.users))
           }
           else{
-            $(spectate(channel))
+            $(spectate(channel, response.gamestate.users))
           }
         }
       }
     });
   }
 }
-function spectate(channel){
-  console.log("you are a spectator");
+function spectate(channel, users) {
+  channel.push("get_state", {
+    game_id: game_id,
+  }).receive("ok", function(state) {
+    if (game_id) {
+      spectate_init(gamecontainer, state, channel, users)
+    }
+  });
 }
 function get_state(channel, users) {
   channel.push("get_state", {
