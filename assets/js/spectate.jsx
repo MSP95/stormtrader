@@ -1,5 +1,13 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import classnames from 'classnames';
+import Player1 from './player1';
+import StocksDB from './stocksdb';
+import Player2 from './player2';
+import Timer from './timer';
+import Trade from './trade';
+import Chat from './chat';
+import Graph from './graph';
 
 export default function spectate_init(root, state, channel, users) {
   let current_player = 0;
