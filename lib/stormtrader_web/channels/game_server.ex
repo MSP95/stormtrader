@@ -8,7 +8,7 @@ defmodule StormtraderWeb.GameServer do
       users: [],
       player1: nil,
       player2: nil,
-      timer: 6,
+      timer: 300,
       stocks_qty: Enum.take_random(1..100, 15),
       # stocks: Enum.take_random(1..100, 10),
     }
