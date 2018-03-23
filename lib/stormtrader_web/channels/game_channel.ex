@@ -107,13 +107,14 @@ defmodule StormtraderWeb.GameChannel do
   # /////////////////////////////////////////////////////////////////////////
   # Sell module
   def handle_in("sell_request", payload, socket) do
-    # IO.inspect payload["buy"]["own"]
-    # %{"stock_id" => stock_id, "qty"=> qty, "bought_at"=>bought_at} = payload
+    IO.inspect "=======Test Area========="
+    # IO.inspect payload
     "games:" <> game_id = socket.topic
     result = GameServer.sell(payload["sell"], game_id)
     broadcast socket, "transaction", result.gamestate
     # IO.inspect result
-    {:reply, {:ok, %{status: result.status}}, socket}
+    IO.inspect "=======Test Area========="
+    {:reply, {:ok, %{status: "result.status"}}, socket}
   end
 
 
