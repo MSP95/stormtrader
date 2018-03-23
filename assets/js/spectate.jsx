@@ -8,6 +8,7 @@ import Timer from './timer';
 import Trade from './trade';
 import Chat from './chat';
 import Graph from './graph';
+import Trending from './trending'
 
 export default function spectate_init(root, state, channel, users) {
   let current_player = 0;

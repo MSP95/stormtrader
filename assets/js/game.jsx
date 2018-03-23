@@ -8,6 +8,7 @@ import Timer from './timer';
 import Trade from './trade';
 import Chat from './chat';
 import Graph from './graph';
+import Trending from './trending'
 
 export default function game_init(root, state, channel, users) {
   let current_player = 0;
@@ -71,33 +72,4 @@ class Game extends React.Component {
       </div>
     </div>);
   }
-}
-
-function Trending(params) {
-  let stocks_names = params["stocksNames"]
-  let stocks_price = params["stocksPrice"]
-  let stocks_quantity = params["stocksQty"]
-  let old_stocks_price = params["stocksOldPrice"]
-  let obj = []
-  for(let i = 0; i < stocks_names.length; i++) {
-    obj.push({id: i, name: stocks_names[i], price: stocks_price[i], quantity: stocks_quantity, change: stocks_price[i] - old_stocks_price[i]})
-  }
-  obj.sort((a,b) => {
-    return a.price < b.price;
-  })
-  let topFive = obj.slice(0,5)
-  return(<div className="trending">
-  <div className="header">
-    <h5>Trending</h5>
-  </div>
-  <div className="trending-block">
-    <table className="trending-table">
-      <tbody>
-      {topFive.map((data) => {
-        return(<tr className="spaceunder" key={data.id}><td className="tdspace">{data.name}</td><td className="tdspace">{data.price}</td><td className="tdspace">{data.change > 0 && <div className="arrow-up"></div>}{data.change < 0 && <div className="arrow-down"></div>}</td></tr>)
-      })}
-    </tbody>
-    </table>
-  </div>
-</div>);
 }
