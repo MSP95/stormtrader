@@ -46,59 +46,6 @@ export default class Graph extends React.Component {
       });
     }
 
-  // componentWillReceiveProps(newProps) {
-  //   if(newProps.stocksPrice != this.props.stocksPrice) {
-  //     let historic = this.state.historic.slice(0)
-  //     // for(let i = 0; i < this.props.stocksPrice.length; i++) {
-  //     //   historic[i].push(this.props.stocksPrice[i])
-  //     // }
-  //     // for(let i = 0; i < 15; i++) {
-  //     //
-  //     // }
-  //     let newdata = []
-  //     for(let i = 0; i < 15; i++) {
-  //       let hist = historic[i]
-  //       console.log("every",hist)
-  //       // hist.push(this.props.stocksPrice[i])
-  //       // newdata.push(hist)
-  //     }
-  //     // console.log(newdata)
-  //     //this.setState({historic: historic})
-  //   }
-    //let stocks = this.state.stocks;
-    // let currentPrice = newProps.stocksPrice
-    // let historic = this.state.historic.slice(0)
-    // console.log("CurrentPrice", currentPrice)
-    // for(let i = 0; i < currentPrice.length; i++) {
-    //   historic[i].push(currentPrice[i])
-    // }
-    // this.setState({historic: historic})
-  //}
-
-  // componentDidMount() {
-  //   setInterval(() => {
-  //     let historic = this.state.historic.slice(0)
-  //     for(let i = 0; i < this.props.stocksPrice.length; i++) {
-  //       //historic[i].push(this.props.stocksPrice[i])
-  //       console.log(i,historic[i])
-  //     }
-  //     this.setState({historic: historic})
-  //   }, 7000)
-  // }
-
-    //stocks.datasets[0].data.push(currentPrice[0])
-    //this.setState({stocks: stocks})
-    //console.log(stocks.labels[stocks.labels.length - 1])
-    // for(let i = 0; i < currentPrice.length; i++) {
-    //   stocks.datasets[i].data.push(currentPrice[i])
-    // }
-    // stocks.labels.push(stocks.labels[stocks.labels.length - 1] + 5)
-    // this.setState({stocks: stocks})
-    // console.log(this.state.stocks)
-    //stocks.datasets[0].data.push(zero)
-    //console.log(stocks)
-
-
   getChart(event) {
     event.preventDefault();
     let value = parseInt(event.target.value)
@@ -106,6 +53,7 @@ export default class Graph extends React.Component {
     let chartData = {labels: this.state.labels, datasets: [{data: this.state.historic[value], label: this.state.names[value].name}]}
     this.setState({stocks: chartData})
   }
+
 
   render() {
     return(<div className="graph">
@@ -115,7 +63,7 @@ export default class Graph extends React.Component {
     <select onChange={this.getChart}>{this.state.names.map((data) => {
         return(<option key={data.id} value={data.id}>{data.name}</option>)
       })}</select>
-    <Line data={this.state.stocks} redraw={true}/>
+    <Line data={this.state.stocks} />
     </div>)
   }
 }
