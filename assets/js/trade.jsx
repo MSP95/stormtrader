@@ -7,20 +7,23 @@ export default class Trade extends React.Component {
     this.buyStock = this.buyStock.bind(this);
     this.sellStock = this.sellStock.bind(this);
     this.sellSelect = this.sellSelect.bind(this);
-    this.handleStockName = this.handleStockName.bind(this);
-    this.handleStockQty = this.handleStockQty.bind(this);
+    this.handleStockName = this.handleStockName.bind(this)
+    this.handleStockQty = this.handleStockQty.bind(this)
+    this.sellStockQty = this.sellStockQty.bind(this)
     this.channel = this.props.channel;
     this.state = {
       stocks_array: [],
       stocks_qty: [],
       own: [],
       selected: 999,
-      input_mismatch_error: "",
-      stock_incart: "",
-      symbols: [],
-      stock_qty_incart: "",
-      cart_total: "",
-      stock_current_price: "",
+      status: "",
+      sell_status: "",
+      stock_name: "",
+      qty: "",
+      buying_at: 0,
+      stock_id: 999,
+      stock_sell: "",
+      sell_qty: "",
     }
   }
 
@@ -57,39 +60,37 @@ export default class Trade extends React.Component {
     let send_object = {player: player, own: buy_object}
     this.channel.push("buy_request", {
       buy: send_object,
+    }).receive("ok", msg => {
+      console.log(msg.status)
+      if(msg.status === "No stocks left") {
+        this.setState({status: "Quantity cannot be supplied!"})
+      }
+      if(msg.status === "Not enough money") {
+        this.setState({status: "Not enough money to buy!"})
+      }
     })
   }
 
   handleStockName(event) {
-    let input = event.target.value;
+    let input = event.target.value.toUpperCase();
     let stocksNames = this.props.stocksNames;
-    let stocksPrice = this.props.stocksPrice;
+    //let stocksPrice = this.props.stocksPrice;
     let index = stocksNames.indexOf(input);
-    if (stocksNames.includes(input.toUpperCase())) {
-      this.setState({stock_incart: input.toUpperCase(), symbols: ["x"], stock_current_price: "($"+stocksPrice[index]+")", input_mismatch_error: ""})
+    if (stocksNames.includes(input)) {
+      this.setState({stock_name: input, status: "", stock_id: index})
     }
     else if (input === "") {
-      this.setState({stock_qty_incart: "", cart_total: "", stock_incart: "", symbols: [], stock_current_price: "", input_mismatch_error: ""})
+      this.setState({status: "", stock_name: "", status: "", stock_id: 999})
     }
     else {
-      this.setState({stock_qty_incart: "", cart_total: "", stock_incart: "", symbols: [], stock_current_price: "", input_mismatch_error: "Invalid Stock Name"})
+      this.setState({stock_name: "", status: "Invalid name!", stock_id: 999})
     }
   }
 
   handleStockQty(event) {
-    let input = event.target.value;
-    let stock_incart = this.state.stock_incart;
-    let stocksQty = this.props.stocksQty;
-    let stocksPrice = this.props.stocksPrice;
-    let stocksNames = this.props.stocksNames;
-    let index = stocksNames.indexOf(stock_incart);
-    if (input <= stocksQty[index]) {
-      let price = input * stocksPrice[index]
-      this.setState({stock_qty_incart: input, cart_total: "$"+price, symbols: ["x","="], input_mismatch_error: ""})
-    }
-    else {
-      this.setState({stock_qty_incart: "", cart_total: "", symbols: [], input_mismatch_error: "Demand exceeding the available quantity"})
-    }
+    let input = event.target.value.toUpperCase();
+    this.setState({qty: input})
+    this.setState({status: ""})
   }
 
   sellStock(event) {
@@ -107,26 +108,34 @@ export default class Trade extends React.Component {
 
   sellSelect(event) {
     this.setState({selected: event.target.value})
+    this.setState({stock_sell: this.props.stocksNames[event.target.value]})
+  }
+
+  sellStockQty(event) {
+    let input = event.target.value.toUpperCase();
+    this.setState({sell_qty: input})
+    this.setState({sell_status: ""})
   }
 
   render() {
     return(<div className="trade">
     <div className="trade-grid">
+      <div className="trade-operations"></div>
       <div className="trade-operations">
         <form onSubmit={this.buyStock}>
           <div className="input-group">
-            {/*<input onChange={this.handleStockName} className="form-control" name="stock_name" type="text" placeholder="Stock Name"></input>*/}
-            <input className="form-control" name="stock_name" type="text" placeholder="Stock Name"></input>
-            {/*<input onChange={this.handleStockQty} className="form-control" name="stock_quantity" type="number" placeholder="Quantity"></input>*/}
-            <input className="form-control" name="stock_quantity" type="number" placeholder="Quantity"></input>
+            <input className="form-control" name="stock_name" type="text" placeholder="Stock Name" onChange={this.handleStockName}></input>
+            <input className="form-control" name="stock_quantity" type="number" placeholder="Quantity" onChange={this.handleStockQty}></input>
           </div>
           <div className="height-p4em"></div>
           <input className="buy-btn btn-success" type="submit" value="BUY"></input>
         </form>
       </div>
-      <div className="buy-error"><p>{this.state.input_mismatch_error}</p></div>
+      <div className="status-operations"><div className="buy-error"><p>{this.state.status}</p></div></div>
+      <div className="status-operations">
       <div className="buy-invoice">
-        <h5><span className="width-p5em">{this.state.stock_incart}</span><span className="width-p5em">{this.state.stock_current_price}</span><span className="width-p5em">{this.state.symbols[0]}</span><span className="width-p5em">{this.state.stock_qty_incart}</span><span className="width-p5em">{this.state.symbols[1]}</span><span className="width-p5em">{this.state.cart_total}</span></h5>
+        <p>{this.state.stock_name}<span className="width-p5em">{this.state.stock_name != "" && <span> (${this.props.stocksPrice[this.state.stock_id]})<span> x</span></span>}</span><span className="width-p5em">{this.state.stock_name != "" && <span>{this.state.qty}</span>}<span className="width-p5em">{this.state.stock_name != "" && <span> = <span>{this.props.stocksPrice[this.state.stock_id] * this.state.qty}</span></span>}</span></span></p>
+      </div>
       </div>
       <div className="trade-operations">
         <form onSubmit={this.sellStock}>
@@ -137,13 +146,19 @@ export default class Trade extends React.Component {
               return(<option key={data.id} value={data.id}>{data.name}</option>)
             })}
           </select>
-          <input className="form-control" name="sell_quantity" type="number" placeholder="Quantity"></input>
+          <input className="form-control" name="sell_quantity" type="number" placeholder="Quantity" onChange={this.sellStockQty}></input>
           </div>
           <div className="height-p4em"></div>
           <input className="buy-btn btn-danger" type="submit" value="SELL"></input>
         </form>
+        </div>
+        <div className="status-operations"><div className="sell-error"><p>{this.state.sell_status}</p></div></div>
+        <div className="status-operations">
+        <div className="sell-invoice">
+          <p>{this.state.stock_sell}<span className="width-p5em">{this.state.stock_sell != "" && <span> (${this.props.stocksPrice[this.state.selected]})<span> x</span></span>}</span><span className="width-p5em">{this.state.stock_sell != "" && <span>{this.state.sell_qty}</span>}<span className="width-p5em">{this.state.stock_sell != "" && <span> = <span>{this.props.stocksPrice[this.state.selected] * this.state.sell_qty}</span></span>}</span></span></p>
+        </div>
+        </div>
       </div>
-    </div>
   </div>);
 }
 }
