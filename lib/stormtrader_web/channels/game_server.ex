@@ -10,7 +10,7 @@ defmodule StormtraderWeb.GameServer do
       users: [],
       player1: nil,
       player2: nil,
-      timer: 10,
+      timer: 300,
       stocks_qty: Enum.take_random(1..100, 15),
     }
     game_id = String.to_atom(game_id)
@@ -67,7 +67,7 @@ defmodule StormtraderWeb.GameServer do
   def handle_call({:buy, payload}, _from, state) do
     amount = payload["own"]["bought_at"]*payload["own"]["qty"]
     available_qty = Enum.at(state.stocks_qty, payload["own"]["stock_id"])
-    if payload["own"]["qty"] <= available_qty do
+    if payload["own"]["qty"] <= available_qty &&  payload["own"]["qty"] > 0 do
       #////////////////////////////////////////////////////////////////////////
       if payload["player"] == 1 do
 
