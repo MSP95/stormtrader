@@ -8,7 +8,6 @@ defmodule StormtraderWeb.PageController do
   end
   def home(conn, _params) do
     state = ChannelMonitor.games_list()
-    IO.inspect state
     render(conn, "home.html", game_list: state)
   end
   def create(conn, _params) do

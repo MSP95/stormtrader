@@ -23,7 +23,6 @@ defmodule StormtraderWeb.UserSocket do
   # performing token verification on connect.
   def connect(%{"currentUser" => currentUser}, socket) do
     socket = assign(socket, :current_user, Repo.get!(User, currentUser))
-    IO.inspect socket
     {:ok, socket}
   end
 

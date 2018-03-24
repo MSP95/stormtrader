@@ -23,6 +23,7 @@ import game_init from "./game";
 import spectate_init from './spectate';
 import lobby_init from "./lobby";
 import wait_init from './waiting';
+import result_init from './results';
 const game_id = window.game_id
 const current_user = window.current_user
 let classgamelist = document.getElementsByClassName("game-list")[0];
@@ -57,7 +58,10 @@ function change_listener(channel) {
       let p1 = response.gamestate.player1;
       let p2 = response.gamestate.player2;
       if (response.winner != null){
-          console.log(response);
+        setTimeout(() => {
+          result_init(gamecontainer, response.winner.winner, response.gamestate);
+        }, 1000);
+
       }
       else{
         // console.log(JSON.stringify(response));

@@ -42,12 +42,12 @@ defmodule StormtraderWeb.GameChannel do
     if game_id != "lobby" do
       users = ChannelMonitor.user_left("games:" <> game_id, user_id)["games:" <> game_id]
       winner = GameServer.user_left(user_id, game_id)
-      if winner != nil do
+      if winner != nil  do
         ChannelMonitor.delete_game("games:" <> game_id)
       end
       state_update(socket, users, game_id, %{winner: winner})
       lobby_update(socket)
-      # GameServer.on_leave(user_id, game_id)
+
     end
     {:ok, socket}
   end
@@ -89,31 +89,25 @@ defmodule StormtraderWeb.GameChannel do
   def handle_in("new_chat_send", payload, socket) do
     %{"body" => msg, "user"=> current_user} = payload
     user = Accounts.get_user(current_user).name
-    # IO.inspect socket
+
     broadcast! socket, "new_chat_receive", %{body: msg, user: user}
     {:reply, {:ok, %{body: msg, user: user}}, socket}
   end
   # /////////////////////////////////////////////////////////////////////////
   # Buy module
   def handle_in("buy_request", payload, socket) do
-    IO.inspect payload["buy"]["own"]
-    # %{"stock_id" => stock_id, "qty"=> qty, "bought_at"=>bought_at} = payload
     "games:" <> game_id = socket.topic
     result = GameServer.buy(payload["buy"], game_id)
     broadcast socket, "transaction", result.gamestate
-    IO.inspect result
     {:reply, {:ok, %{status: result.status}}, socket}
   end
   # /////////////////////////////////////////////////////////////////////////
   # Sell module
   def handle_in("sell_request", payload, socket) do
-    IO.inspect "=======Test Area========="
-    # IO.inspect payload
+
     "games:" <> game_id = socket.topic
     result = GameServer.sell(payload["sell"], game_id)
     broadcast socket, "transaction", result.gamestate
-    # IO.inspect result
-    IO.inspect "=======Test Area========="
     {:reply, {:ok, %{status: "result.status"}}, socket}
   end
 

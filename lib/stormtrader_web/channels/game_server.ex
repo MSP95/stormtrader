@@ -10,7 +10,6 @@ defmodule StormtraderWeb.GameServer do
       player2: nil,
       timer: 300,
       stocks_qty: Enum.take_random(1..100, 15),
-      # stocks: Enum.take_random(1..100, 10),
     }
     game_id = String.to_atom(game_id)
     start_link(initial_state, game_id)
@@ -126,29 +125,29 @@ defmodule StormtraderWeb.GameServer do
     # /////////////////////////////////////////////////////////////////////////////
     if payload["player"]==2 do
       shares = state.player2.own
-    sellQuant = payload["own"]["qty"]
-    shares = shares
-    |> Enum.reduce(%{qty: sellQuant, s: []}, fn(own, acc)->
-      # filtering required stocks
-      if own["stock_id"] == payload["own"]["stock_id"] do
-        if own["qty"]>= acc.qty do
-          own = put_in(own["qty"], own["qty"]-acc.qty)
-          if own["qty"] == 0 do
-            %{qty: 0, s: acc.s}
+      sellQuant = payload["own"]["qty"]
+      shares = shares
+      |> Enum.reduce(%{qty: sellQuant, s: []}, fn(own, acc)->
+        # filtering required stocks
+        if own["stock_id"] == payload["own"]["stock_id"] do
+          if own["qty"]>= acc.qty do
+            own = put_in(own["qty"], own["qty"]-acc.qty)
+            if own["qty"] == 0 do
+              %{qty: 0, s: acc.s}
+            else
+              %{qty: 0, s: acc.s ++ [own]}
+            end
           else
-            %{qty: 0, s: acc.s ++ [own]}
+            %{qty: acc.qty - own["qty"], s: acc.s}
           end
         else
-          %{qty: acc.qty - own["qty"], s: acc.s}
+          %{qty: acc.qty, s: acc.s ++ [own]}
         end
-      else
-        %{qty: acc.qty, s: acc.s ++ [own]}
-      end
-    end)
-    state = put_in(state.player2.own, shares.s)
-    state = put_in(state.player2.wallet, state.player2.wallet+(sellQuant*payload["own"]["sold_at"]))
-    new_list = List.replace_at(state.stocks_qty, payload["own"]["stock_id"], available_qty+payload["own"]["qty"])
-    state = Map.replace!(state, :stocks_qty, new_list)
+      end)
+      state = put_in(state.player2.own, shares.s)
+      state = put_in(state.player2.wallet, state.player2.wallet+(sellQuant*payload["own"]["sold_at"]))
+      new_list = List.replace_at(state.stocks_qty, payload["own"]["stock_id"], available_qty+payload["own"]["qty"])
+      state = Map.replace!(state, :stocks_qty, new_list)
 
     end
     # /////////////////////////////////////////////////////////////////////////////
@@ -156,7 +155,6 @@ defmodule StormtraderWeb.GameServer do
     {:reply, %{status: status, gamestate: %{player1: state.player1, player2: state.player2, stocks_qty: state.stocks_qty}}, state}
   end
   def handle_call({:user_joined,current_user, users, game_id}, _from, state) do
-    IO.inspect state
     new_state = Map.replace!(state, :users, users)
     if new_state.player1 == nil do
       new_state = Map.replace!(new_state, :player1, %{user_id: current_user, wallet: 10000, own: []})
@@ -170,16 +168,22 @@ defmodule StormtraderWeb.GameServer do
 
   def handle_call({:user_left, user_id, game_id}, _from, state) do
 
-    if user_id == state.player1.user_id do
-      winner = state.player2.user_id
-      Process.send_after(self(), {:stopp, game_id}, 5000)
+    if state.player1 == nil || state.player2 == nil do
+      Process.send_after(self(), {:stopp, game_id}, 800)
+      winner = "no one"
+    else
+      if user_id == state.player1.user_id do
+        winner = state.player2.user_id
+        state = put_in(state.player1.user_id, nil)
+        Process.send_after(self(), {:stopp, game_id}, 800)
 
-    end
-    if user_id == state.player2.user_id do
-      winner = state.player1.user_id
-      Process.send_after(self(), {:stopp, game_id}, 5000)
-      # GenServer.stop(game_id, "user left abruptly", :infinity)
-
+      end
+      if user_id == state.player2.user_id do
+        winner = state.player1.user_id
+        state = put_in(state.player2.user_id, nil)
+        Process.send_after(self(), {:stopp, game_id}, 800)
+        # GenServer.stop(game_id, "user left abruptly", :infinity)
+      end
     end
 
     {:reply, %{winner: winner}, state}
@@ -202,7 +206,7 @@ defmodule StormtraderWeb.GameServer do
       if state.player1.wallet==state.player2.wallet, do: winner= "tie"
       StormtraderWeb.Endpoint.broadcast! "games:"<>state.id, "state_update", %{ gamestate: state, winner: winner}
       game_id_atom = String.to_atom(state.id)
-      Process.send_after(self(), {:stopp, game_id_atom}, 5000)
+      Process.send_after(self(), {:stopp, game_id_atom}, 800)
 
 
     else
@@ -210,14 +214,11 @@ defmodule StormtraderWeb.GameServer do
       state = Map.replace!(state, :timer, time)
       timerx = Process.send_after(self(), {:work}, 1000)
     end
-    # IO.inspect state
-
     StormtraderWeb.Endpoint.broadcast! "games:"<>state.id, "start_timer", %{time: time}
     {:noreply, state}
   end
 
   def handle_call({:timer}, _from, state) do
-    # IO.inspect state
     if state.status == "ready" and state.player1 != nil and state.player2 != nil do
       state = Map.replace!(state, :status, "started")
       timerx = Process.send_after(self(), {:work}, 1000) # In 2 hours
