@@ -15,13 +15,12 @@ export default class Trade extends React.Component {
       stocks_array: [],
       stocks_qty: [],
       own: [],
-      selected: 999,
+      selected: "",
       status: "",
       sell_status: "",
       stock_name: "",
       qty: "",
-      buying_at: 0,
-      stock_id: 999,
+      stock_id: "",
       stock_sell: "",
       sell_qty: "",
     }
@@ -39,7 +38,7 @@ export default class Trade extends React.Component {
         qty[stock_name.indexOf(unique[i].stock_name)] = qty[stock_name.indexOf(unique[i].stock_name)] + unique[i].qty
       }
       else {
-          qty[stock_name.indexOf(unique[i].stock_name)] = qty[stock_name.indexOf(unique[i].stock_name)] + unique[i].qty
+        qty[stock_name.indexOf(unique[i].stock_name)] = qty[stock_name.indexOf(unique[i].stock_name)] + unique[i].qty
       }
     }
     for(let i = 0; i < stocks.length; i++) {
@@ -51,24 +50,27 @@ export default class Trade extends React.Component {
 
   buyStock(event) {
     event.preventDefault();
-    let stock_name = event.target.stock_name.value;
+    let stock_name = event.target.stock_name.value.toUpperCase();
     let stock_quantity = event.target.stock_quantity.value;
-    // TODO: VALIDATE NAME FIRST
     let stock_id = this.props.stocksNames.indexOf(stock_name)
     let buy_object = {stock_id: stock_id, stock_name: stock_name, qty: parseInt(stock_quantity), bought_at: this.props.stocksPrice[stock_id]}
     let player = this.props.playerNumber
     let send_object = {player: player, own: buy_object}
-    this.channel.push("buy_request", {
-      buy: send_object,
-    }).receive("ok", msg => {
-      console.log(msg.status)
-      if(msg.status === "No stocks left") {
-        this.setState({status: "Quantity cannot be supplied!"})
-      }
-      if(msg.status === "Not enough money") {
-        this.setState({status: "Not enough money to buy!"})
-      }
-    })
+    if(stock_name != "" && stock_quantity != "" && stock_id != -1) {
+      this.channel.push("buy_request", {
+        buy: send_object,
+      }).receive("ok", msg => {
+        if(msg.status === "No stocks left") {
+          this.setState({status: "Quantity cannot be supplied!"})
+        }
+        if(msg.status === "Not enough money") {
+          this.setState({status: "Not enough money to buy!"})
+        }
+      })
+    }
+    else {
+      this.setState({status: "Invalid input"})
+    }
   }
 
   handleStockName(event) {
@@ -101,20 +103,39 @@ export default class Trade extends React.Component {
     let sell_object = {stock_id: parseInt(stock_id), stock_name: stock_name, qty: parseInt(stock_quantity), sold_at: this.props.stocksPrice[stock_id]}
     let player = this.props.playerNumber
     let send_object = {player: player, own: sell_object}
-    this.channel.push("sell_request", {
-      sell: send_object,
-    })
+    if(this.state.selected === "") {
+      this.setState({stock_sell: ""})
+    }
+    if(this.state.selected != "" && this.state.sell_qty != "") {
+      this.channel.push("sell_request", {
+        sell: send_object,
+      })
+      this.setState({stock_sell: "", selected: "", sell_qty: ""})
+      this.refs.sell_quantity.value = ""
+    }
+    else {
+      this.setState({sell_status: "Select a stock and/or enter quantity to sell"})
+    }
   }
 
   sellSelect(event) {
     this.setState({selected: event.target.value})
     this.setState({stock_sell: this.props.stocksNames[event.target.value]})
+    if(event.target.value === "") {
+      this.setState({stock_sell: ""})
+    }
   }
 
   sellStockQty(event) {
-    let input = event.target.value.toUpperCase();
+    let input = event.target.value
     this.setState({sell_qty: input})
     this.setState({sell_status: ""})
+    if(event.target.value > this.state.stocks_qty[this.state.selected]) {
+      this.setState({sell_status: "Entered more quantity than you own!"})
+    }
+    else {
+      this.setState({sell_status: ""})
+    }
   }
 
   render() {
@@ -133,32 +154,32 @@ export default class Trade extends React.Component {
       </div>
       <div className="status-operations"><div className="buy-error"><p>{this.state.status}</p></div></div>
       <div className="status-operations">
-      <div className="buy-invoice">
-        <p>{this.state.stock_name}<span className="width-p5em">{this.state.stock_name != "" && <span> (${this.props.stocksPrice[this.state.stock_id]})<span> x</span></span>}</span><span className="width-p5em">{this.state.stock_name != "" && <span>{this.state.qty}</span>}<span className="width-p5em">{this.state.stock_name != "" && <span> = <span>{this.props.stocksPrice[this.state.stock_id] * this.state.qty}</span></span>}</span></span></p>
-      </div>
+        <div className="buy-invoice">
+          <p>{this.state.stock_name}<span className="width-p5em">{this.state.stock_name != "" && <span> (${this.props.stocksPrice[this.state.stock_id]})<span> x</span></span>}</span><span className="width-p5em">{this.state.stock_name != "" && <span>{this.state.qty}</span>}<span className="width-p5em">{this.state.stock_name != "" && <span> = <span>{this.props.stocksPrice[this.state.stock_id] * this.state.qty}</span></span>}</span></span></p>
+        </div>
       </div>
       <div className="trade-operations">
         <form onSubmit={this.sellStock}>
           <div className="input-group">
-          <select className="form-control" onChange={this.sellSelect}>
-            <option default>Select Stock</option>
-            {this.state.own.map((data) => {
-              return(<option key={data.id} value={data.id}>{data.name}</option>)
-            })}
-          </select>
-          <input className="form-control" name="sell_quantity" type="number" placeholder="Quantity" onChange={this.sellStockQty}></input>
+            <select className="form-control" onChange={this.sellSelect}>
+              <option default value="">Select Stock</option>
+              {this.state.own.map((data) => {
+                return(<option key={data.id} value={data.id}>{data.name}</option>)
+              })}
+            </select>
+            <input className="form-control" ref="sell_quantity" name="sell_quantity" type="number" placeholder={this.state.selected != "" ? "You own "+this.state.stocks_qty[this.state.selected]+" stock(s)" : "Quantity"} onChange={this.sellStockQty}></input>
           </div>
           <div className="height-p4em"></div>
           <input className="buy-btn btn-danger" type="submit" value="SELL"></input>
         </form>
-        </div>
-        <div className="status-operations"><div className="sell-error"><p>{this.state.sell_status}</p></div></div>
-        <div className="status-operations">
+      </div>
+      <div className="status-operations"><div className="sell-error"><p>{this.state.sell_status}</p></div></div>
+      <div className="status-operations">
         <div className="sell-invoice">
           <p>{this.state.stock_sell}<span className="width-p5em">{this.state.stock_sell != "" && <span> (${this.props.stocksPrice[this.state.selected]})<span> x</span></span>}</span><span className="width-p5em">{this.state.stock_sell != "" && <span>{this.state.sell_qty}</span>}<span className="width-p5em">{this.state.stock_sell != "" && <span> = <span>{this.props.stocksPrice[this.state.selected] * this.state.sell_qty}</span></span>}</span></span></p>
         </div>
-        </div>
       </div>
+    </div>
   </div>);
 }
 }
