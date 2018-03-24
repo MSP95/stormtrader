@@ -40,27 +40,35 @@ defmodule StormtraderWeb.GameChannel do
     "games:" <> game_id = socket.topic
     user_id = socket.assigns.current_user.id
     if game_id != "lobby" do
+      old_state = GameServer.get_state(game_id)
+      state = GameServer.user_left(user_id, game_id)
       users = ChannelMonitor.user_left("games:" <> game_id, user_id)["games:" <> game_id]
-      winner = GameServer.user_left(user_id, game_id)
-      if winner != nil  do
+      users_in_channel = ChannelMonitor.users_in_channel("games:" <> game_id)
+      if users_in_channel == nil do
+        GameServer.stopp(game_id)
+      end
+      if state.winner != nil || state.state.status == "stopped" do
+        # GameServer.stopp
         ChannelMonitor.delete_game("games:" <> game_id)
       end
-      state_update(socket, users, game_id, %{winner: winner})
-      lobby_update(socket)
-
+      if old_state.status != "stopped" do
+        state_update(socket, users, game_id, state)
+        lobby_update(socket)
+      end
     end
     {:ok, socket}
   end
 
   def handle_info({:after_join, users, game_id}, socket) do
-    state_update(socket, users, game_id,  %{winner: nil})
+
+    gamestate = GameServer.get_state(game_id)
+    state_update(socket, users, game_id,  %{state: gamestate, winner: nil})
     {:noreply, socket}
   end
 
   defp state_update(socket, users, game_id, result) do
 
-    gamestate = GameServer.get_state(game_id)
-    broadcast! socket, "state_update", %{ gamestate: gamestate, winner: result.winner}
+    broadcast! socket, "state_update", %{ gamestate: result.state, winner: result.winner}
 
   end
   def handle_info(:after_join_lobby, socket) do

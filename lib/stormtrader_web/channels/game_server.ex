@@ -1,4 +1,6 @@
+
 defmodule StormtraderWeb.GameServer do
+  alias StormtraderWeb.ChannelMonitor
   use GenServer
   def new(player1, users, game_id) do
 
@@ -8,7 +10,7 @@ defmodule StormtraderWeb.GameServer do
       users: [],
       player1: nil,
       player2: nil,
-      timer: 300,
+      timer: 10,
       stocks_qty: Enum.take_random(1..100, 15),
     }
     game_id = String.to_atom(game_id)
@@ -51,9 +53,16 @@ defmodule StormtraderWeb.GameServer do
     game_id = String.to_atom(game_id)
     GenServer.call(game_id, {:sell, payload})
   end
+  def stopp(game_id) do
+    game_id = String.to_atom(game_id)
+    Process.send_after(self(), {:stopp, game_id}, 1000)
+  end
 
   # /////////////////////////////////////////////////////////////////////////////
 
+  def handle_cast({:stopp, game_id}, _from, state) do
+    GenServer.stop(game_id, :normal, :infinity)
+  end
   # GenServer implementation
   def handle_call({:buy, payload}, _from, state) do
     amount = payload["own"]["bought_at"]*payload["own"]["qty"]
@@ -169,45 +178,55 @@ defmodule StormtraderWeb.GameServer do
   def handle_call({:user_left, user_id, game_id}, _from, state) do
 
     if state.player1 == nil || state.player2 == nil do
-      Process.send_after(self(), {:stopp, game_id}, 800)
+      # Process.send_after(self(), {:stopp, game_id}, 800)
       winner = "no one"
     else
       if user_id == state.player1.user_id do
         winner = state.player2.user_id
-        state = put_in(state.player1.user_id, nil)
-        Process.send_after(self(), {:stopp, game_id}, 800)
+        # state = put_in(state.player1.user_id, nil)
+        state = Map.replace!(state, :status, "stopped")
+        # Process.send_after(self(), {:stopp, game_id}, 800)
 
       end
       if user_id == state.player2.user_id do
         winner = state.player1.user_id
-        state = put_in(state.player2.user_id, nil)
-        Process.send_after(self(), {:stopp, game_id}, 800)
+        # state = put_in(state.player2.user_id, nil)
+        state = Map.replace!(state, :status, "stopped")
+        # Process.send_after(self(), {:stopp, game_id}, 800)
         # GenServer.stop(game_id, "user left abruptly", :infinity)
       end
     end
 
-    {:reply, %{winner: winner}, state}
+    {:reply, %{state: state, winner: winner}, state}
   end
-  def handle_info({:stopp, game_id}, state) do
-    GenServer.stop(game_id, "user left abruptly", :infinity)
-  end
+
   def handle_call({:get_state}, _from, state) do
     {:reply, state, state}
   end
 
   def handle_info({:work}, state) do
     if (state.timer == 0) do
+      if (state.status != "stopped") do
+        state = Map.replace!(state, :status, "stopped")
+        ChannelMonitor.delete_game("games:" <> state.id)
+        gamelist = ChannelMonitor.games_list()
+        |> Enum.map(fn{k, v} ->
+          v = Enum.map(v, fn(user) -> user.name end)
+          {k, v}
+        end)
+        |> Enum.into(%{})
 
-      if state.player1.wallet>state.player2.wallet do
-        winner = state.player1.user_id
-      else
-        winner = state.player2.user_id
+        StormtraderWeb.Endpoint.broadcast "games:lobby", "lobby_update", %{game_list: gamelist}
+        if state.player1.wallet>state.player2.wallet do
+          winner = state.player1.user_id
+        else
+          winner = state.player2.user_id
+        end
+        if state.player1.wallet==state.player2.wallet, do: winner= "tie"
+        StormtraderWeb.Endpoint.broadcast! "games:"<>state.id, "state_update", %{ gamestate: state, winner: winner}
+        # game_id_atom = String.to_atom(state.id)
+        # Process.send_after(self(), {:stopp, game_id_atom},200)
       end
-      if state.player1.wallet==state.player2.wallet, do: winner= "tie"
-      StormtraderWeb.Endpoint.broadcast! "games:"<>state.id, "state_update", %{ gamestate: state, winner: winner}
-      game_id_atom = String.to_atom(state.id)
-      Process.send_after(self(), {:stopp, game_id_atom}, 800)
-
 
     else
       time = state.timer-1

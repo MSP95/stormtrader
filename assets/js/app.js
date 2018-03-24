@@ -59,7 +59,7 @@ function change_listener(channel) {
       let p2 = response.gamestate.player2;
       if (response.winner != null){
         setTimeout(() => {
-          result_init(gamecontainer, response.winner.winner, response.gamestate);
+          result_init(gamecontainer, response.winner, response.gamestate);
         }, 1000);
 
       }
