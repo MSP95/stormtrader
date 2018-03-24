@@ -110,7 +110,12 @@ export default class Trade extends React.Component {
       this.channel.push("sell_request", {
         sell: send_object,
       })
-      this.setState({stock_sell: "", selected: "", sell_qty: ""})
+      if(this.state.stocks_qty[this.state.selected] === 1) {
+        this.setState({stock_sell: "", selected: "", sell_qty: ""})
+      }
+      else {
+        this.setState({sell_qty: ""})
+      }
       this.refs.sell_quantity.value = ""
     }
     else {
@@ -155,7 +160,7 @@ export default class Trade extends React.Component {
       <div className="status-operations"><div className="buy-error"><p>{this.state.status}</p></div></div>
       <div className="status-operations">
         <div className="buy-invoice">
-          <p>{this.state.stock_name}<span className="width-p5em">{this.state.stock_name != "" && <span> (${this.props.stocksPrice[this.state.stock_id]})<span> x</span></span>}</span><span className="width-p5em">{this.state.stock_name != "" && <span>{this.state.qty}</span>}<span className="width-p5em">{this.state.stock_name != "" && <span> = <span>{this.props.stocksPrice[this.state.stock_id] * this.state.qty}</span></span>}</span></span></p>
+          <p>{this.state.stock_name}<span className="width-p5em">{this.state.stock_name != "" && <span> (${this.props.stocksPrice[this.state.stock_id]})<span> x</span></span>}</span><span className="width-p5em">{this.state.stock_name != "" && <span>{this.state.qty}</span>}<span className="width-p5em">{this.state.stock_name != "" && <span> = <span className={this.props.stocksPrice[this.state.stock_id] * this.state.qty > this.props.player.wallet ? "cannotbuy" : "canbuy"}>${this.props.stocksPrice[this.state.stock_id] * this.state.qty}</span></span>}</span></span></p>
         </div>
       </div>
       <div className="trade-operations">
@@ -176,7 +181,7 @@ export default class Trade extends React.Component {
       <div className="status-operations"><div className="sell-error"><p>{this.state.sell_status}</p></div></div>
       <div className="status-operations">
         <div className="sell-invoice">
-          <p>{this.state.stock_sell}<span className="width-p5em">{this.state.stock_sell != "" && <span> (${this.props.stocksPrice[this.state.selected]})<span> x</span></span>}</span><span className="width-p5em">{this.state.stock_sell != "" && <span>{this.state.sell_qty}</span>}<span className="width-p5em">{this.state.stock_sell != "" && <span> = <span>{this.props.stocksPrice[this.state.selected] * this.state.sell_qty}</span></span>}</span></span></p>
+          <p>{this.state.stock_sell}<span className="width-p5em">{this.state.stock_sell != "" && <span> (${this.props.stocksPrice[this.state.selected]})<span> x</span></span>}</span><span className="width-p5em">{this.state.stock_sell != "" && <span>{this.state.sell_qty}</span>}<span className="width-p5em">{this.state.stock_sell != "" && <span> = <span>${this.props.stocksPrice[this.state.selected] * this.state.sell_qty}</span></span>}</span></span></p>
         </div>
       </div>
     </div>

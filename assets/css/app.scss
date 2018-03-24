@@ -22,6 +22,14 @@ body { font-size: 20pt; }
   overflow-y: auto;
 }
 
+.canbuy {
+  color: green
+}
+
+.cannotbuy {
+  color: red
+}
+
 .win-status {
   background-color: #1e88e5;
   height: 2em;
@@ -69,6 +77,9 @@ body { font-size: 20pt; }
 
 .otherplayer {
   background-color: #eee;
+  min-height: 0px;
+  min-width: 0px;
+  overflow-y: auto;
 }
 
 .trending {
@@ -79,24 +90,14 @@ body { font-size: 20pt; }
 
 }
 
-.chat {
+.chat-block {
   background-color: #ddd;
-
   overflow-y: auto;
-  position: relative;
-  // overflow-y: auto;
+  //position: relative;
 }
-.chat-header {
-  // height: inherit;
-  position: sticky;
-  top: 0;
 
-  background-color: #eee;
-}
-.chat-input-group {
-  position: sticky;
-    bottom: 0;
-    left: 0;
+.chat-inputs {
+
 }
 
 .padding {
@@ -273,7 +274,7 @@ body { font-size: 20pt; }
 .subheader {
   background-color: #1976d2;
   height: 1.5em;
-  font-size: 0.8em;
+  font-size: 0.7em;
   color: white;
   display: flex;
   align-items: center;

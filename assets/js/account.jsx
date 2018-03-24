@@ -29,13 +29,13 @@ export default class Account extends React.Component {
     <div className="header">
       <h5>Stocks You Own</h5>
     </div>
-    <div className="subheader">Current Market Worth : {this.state.sum}</div>
+    <div className="subheader">Current Market Worth : ${this.state.sum}</div>
     <div className="account-block">
       <table className="account-table">
         <tbody>
         <tr><td className="tdspace">Name</td><td className="tdspace">Qty.</td><td className="tdspace">Price</td></tr>
         {this.state.own.map((data) => {
-          return(<tr key={data.id}><td className="tdspace">{data.stock_name}</td><td className="tdspace">{data.qty}</td><td className="tdspace">{data.bought_at}</td></tr>)
+          return(<tr key={data.id}><td className="tdspace">{data.stock_name}</td><td className="tdspace">{data.qty}</td><td className="tdspace">${data.bought_at}</td></tr>)
         })}
       </tbody>
       </table>

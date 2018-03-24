@@ -18,7 +18,7 @@ export default class OtherPlayer extends React.Component {
       <tbody>
       <tr className="spaceunder"><td className="tdspace">Name</td><td className="tdspace">Qty.</td><td className="tdspace">Price</td></tr>
       {this.props.player.own.map((data) => {
-        return(<tr className="spaceunder" key={data.id}><td className="tdspace">{data.stock_name}</td><td className="tdspace">{data.qty}</td><td className="tdspace">{data.bought_at}</td></tr>)
+        return(<tr className="spaceunder" key={data.id}><td className="tdspace">{data.stock_name}</td><td className="tdspace">{data.qty}</td><td className="tdspace">${data.bought_at}</td></tr>)
       })}
     </tbody>
   </table>

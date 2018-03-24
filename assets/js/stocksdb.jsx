@@ -26,7 +26,7 @@ export default class StocksDB extends React.Component {
         </thead>
         <tbody>
         {obj.map((data) => {
-          return(<tr key={data.id} className={data.qty === 0 ? 'nostocksleft' : null }><td className="tdspace">{data.name}</td><td className="tdspace">{data.price}</td><td className="tdspace">{data.qty}</td><td className="tdspace">{data.change > 0 && <div className="arrow-up"></div>}{data.change < 0 && <div className="arrow-down"></div>}</td></tr>)
+          return(<tr key={data.id} className={data.qty === 0 ? 'nostocksleft' : null }><td className="tdspace">{data.name}</td><td className="tdspace">${data.price}</td><td className="tdspace">{data.qty}</td><td className="tdspace">{data.change > 0 && <div className="arrow-up"></div>}{data.change < 0 && <div className="arrow-down"></div>}</td></tr>)
         })}
         </tbody>
       </table>

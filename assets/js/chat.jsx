@@ -34,15 +34,15 @@ export default class Chat extends React.Component {
 
   render() {
     return(
-      <div className="chat">
-        <h5 className="header">Chat</h5>
-        <form onSubmit={this.handleSubmit}>
-          <div id="chatbox">
+      <div className="chat-block">
+        <div className="header"><h5>Chat</h5></div>
+          <div>
             {this.state.msgs.map(function(comp,i){
               return <div key={'msg' + i}>{comp}</div>
             })}
           </div>
-          <div className="input-group chat-input-group">
+          <form onSubmit={this.handleSubmit} className="chat-inputs">
+          <div className="input-group">
             <input type="text" ref="chatinput" onChange={this.handleChange} className="form-control" id="input-box"
               placeholder="Write a msg."
               required />
