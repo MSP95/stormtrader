@@ -21,7 +21,7 @@ body { font-size: 20pt;}
 }
 
 .account {
-  background-color: #eee;
+  background-color: #fbfbfb;
   min-height: 0px;
   min-width: 0px;
   overflow-y: auto;
@@ -81,19 +81,28 @@ body { font-size: 20pt;}
 }
 
 .otherplayer {
-  background-color: #eee;
+  background-color: #fbfbfb;
   min-height: 0px;
   min-width: 0px;
   overflow-y: auto;
 }
 
 .trending {
-
+  background-color: #fbfbfb;
 }
 
 .graph {
 
 }
+
+.graph-selector {
+  font-size: 0.5em;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  -o-appearance: none;
+  appearance: none;
+}
+
 
 .chat-block {
   background-color: #fbfbfb;
@@ -137,7 +146,7 @@ body { font-size: 20pt;}
 }
 
 .header {
-  background-color: #3949ab;
+  background-color: #038fd2;
   height: 2em;
   color: white;
   display: flex;
@@ -231,13 +240,13 @@ body { font-size: 20pt;}
 
 .trending-table {
   font-size: 0.7em;
-  border-spacing: 1.2em;
+  width: 100%;
+  height: 100%;
+  text-align: center;
 }
 
 .trending-block {
   display: flex;
-  align-items: center;
-  justify-content: center;
 }
 
 .trending-row {
@@ -246,13 +255,19 @@ body { font-size: 20pt;}
 
 .stocksdb-table {
   font-size: 0.7em;
-  border-spacing: 1.2em;
+  width: 100%;
+  text-align: center;
+  //border-spacing: 1.2em;
+}
+
+.table-head {
+  background-color: #afe1f4;
 }
 
 .stocksdb-block {
   display: flex;
-  align-items: center;
-  justify-content: center;
+  //align-items: center;
+  //justify-content: center;
 }
 
 .arrow-up {
@@ -272,25 +287,38 @@ body { font-size: 20pt;}
 }
 
 .account-table {
-  margin-left: auto;
-  margin-right: auto;
-  font-size: 0.8em;
-  border-spacing: 1.2em;
+  font-size: 0.7em;
+  width: 100%;
+  text-align: center;
 }
 
 .account-block {
   display: flex;
-  align-items: center;
-  justify-content: center;
+  //align-items: center;
+  //justify-content: center;
 }
 
 .otherplayer-table {
-  font-size: 0.8em;
-  width: 1em;
+  font-size: 0.7em;
+  width: 100%;
+  text-align: center;
 }
 
 .tdspace {
-  padding: 0em 1em 0 1em;
+  padding: 0em 1em 0em 0em;
+  vertical-align: middle;
+}
+
+tr td {
+  height: 2.2em;
+}
+
+tr:hover {
+  background-color: #dbe0e8;
+}
+
+.title-bar {
+  background-color: #dbedf4;
 }
 
 .spaceunder {
@@ -299,15 +327,14 @@ body { font-size: 20pt;}
 
 .otherplayer-block {
   display: flex;
-  align-items: center;
-  justify-content: center;
+  //align-items: center;
+  //justify-content: center;
 }
 
 .subheader {
-  background-color: #1976d2;
+  background-color: #8dd0f0;
   height: 1.5em;
   font-size: 0.7em;
-  color: white;
   display: flex;
   align-items: center;
   text-align: center;
