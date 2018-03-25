@@ -1,17 +1,25 @@
 <script>
 window.current_user = "<%= @current_user.id %>";
 </script>
+<div class="container-fluid">
 <%= form_tag("/") do %>
-<div class="row container-fluid">
-  <h1 class="col-md-5 offset-md-1 col-sm-12"> welcome home <%= @current_user.name %>!</h1>
-  <div class="col-md-6 offset-md-5 col-sm-12">
-  <div class="card">
-    <h3 class="card-header"> Join a Game: </h3>
-    <div class="card-body">
-      <div class="game-list">
+<div class="row mt-4">
+  <div class="col-md-5 offset-md-1 col-sm-12">
+    <h1> Welcome home <%= @current_user.name %>!</h1>
+    <h3> Instructions: </h3>
+
+
+  </div>
+
+  <div class="col-md-5 col-sm-12">
+    <div class="card">
+      <h3 class="card-header"> Join or Spectate a Game: </h3>
+      <div class="card-body">
+        <div class="game-list">
+        </div>
+        <hr>
+        <%= submit "Create Game", class: "btn btn-info btn-md btn-block create_game" %>
       </div>
-      <hr>
-      <%= submit "Create Game", class: "btn btn-success create_game" %>
     </div>
   </div>
 </div>

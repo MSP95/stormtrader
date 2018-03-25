@@ -12,27 +12,21 @@
 </head>
 
 <body>
+  <%= if @current_user do %>
+    <div class="d-flex justify-content-between headbar">
+      <div class="col"><h2 class="logo"> Storm Trader </h2></div>
+      <div class="d-flex justify-content-right pr-2">
 
 
+      <div class="player  pr-1"> Player: <%= @current_user.name %>  </div>
+      <div class="home pr-1"> &nbsp<%= link "Home", to: page_path(@conn, :home), class: "" %>  </div>
+      <div class="logout pr-1">&nbsp<%= link "Log out", to: "/session", method: :delete, class: "" %></div>
 
-    <nav class="navbar navbar-light bg-light justify-content-between mb-1 headbar">
-      <div class="navbar-brand"><h1> Storm Trader </h1></div>
-      <!-- </div> -->
-      <div class="row">
-      <%= if @current_user do %>
-      <!-- <div class="h6"> -->
-      <h4 class="navbar-item active"> Player: <%= @current_user.name %> | </h4>
-      <h4 class="navbar-link"> &nbsp<%= link "Home", to: page_path(@conn, :home), class: "" %> | </h4>
-      <h4 class="navbar-link pr-3">&nbsp<%= link "Log Out", to: "/session", method: :delete, class: "" %></h4>
-      <!-- </div> -->
-
-      <% else %>
-      <div class="navbar-item"></div>
-      <% end %>
     </div>
-    </nav>
+  </div>
+  <% end %>
 
-<div class="container-fluid">
+<div class=" mt-2 container-fluid">
   <%= if get_flash(@conn, :info) do %>
   <p class="alert alert-info" role="alert"><%= get_flash(@conn, :info) %></p>
   <% end %>
