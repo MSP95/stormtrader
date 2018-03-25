@@ -40,6 +40,9 @@ function start_game() {
     .receive("ok", resp => {
       console.log(current_user + ' Joined game ' + game_id, resp)
       $(change_listener(channel))
+    })
+    .receive("error", resp => {
+      window.location="/home";
     });
   }
 }
@@ -58,9 +61,9 @@ function change_listener(channel) {
       let p1 = response.gamestate.player1;
       let p2 = response.gamestate.player2;
       if (response.winner != null){
-        setTimeout(() => {
+        // setTimeout(() => {
           result_init(gamecontainer, response.winner, response.gamestate);
-        }, 1000);
+        // }, 1000);
 
       }
       else{

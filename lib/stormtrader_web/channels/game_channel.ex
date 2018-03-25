@@ -23,12 +23,19 @@ defmodule StormtraderWeb.GameChannel do
 
   # Join function for game channel
   def join("games:" <> game_id,_params, socket) do
-    current_user = socket.assigns.current_user
-    users = ChannelMonitor.user_joined("games:" <> game_id, current_user)["games:" <> game_id]
-    GameServer.addnew(current_user.id, get_usernames(users), game_id)
-    send self,{:after_join, users, game_id}
-    send self, :after_join_lobby
-    {:ok, %{ users: get_usernames(users) }, socket}
+    game_id0 = String.to_atom(game_id)
+    is_there = GenServer.whereis(game_id0)
+    if is_there == nil do
+      {:error, %{ msg: "pick a new game"}}
+    else
+
+      current_user = socket.assigns.current_user
+      users = ChannelMonitor.user_joined("games:" <> game_id, current_user)["games:" <> game_id]
+      GameServer.addnew(current_user.id, get_usernames(users), game_id)
+      send self,{:after_join, users, game_id}
+      send self, :after_join_lobby
+      {:ok, %{ users: get_usernames(users) }, socket}
+    end
   end
 
 
@@ -40,21 +47,29 @@ defmodule StormtraderWeb.GameChannel do
 
   def terminate(_reason, socket) do
     "games:" <> game_id = socket.topic
-    user_id = socket.assigns.current_user.id
-    if game_id != "lobby" do
-      old_state = GameServer.get_state(game_id)
-      state = GameServer.user_left(user_id, game_id)
-      users = ChannelMonitor.user_left("games:" <> game_id, user_id)["games:" <> game_id]
-      users_in_channel = ChannelMonitor.users_in_channel("games:" <> game_id)
-      if users_in_channel == nil do
-        GameServer.stopp(game_id)
-      end
-      if state.winner != nil || state.state.status == "stopped" do
-        ChannelMonitor.delete_game("games:" <> game_id)
-      end
-      if old_state.status != "stopped" do
-        state_update(socket, users, game_id, state)
-        lobby_update(socket)
+    game_id0 = String.to_atom(game_id)
+    is_there = GenServer.whereis(game_id0)
+    if is_there != nil do
+      IO.inspect "***********call terminate function***********"
+      user_id = socket.assigns.current_user.id
+      if game_id != "lobby" do
+        old_state = GameServer.get_state(game_id)
+        IO.inspect "********old state***********"
+        IO.inspect old_state.users
+        users = ChannelMonitor.user_left("games:" <> game_id, user_id)["games:" <> game_id]
+        state = GameServer.user_left(get_usernames(users), user_id, game_id)
+        IO.inspect state.state.users
+        if length(state.state.users) == 0 do
+          IO.inspect "***********end genserver***********"
+          GameServer.stopp(game_id)
+        end
+        if state.winner != nil || state.state.status == "stopped" do
+          ChannelMonitor.delete_game("games:" <> game_id)
+        end
+        if old_state.status != "stopped" do
+          state_update(socket, users, game_id, state)
+          lobby_update(socket)
+        end
       end
     end
     {:ok, socket}
@@ -117,7 +132,7 @@ defmodule StormtraderWeb.GameChannel do
     "games:" <> game_id = socket.topic
     result = GameServer.sell(payload["sell"], game_id)
     broadcast socket, "transaction", result.gamestate
-    {:reply, {:ok, %{status: "result.status"}}, socket}
+    {:reply, {:ok, %{status: result.status}}, socket}
   end
 
 
