@@ -13,39 +13,38 @@
 
 <body>
 
-  <div class="container-fluid">
-    <div class="row">
-      <div class="col-md-10">
-        <h1> Storm Trader </h1>
-      </div>
-      <div class="col-sm-2">
-        <%= if @current_user do %>
-        <div class="h6">
-          Player: <%= @current_user.name %>
 
-        <%= link "Log Out", to: "/session", method: :delete, class: "" %>
-        </div>
-        <%= link "End Game", to: page_path(@conn, :home), class: "end_game btn btn-danger btn-block" %>
 
-        <% else %>
-        <div class="">Not logged in.</div>
-        <% end %>
-      </div>
+    <nav class="navbar navbar-light bg-light justify-content-between mb-1 headbar">
+      <div class="navbar-brand"><h1> Storm Trader </h1></div>
+      <!-- </div> -->
+      <div class="row">
+      <%= if @current_user do %>
+      <!-- <div class="h6"> -->
+      <h4 class="navbar-item active"> Player: <%= @current_user.name %> | </h4>
+      <h4 class="navbar-link"> &nbsp<%= link "Home", to: page_path(@conn, :home), class: "" %> | </h4>
+      <h4 class="navbar-link pr-3">&nbsp<%= link "Log Out", to: "/session", method: :delete, class: "" %></h4>
+      <!-- </div> -->
+
+      <% else %>
+      <div class="navbar-item"></div>
+      <% end %>
     </div>
-  </div>
-  <!-- <hr> -->
-  <div class="">
-    <%= if get_flash(@conn, :info) do %>
-    <p class="alert alert-info" role="alert"><%= get_flash(@conn, :info) %></p>
-    <% end %>
-    <%= if get_flash(@conn, :error) do %>
-    <p class="alert alert-danger" role="alert"><%= get_flash(@conn, :error) %></p>
-    <% end %>
-    <main role="main">
-      <%= render @view_module, @view_template, assigns %>
-    </main>
+    </nav>
 
-  </div> <!-- /container -->
-  <script src="<%= static_path(@conn, "/js/app.js") %>"></script>
+<div class="container-fluid">
+  <%= if get_flash(@conn, :info) do %>
+  <p class="alert alert-info" role="alert"><%= get_flash(@conn, :info) %></p>
+  <% end %>
+  <%= if get_flash(@conn, :error) do %>
+  <p class="alert alert-danger" role="alert"><%= get_flash(@conn, :error) %></p>
+  <% end %>
+</div>
+  <main role="main">
+    <%= render @view_module, @view_template, assigns %>
+  </main>
+
+
+<script src="<%= static_path(@conn, "/js/app.js") %>"></script>
 </body>
 </html>

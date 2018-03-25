@@ -52,6 +52,10 @@ class Spectate extends React.Component {
     });
   }
 
+  componentWillUnmount() {
+    this.channel.leave()
+  }
+
   render() {
     return(<div>
       <div className="title-grid">

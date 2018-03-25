@@ -10,7 +10,7 @@ defmodule StormtraderWeb.GameServer do
       users: [],
       player1: nil,
       player2: nil,
-      timer: 300,
+      timer: 10,
       stocks_qty: Enum.take_random(1..100, 15),
     }
     game_id = String.to_atom(game_id)
@@ -104,63 +104,83 @@ defmodule StormtraderWeb.GameServer do
     available_qty = Enum.at(state.stocks_qty, payload["own"]["stock_id"])
     # /////////////////////////////////////////////////////////////////////////////
     if payload["player"] == 1 do
-
-      shares = state.player1.own
       sellQuant = payload["own"]["qty"]
-      shares = shares
-      |> Enum.reduce(%{qty: sellQuant, s: []}, fn(own, acc)->
-        # filtering required stocks
+      shares = state.player1.own
+      owned_quantity = Enum.reduce(shares, 0, fn(own, acc)->
         if own["stock_id"] == payload["own"]["stock_id"] do
-          if own["qty"]>= acc.qty do
-            own = put_in(own["qty"], own["qty"]-acc.qty)
-            if own["qty"] == 0 do
-              %{qty: 0, s: acc.s}
-            else
-              %{qty: 0, s: acc.s ++ [own]}
-            end
-          else
-            %{qty: acc.qty - own["qty"], s: acc.s}
-          end
+          acc+own["qty"]
         else
-          %{qty: acc.qty, s: acc.s ++ [own]}
+          acc
         end
       end)
-      state = put_in(state.player1.own, shares.s)
-      state = put_in(state.player1.wallet, state.player1.wallet+(sellQuant*payload["own"]["sold_at"]))
-      new_list = List.replace_at(state.stocks_qty, payload["own"]["stock_id"], available_qty+payload["own"]["qty"])
-      state = Map.replace!(state, :stocks_qty, new_list)
-
+      IO.inspect owned_quantity
+      IO.inspect sellQuant
+      if owned_quantity > sellQuant && sellQuant > 0 do
+        shares = shares
+        |> Enum.reduce(%{qty: sellQuant, s: []}, fn(own, acc)->
+          # filtering required stocks
+          if own["stock_id"] == payload["own"]["stock_id"] do
+            if own["qty"]>= acc.qty do
+              own = put_in(own["qty"], own["qty"]-acc.qty)
+              if own["qty"] == 0 do
+                %{qty: 0, s: acc.s}
+              else
+                %{qty: 0, s: acc.s ++ [own]}
+              end
+            else
+              %{qty: acc.qty - own["qty"], s: acc.s}
+            end
+          else
+            %{qty: acc.qty, s: acc.s ++ [own]}
+          end
+        end)
+        state = put_in(state.player1.own, shares.s)
+        state = put_in(state.player1.wallet, state.player1.wallet+(sellQuant*payload["own"]["sold_at"]))
+        new_list = List.replace_at(state.stocks_qty, payload["own"]["stock_id"], available_qty+payload["own"]["qty"])
+        state = Map.replace!(state, :stocks_qty, new_list)
+      else
+        status = "Invalid Quantity"
+      end
     end
     # /////////////////////////////////////////////////////////////////////////////
     if payload["player"]==2 do
       shares = state.player2.own
       sellQuant = payload["own"]["qty"]
-      shares = shares
-      |> Enum.reduce(%{qty: sellQuant, s: []}, fn(own, acc)->
-        # filtering required stocks
+      owned_quantity = Enum.reduce(shares, 0, fn(own, acc)->
         if own["stock_id"] == payload["own"]["stock_id"] do
-          if own["qty"]>= acc.qty do
-            own = put_in(own["qty"], own["qty"]-acc.qty)
-            if own["qty"] == 0 do
-              %{qty: 0, s: acc.s}
-            else
-              %{qty: 0, s: acc.s ++ [own]}
-            end
-          else
-            %{qty: acc.qty - own["qty"], s: acc.s}
-          end
+          acc+own["qty"]
         else
-          %{qty: acc.qty, s: acc.s ++ [own]}
+          acc
         end
       end)
-      state = put_in(state.player2.own, shares.s)
-      state = put_in(state.player2.wallet, state.player2.wallet+(sellQuant*payload["own"]["sold_at"]))
-      new_list = List.replace_at(state.stocks_qty, payload["own"]["stock_id"], available_qty+payload["own"]["qty"])
-      state = Map.replace!(state, :stocks_qty, new_list)
-
+      if owned_quantity > sellQuant && sellQuant > 0 do
+        shares = shares
+        |> Enum.reduce(%{qty: sellQuant, s: []}, fn(own, acc)->
+          # filtering required stocks
+          if own["stock_id"] == payload["own"]["stock_id"] do
+            if own["qty"]>= acc.qty do
+              own = put_in(own["qty"], own["qty"]-acc.qty)
+              if own["qty"] == 0 do
+                %{qty: 0, s: acc.s}
+              else
+                %{qty: 0, s: acc.s ++ [own]}
+              end
+            else
+              %{qty: acc.qty - own["qty"], s: acc.s}
+            end
+          else
+            %{qty: acc.qty, s: acc.s ++ [own]}
+          end
+        end)
+        state = put_in(state.player2.own, shares.s)
+        state = put_in(state.player2.wallet, state.player2.wallet+(sellQuant*payload["own"]["sold_at"]))
+        new_list = List.replace_at(state.stocks_qty, payload["own"]["stock_id"], available_qty+payload["own"]["qty"])
+        state = Map.replace!(state, :stocks_qty, new_list)
+      else
+        status = "Invalid Quantity"
+      end
     end
     # /////////////////////////////////////////////////////////////////////////////
-
     {:reply, %{status: status, gamestate: %{player1: state.player1, player2: state.player2, stocks_qty: state.stocks_qty}}, state}
   end
   def handle_call({:user_joined,current_user, users, game_id}, _from, state) do

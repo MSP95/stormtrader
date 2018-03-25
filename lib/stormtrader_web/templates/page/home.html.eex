@@ -2,7 +2,7 @@
 window.current_user = "<%= @current_user.id %>";
 </script>
 <%= form_tag("/") do %>
-<div class="row">
+<div class="row container-fluid">
   <h1 class="col-md-5 offset-md-1 col-sm-12"> welcome home <%= @current_user.name %>!</h1>
   <div class="col-md-6 offset-md-5 col-sm-12">
   <div class="card">
