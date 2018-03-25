@@ -27,9 +27,9 @@ defmodule StormtraderWeb.GameServer do
     GenServer.call(game_id, {:user_joined, current_user, users, game_id})
   end
 
-  def user_left(current_user, game_id) do
+  def user_left(users, current_user, game_id) do
     game_id = String.to_atom(game_id)
-    GenServer.call(game_id, {:user_left, current_user, game_id})
+    GenServer.call(game_id, {:user_left,users, current_user, game_id})
   end
 
   def start_link(initial_state, name) do
@@ -54,13 +54,17 @@ defmodule StormtraderWeb.GameServer do
   end
   def stopp(game_id) do
     game_id = String.to_atom(game_id)
-    Process.send_after(self(), {:stopp, game_id}, 1000)
+
+    GenServer.stop(game_id, :normal, :infinity)
+    # Process.send_after(self(), {:stopp, game_id}, 1000)
   end
 
   # /////////////////////////////////////////////////////////////////////////////
 
-  def handle_cast({:stopp, game_id}, _from, state) do
-    GenServer.stop(game_id, :normal, :infinity)
+  def handle_info({:stopp, game_id}, _from, state) do
+    # IO.inspect "***********stopped***********"
+    # GenServer.stop(game_id, :normal, :infinity)
+    {:noreply, state}
   end
   # GenServer implementation
   def handle_call({:buy, payload}, _from, state) do
@@ -194,8 +198,8 @@ defmodule StormtraderWeb.GameServer do
     {:reply, new_state, new_state}
   end
 
-  def handle_call({:user_left, user_id, game_id}, _from, state) do
-
+  def handle_call({:user_left,users, user_id, game_id}, _from, state) do
+    state = Map.replace!(state, :users, users)
     if state.player1 == nil || state.player2 == nil do
       # Process.send_after(self(), {:stopp, game_id}, 800)
       winner = "no one"
