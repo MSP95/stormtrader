@@ -114,7 +114,7 @@ defmodule StormtraderWeb.GameServer do
       end)
       IO.inspect owned_quantity
       IO.inspect sellQuant
-      if owned_quantity > sellQuant && sellQuant > 0 do
+      if owned_quantity >= sellQuant && sellQuant > 0 do
         shares = shares
         |> Enum.reduce(%{qty: sellQuant, s: []}, fn(own, acc)->
           # filtering required stocks
@@ -152,7 +152,7 @@ defmodule StormtraderWeb.GameServer do
           acc
         end
       end)
-      if owned_quantity > sellQuant && sellQuant > 0 do
+      if owned_quantity >= sellQuant && sellQuant > 0 do
         shares = shares
         |> Enum.reduce(%{qty: sellQuant, s: []}, fn(own, acc)->
           # filtering required stocks
