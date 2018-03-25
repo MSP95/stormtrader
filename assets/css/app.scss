@@ -122,12 +122,11 @@ body { font-size: 20pt;}
 .chat-inputs {
   width: 95%;
   margin-left: 0.3em;
-  margin-top: 0.3em
+  margin-bottom: 0em
 }
 
 .noglow {
   outline: none;
-  //border: none !important;
   -webkit-box-shadow: none !important;
   -moz-box-shadow: none !important;
   box-shadow: none !important;
