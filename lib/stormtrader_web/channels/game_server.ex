@@ -16,7 +16,6 @@ defmodule StormtraderWeb.GameServer do
     game_id = String.to_atom(game_id)
     start_link(initial_state, game_id)
 
-
   end
   def addnew(current_user, users, game_id) do
     game_id0 = String.to_atom(game_id)

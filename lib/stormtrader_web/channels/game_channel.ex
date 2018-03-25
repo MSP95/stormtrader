@@ -30,6 +30,8 @@ defmodule StormtraderWeb.GameChannel do
     send self, :after_join_lobby
     {:ok, %{ users: get_usernames(users) }, socket}
   end
+
+
   def handle_in("get_state", payload, socket) do
     %{"game_id" => game_id} = payload
     payload = GameServer.get_state(game_id)
@@ -48,7 +50,6 @@ defmodule StormtraderWeb.GameChannel do
         GameServer.stopp(game_id)
       end
       if state.winner != nil || state.state.status == "stopped" do
-        # GameServer.stopp
         ChannelMonitor.delete_game("games:" <> game_id)
       end
       if old_state.status != "stopped" do
