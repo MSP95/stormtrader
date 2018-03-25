@@ -1,8 +1,7 @@
 #!/bin/bash
 
-export PORT=5100
+export PORT=5123
 
-cd ~/www/memory
-./bin/memory stop || true
-./bin/memory start
-
+cd ~/www/stormtrader
+./bin/stormtrader stop || true
+./bin/stormtrader start
