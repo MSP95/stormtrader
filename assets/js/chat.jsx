@@ -27,26 +27,31 @@ export default class Chat extends React.Component {
   componentDidMount(){
     let messagesContainer = $("#chatbox")
     this.channel.on("new_chat_receive", payload => {
-      let messageItem = `[${payload.user}] ${payload.body}`
+      let messageItem = `${payload.user}: ${payload.body}`
       this.setState({msgs: this.state.msgs.concat([messageItem])})
     })
+  }
+
+  componentDidUpdate() {
+    let msgs = this.refs.msg
+    msgs.scrollTop = msgs.scrollHeight
   }
 
   render() {
     return(
       <div className="chat-block">
         <div className="header"><h5>Chat</h5></div>
-          <div>
+          <div className="messages-box" ref="msg">
             {this.state.msgs.map(function(comp,i){
-              return <div key={'msg' + i}>{comp}</div>
+              return <div key={'msg' + i} className="chat-bubble">{comp}</div>
             })}
           </div>
           <form onSubmit={this.handleSubmit} className="chat-inputs">
           <div className="input-group">
-            <input type="text" ref="chatinput" onChange={this.handleChange} className="form-control" id="input-box"
-              placeholder="Write a msg."
+            <input type="text" ref="chatinput" onChange={this.handleChange} className="form-control noglow" id="input-box"
+              placeholder="Write something."
               required />
-            <input type="submit" className="btn btn-success" value = "send"/>
+            <input type="submit" className="btn btn-info" value = "SEND"/>
           </div>
         </form>
       </div>);
