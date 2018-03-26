@@ -10,6 +10,9 @@ export default class Trade extends React.Component {
     this.handleStockName = this.handleStockName.bind(this)
     this.handleStockQty = this.handleStockQty.bind(this)
     this.sellStockQty = this.sellStockQty.bind(this)
+    this.handleNameClick = this.handleNameClick.bind(this)
+    this.handleQtyClick = this.handleQtyClick.bind(this)
+    this.handleSellClickQty = this.handleSellClickQty.bind(this)
     this.channel = this.props.channel;
     this.state = {
       stocks_array: [],
@@ -66,6 +69,9 @@ export default class Trade extends React.Component {
         if(msg.status === "Not enough money") {
           this.setState({status: "Not enough money to buy!"})
         }
+        if(msg.status === "successfull") {
+          this.setState({status: "Successfully bought!"})
+        }
       })
     }
     else {
@@ -76,17 +82,30 @@ export default class Trade extends React.Component {
   handleStockName(event) {
     let input = event.target.value.toUpperCase();
     let stocksNames = this.props.stocksNames;
-    //let stocksPrice = this.props.stocksPrice;
     let index = stocksNames.indexOf(input);
     if (stocksNames.includes(input)) {
       this.setState({stock_name: input, status: "", stock_id: index})
     }
     else if (input === "") {
-      this.setState({status: "", stock_name: "", status: "", stock_id: 999})
+      this.setState({status: "", stock_name: "", status: "", stock_id: ""})
     }
     else {
-      this.setState({stock_name: "", status: "Invalid name!", stock_id: 999})
+      this.setState({stock_name: "", status: "Invalid name!", stock_id: ""})
     }
+  }
+
+  handleNameClick() {
+    this.refs.stock_name.value = ""
+    this.setState({status: "", sell_status: ""})
+  }
+
+  handleQtyClick() {
+    this.refs.stock_quantity.value = ""
+    this.setState({status: "", sell_status: ""})
+  }
+
+  handleSellClickQty() {
+    this.setState({status: "", sell_status: ""})
   }
 
   handleStockQty(event) {
@@ -109,14 +128,22 @@ export default class Trade extends React.Component {
     if(this.state.selected != "" && this.state.sell_qty != "") {
       this.channel.push("sell_request", {
         sell: send_object,
+      }).receive("ok", msg => {
+        if(msg.status === "Invalid Quantity") {
+          this.setState({sell_status: "Invalid quantity!"})
+        }
+        if(msg.status === "success") {
+          this.setState({sell_status: "Successfully sold!"}, () => {
+            if(this.state.stocks_qty[this.state.selected] === 0) {
+              this.setState({stock_sell: "", selected: "", sell_qty: ""})
+              }
+              else {
+                this.setState({sell_qty: ""})
+              }
+              this.refs.sell_quantity.value = ""
+          })
+        }
       })
-      if(this.state.stocks_qty[this.state.selected] === 1) {
-        this.setState({stock_sell: "", selected: "", sell_qty: ""})
-      }
-      else {
-        this.setState({sell_qty: ""})
-      }
-      this.refs.sell_quantity.value = ""
     }
     else {
       this.setState({sell_status: "Select a stock and/or enter quantity to sell"})
@@ -150,8 +177,8 @@ export default class Trade extends React.Component {
       <div className="trade-operations">
         <form onSubmit={this.buyStock}>
           <div className="input-group">
-            <input className="form-control" name="stock_name" type="text" placeholder="Stock Name" onChange={this.handleStockName}></input>
-            <input className="form-control" name="stock_quantity" type="number" placeholder="Quantity" onChange={this.handleStockQty}></input>
+            <input className="form-control" ref="stock_name" name="stock_name" type="text" placeholder="Stock Name" onClick={this.handleNameClick} onChange={this.handleStockName}></input>
+            <input className="form-control" ref="stock_quantity" name="stock_quantity" type="number" placeholder="Quantity" onClick={this.handleQtyClick} onChange={this.handleStockQty}></input>
           </div>
           <div className="height-p4em"></div>
           <input className="buy-btn btn-success" type="submit" value="BUY"></input>
@@ -172,7 +199,7 @@ export default class Trade extends React.Component {
                 return(<option key={data.id} value={data.id}>{data.name}</option>)
               })}
             </select>
-            <input className="form-control" ref="sell_quantity" name="sell_quantity" type="number" placeholder={this.state.selected != "" ? "You own "+this.state.stocks_qty[this.state.selected]+" stock(s)" : "Quantity"} onChange={this.sellStockQty}></input>
+            <input className="form-control" ref="sell_quantity" name="sell_quantity" type="number" onClick={this.handleSellClickQty} placeholder={this.state.selected != "" ? "You own "+this.state.stocks_qty[this.state.selected]+" stock(s)" : "Quantity"} onChange={this.sellStockQty}></input>
           </div>
           <div className="height-p4em"></div>
           <input className="buy-btn btn-danger" type="submit" value="SELL"></input>

@@ -9,7 +9,7 @@ export default class Graph extends React.Component {
     this.state = {
       names: [{id: 0, name: "AMZN"},
       {id:1, name: "APPL"},
-      {id: 2, name: "BABA"},
+      {id:2, name: "BABA"},
       {id:3, name: "CSCO"},
       {id:4, name: "FB"},
       {id:5, name: "GOOG"},
@@ -41,7 +41,7 @@ export default class Graph extends React.Component {
         for(let i = 0; i < stocks.length; i++) {
           historic[i].push(stocks[i])
         }
-        label.push(label[label.length - 1] + 5)
+        label.push(label[label.length - 1] + 7)
         this.setState({historic: historic, labels: label})
       });
     }
@@ -57,13 +57,17 @@ export default class Graph extends React.Component {
 
   render() {
     return(<div className="graph">
-    <div className="subheader">
+    <div className="header">
       <h5>Graph</h5>
     </div>
-    <select onChange={this.getChart}>{this.state.names.map((data) => {
-        return(<option key={data.id} value={data.id}>{data.name}</option>)
-      })}</select>
+    <div>
+      <select className="custom-select custom-select-sm graph-selector" onChange={this.getChart}>{this.state.names.map((data) => {
+          return(<option key={data.id} value={data.id}>{data.name}</option>)
+        })}</select>
+    </div>
+    <div>
     <Line data={this.state.stocks} />
+    </div>
     </div>)
   }
 }

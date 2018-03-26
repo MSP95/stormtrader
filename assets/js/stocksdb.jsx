@@ -22,7 +22,7 @@ export default class StocksDB extends React.Component {
     <div className="stocksdb-block">
       <table className="stocksdb-table">
         <thead>
-          <tr><td className="tdspace">Name</td><td className="tdspace">Price</td><td className="tdspace">Qty.</td><td className="tdspace"></td></tr>
+          <tr className="table-head"><td className="tdspace">Name</td><td className="tdspace">Price</td><td className="tdspace">Qty.</td><td className="tdspace"></td></tr>
         </thead>
         <tbody>
         {obj.map((data) => {

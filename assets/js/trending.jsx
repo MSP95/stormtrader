@@ -21,9 +21,12 @@ export default class Trending extends React.Component {
     </div>
     <div className="trending-block">
       <table className="trending-table">
+        <thead>
+          <tr className="table-head"><td className="tdspace">Name</td><td className="tdspace">Price</td><td className="tdspace"></td></tr>
+        </thead>
         <tbody>
           {topFive.map((data) => {
-            return(<tr className="spaceunder" key={data.id}><td className="tdspace">{data.name}</td><td className="tdspace">{data.price}</td><td className="tdspace">{data.change > 0 && <div className="arrow-up"></div>}{data.change < 0 && <div className="arrow-down"></div>}</td></tr>)
+            return(<tr className="spaceunder" key={data.id}><td className="tdspace">{data.name}</td><td className="tdspace">${data.price}</td><td className="tdspace">{data.change > 0 && <div className="arrow-up"></div>}{data.change < 0 && <div className="arrow-down"></div>}</td></tr>)
           })}
         </tbody>
       </table>
