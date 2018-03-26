@@ -2,474 +2,500 @@
 @import "bootstrap";
 
 body { font-size: 20pt;}
-  .login{
-      padding-top: 10%;
-
-    }
-    .logo{
-      line-height: 1.7em;
-      font-style: italic;
-      font-family:sans-serif;
-
-    }
-  .headbar {
-    // box-shadow: 0 4px 2px -2px teal;
-    height: 2.3em;
-    border-bottom: 1px solid lightgray;
-    background-color: white;
-    //margin-bottom: 5px;
-
-
-  }
-  .player{
-    line-height: 2.3em;;
-    padding-left: 5px;
-    border-left: solid 1px white;
-    // border-right: solid 1px lightgray;
-
-  }
-  .home{
-    line-height: 2.3em;;
-    border-right: solid 1px white;
-
-  }
-  .logout{
-
-    line-height: 2.3em;
-
-  }
-
-  .grid {
-    display: grid;
-    grid-template-columns: 2fr 1fr 1fr 1fr;
-    // height: 100vh;
-    grid-gap: 0.2em;
-  }
-
-  .title-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr;
-  }
-
-  .account {
-    background-color: #eee;
-    min-height: 0px;
-    min-width: 0px;
-    overflow-y: auto;
-  }
-
-  .canbuy {
-    color: green
-  }
-
-  .cannotbuy {
-    color: red
-  }
-
-  .win-status {
-    background-color: #1e88e5;
-    height: 2em;
-    color: white;
-    display: flex;
-    align-items: center;
-    text-align: center;
-    justify-content: center;
-  }
-
-  .wallet-status {
-    background-color: #fbc02d;
-    height: 2em;
-    display: flex;
-    align-items: center;
-    text-align: center;
-    justify-content: center;
-  }
-
-  .timer {
-    background-color: #c2185b;
-    height: 2em;
-    color: white;
-    display: flex;
-    align-items: center;
-    text-align: center;
-    justify-content: center;
-  }
-
-  .trade {
-    grid-row: 1/2;
-  }
-
-  .stocksdb {
-    grid-row: 1/3;
-    background-color: #fbfbfb;
-    min-height: 0px;
-    min-width: 0px;
-    overflow-y: auto;
-  }
-
-  .nostocksleft {
-    color: #c0c0c0;
-  }
-
-  .otherplayer {
-    background-color: #eee;
-    min-height: 0px;
-    min-width: 0px;
-    overflow-y: auto;
-  }
-
-  .trending {
-
-  }
-
-  .graph {
-
-  }
-
-  .chat-block {
-    background-color: #fbfbfb;
-    display: grid;
-    grid-template-rows: 0fr 3fr 0.7fr;
-    min-height: 0px;
-    min-width: 0px;
-  }
-
-  .messages-box {
-    overflow-y: auto;
-  }
-
-  .chat-bubble {
-    background-color: #5ab9ea;
-    color: white;
-    border-radius: 0.3em;
-    display: flex;
-    padding-left: 0.5em;
-    font-size: 0.7em;
-    margin-left: 0.3em;
-    margin-right: 0.3em;
-    margin-top: 0.3em;
-  }
-
-  .chat-inputs {
-    width: 95%;
-    margin-left: 0.3em;
-    margin-top: 0.3em
-  }
-
-  .noglow {
-    outline: none;
-    //border: none !important;
-    -webkit-box-shadow: none !important;
-    -moz-box-shadow: none !important;
-    box-shadow: none !important;
-  }
-
-  .padding {
-    height: 0.2em;
-  }
-
-  .header {
-    background-color: #3949ab;
-    height: 2em;
-    color: white;
-    display: flex;
-    align-items: center;
-    text-align: center;
-    justify-content: center;
-  }
-
-  .otherplayer-header {
-    background-color: #8e24aa;
-    height: 2em;
-    color: white;
-    display: flex;
-    align-items: center;
-    text-align: center;
-    justify-content: center;
-  }
-
-  .trade-operations {
-    margin: 0 auto;
-    width: 75%;
-  }
-
-  .status-operations {
-    margin: 0 auto;
-    width: 100%;
-  }
-
-  .buy-btn {
-    width: 100%;
-  }
-
-  .trade-grid {
-    display: grid;
-    grid-template-rows: 0.5fr 1fr 0.5fr 0.5fr 1fr 0.5fr 0.5fr;
-  }
-
-  .timer-wallet {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-  }
-
-  .buy-error {
-    width: 75%;
-    font-size: 0.6em;
-    color: red;
-    margin: 0 auto;
-    display: flex;
-    align-items: center;
-    text-align: center;
-    justify-content: center;
-  }
-
-  .sell-error {
-    width: 75%;
-    font-size: 0.6em;
-    color: red;
-    margin: 0 auto;
-    display: flex;
-    align-items: center;
-    text-align: center;
-    justify-content: center;
-  }
-
-  .buy-invoice {
-    width: 75%;
-    margin: 0 auto;
-    display: flex;
-    align-items: center;
-    text-align: center;
-    justify-content: center;
-    color: #808080;
-  }
-
-  .sell-invoice {
-    width: 75%;
-    margin: 0 auto;
-    display: flex;
-    align-items: center;
-    text-align: center;
-    justify-content: center;
-    color: #808080;
-  }
-
-  .width-p5em {
-    margin-right: 0.5em;
-  }
-
-  .width-1em {
-    margin-right: 1em;
-  }
-
-  .height-p4em {
-    height: 0.4em;
-  }
-
-  .trending-table {
-    font-size: 0.7em;
-    border-spacing: 1.2em;
-  }
-
-  .trending-block {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .trending-row {
-    background-color: #eee;
-  }
-
-  .stocksdb-table {
-    font-size: 0.7em;
-    border-spacing: 1.2em;
-  }
-
-  .stocksdb-block {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .arrow-up {
-    width: 0.8em;
-    height: 0.8em;
-    border-right: 0.3em solid green;
-    border-top: 0.3em solid green;
-    transform: rotate(-45deg);
-  }
-
-  .arrow-down {
-    width: 0.8em;
-    height: 0.8em;
-    border-right: 0.3em solid red;
-    border-bottom: 0.3em solid red;
-    transform: rotate(45deg);
-  }
-
-  .account-table {
-    margin-left: auto;
-    margin-right: auto;
-    font-size: 0.8em;
-    border-spacing: 1.2em;
-  }
-
-  .account-block {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .otherplayer-table {
-    font-size: 0.8em;
-    width: 1em;
-  }
-
-  .tdspace {
-    padding: 0em 1em 0 1em;
-  }
-
-  .spaceunder {
-    margin-bottom: 1em;
-  }
-
-  .otherplayer-block {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .subheader {
-    background-color: #1976d2;
-    height: 1.5em;
-    font-size: 0.7em;
-    color: white;
-    display: flex;
-    align-items: center;
-    text-align: center;
-    justify-content: center;
-  }
-
-  .card-header {
-    text-align: center;
-    font-family:sans-serif;
-  }
-  .waiting-area{
-    color: lightgrey;
-    height: 100%;
-    overflow:hidden;
-
-
-
-  }
-  .waiting-text {
-    color: lightgray;
-    font-size: 4em;
-    align-items: center;
-    text-align: center;
-    justify-content: center;
-
-  }
-  .sk-cube-grid {
-    width: 300px;
-    height: 300px;
-    margin: 100px auto;
-  }
-
-  .sk-cube-grid .sk-cube {
-    width: 33%;
-    height: 33%;
-    background-color: lightgray;
-    float: left;
-    -webkit-animation: sk-cubeGridScaleDelay 1.3s infinite ease-in-out;
-    animation: sk-cubeGridScaleDelay 1.3s infinite ease-in-out;
-  }
-  .sk-cube-grid .sk-cube1 {
-    -webkit-animation-delay: 0.2s;
-    animation-delay: 0.2s;
-  }
-  .sk-cube-grid .sk-cube2 {
-    -webkit-animation-delay: 0.3s;
-    animation-delay: 0.3s;
-  }
-  .sk-cube-grid .sk-cube3 {
-    -webkit-animation-delay: 0.4s;
-    animation-delay: 0.4s;
-  }
-  .sk-cube-grid .sk-cube4 {
-    -webkit-animation-delay: 0.1s;
-    animation-delay: 0.1s;
-  }
-  .sk-cube-grid .sk-cube5 {
-    -webkit-animation-delay: 0.2s;
-    animation-delay: 0.2s;
-  }
-  .sk-cube-grid .sk-cube6 {
-    -webkit-animation-delay: 0.3s;
-    animation-delay: 0.3s;
-  }
-  .sk-cube-grid .sk-cube7 {
-    -webkit-animation-delay: 0s;
-    animation-delay: 0s;
-  }
-  .sk-cube-grid .sk-cube8 {
-    -webkit-animation-delay: 0.1s;
-    animation-delay: 0.1s;
-  }
-  .sk-cube-grid .sk-cube9 {
-    -webkit-animation-delay: 0.2s;
-    animation-delay: 0.2s;
-  }
-
-  @-webkit-keyframes sk-cubeGridScaleDelay {
-    0%, 70%, 100% {
-      -webkit-transform: scale3D(1, 1, 1);
-      transform: scale3D(1, 1, 1);
-    } 35% {
-      -webkit-transform: scale3D(0, 0, 1);
-      transform: scale3D(0, 0, 1);
-    }
-  }
-
-  @keyframes sk-cubeGridScaleDelay {
-    0%, 70%, 100% {
-      -webkit-transform: scale3D(1, 1, 1);
-      transform: scale3D(1, 1, 1);
-    } 35% {
-      -webkit-transform: scale3D(0, 0, 1);
-      transform: scale3D(0, 0, 1);
-    }
-  }
-
-  .blink {
-    -webkit-animation: blinker 1s infinite;
-    -moz-animation: blinker 1s infinite;
-    -o-animation: blinker 1s infinite;
-    animation: blinker 1s infinite;
-  }
-
-  @keyframes blinker {
-    0%    {opacity: 1;}
-    50%   {opacity: 0;}
-    100%  {opacity: 1;}
-  }
-
-  @-o-keyframes blinker {
-    0%    {opacity: 1;}
-    50%   {opacity: 0;}
-    100%  {opacity: 1;}
-  }
-  @-webkit-keyframes blinker {
-    0%    {opacity: 1;}
-    50%   {opacity: 0;}
-    100%  {opacity: 1;}
-  }
-  @-moz-keyframes blinker {
-    0%    {opacity: 1;}
-    50%   {opacity: 0;}
-    100%  {opacity: 1;}
-  }
+.login{
+  padding-top: 10%;
+
+}
+.logo{
+  line-height: 50px;
+  font-size: 15pt;
+  color: white;
+
+}
+.player:hover
+{
+  background-color: teal;
+  transition: background-color 0.5s ease;
+}
+.logout:hover
+{
+  background-color: teal;
+  transition: background-color 0.5s ease;
+}
+.home:hover
+{
+  background-color: teal;
+  transition: background-color 0.5s ease;
+}
+.headbar {
+
+  font-size: 12pt;
+  height: 50px;
+  // border-bottom: 1px solid lightgray;
+}
+.seperator{
+  padding-left: 5px;
+  padding-right: 5px;
+  line-height: 45px;
+
+  font-size: 17pt;
+  font-family: serif;
+
+}
+.player{
+  line-height: 50px;
+  padding-left: 5px;
+  padding-right: 5px;
+  transition: background-color 0.5s ease;
+
+}
+.home{
+  line-height: 50px;
+  padding-left: 5px;
+  padding-right: 5px;
+  transition: background-color 0.5s ease;
+
+}
+.logout{
+
+  line-height: 50px;
+  padding-left: 5px;
+  padding-right: 5px;
+  transition: background-color 0.5s ease;
+
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr;
+  // height: 100vh;
+  grid-gap: 0.2em;
+}
+
+.title-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+}
+
+.account {
+  background-color: #eee;
+  min-height: 0px;
+  min-width: 0px;
+  overflow-y: auto;
+}
+
+.canbuy {
+  color: green
+}
+
+.cannotbuy {
+  color: red
+}
+
+.win-status {
+  background-color: #1e88e5;
+  height: 2em;
+  color: white;
+  display: flex;
+  align-items: center;
+  text-align: center;
+  justify-content: center;
+}
+
+.wallet-status {
+  background-color: #fbc02d;
+  height: 2em;
+  display: flex;
+  align-items: center;
+  text-align: center;
+  justify-content: center;
+}
+
+.timer {
+  background-color: #c2185b;
+  height: 2em;
+  color: white;
+  display: flex;
+  align-items: center;
+  text-align: center;
+  justify-content: center;
+}
+
+.trade {
+  grid-row: 1/2;
+}
+
+.stocksdb {
+  grid-row: 1/3;
+  background-color: #fbfbfb;
+  min-height: 0px;
+  min-width: 0px;
+  overflow-y: auto;
+}
+
+.nostocksleft {
+  color: #c0c0c0;
+}
+
+.otherplayer {
+  background-color: #eee;
+  min-height: 0px;
+  min-width: 0px;
+  overflow-y: auto;
+}
+
+.trending {
+
+}
+
+.graph {
+
+}
+
+.chat-block {
+  background-color: #fbfbfb;
+  display: grid;
+  grid-template-rows: 0fr 3fr 0.7fr;
+  min-height: 0px;
+  min-width: 0px;
+}
+
+.messages-box {
+  overflow-y: auto;
+}
+
+.chat-bubble {
+  background-color: #5ab9ea;
+  color: white;
+  border-radius: 0.3em;
+  display: flex;
+  padding-left: 0.5em;
+  font-size: 0.7em;
+  margin-left: 0.3em;
+  margin-right: 0.3em;
+  margin-top: 0.3em;
+}
+
+.chat-inputs {
+  width: 95%;
+  margin-left: 0.3em;
+  margin-top: 0.3em
+}
+
+.noglow {
+  outline: none;
+  //border: none !important;
+  -webkit-box-shadow: none !important;
+  -moz-box-shadow: none !important;
+  box-shadow: none !important;
+}
+
+.padding {
+  height: 0.2em;
+}
+
+.header {
+  background-color: #3949ab;
+  height: 2em;
+  color: white;
+  display: flex;
+  align-items: center;
+  text-align: center;
+  justify-content: center;
+}
+
+.otherplayer-header {
+  background-color: #8e24aa;
+  height: 2em;
+  color: white;
+  display: flex;
+  align-items: center;
+  text-align: center;
+  justify-content: center;
+}
+
+.trade-operations {
+  margin: 0 auto;
+  width: 75%;
+}
+
+.status-operations {
+  margin: 0 auto;
+  width: 100%;
+}
+
+.buy-btn {
+  width: 100%;
+}
+
+.trade-grid {
+  display: grid;
+  grid-template-rows: 0.5fr 1fr 0.5fr 0.5fr 1fr 0.5fr 0.5fr;
+}
+
+.timer-wallet {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+.buy-error {
+  width: 75%;
+  font-size: 0.6em;
+  color: red;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  text-align: center;
+  justify-content: center;
+}
+
+.sell-error {
+  width: 75%;
+  font-size: 0.6em;
+  color: red;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  text-align: center;
+  justify-content: center;
+}
+
+.buy-invoice {
+  width: 75%;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  text-align: center;
+  justify-content: center;
+  color: #808080;
+}
+
+.sell-invoice {
+  width: 75%;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  text-align: center;
+  justify-content: center;
+  color: #808080;
+}
+
+.width-p5em {
+  margin-right: 0.5em;
+}
+
+.width-1em {
+  margin-right: 1em;
+}
+
+.height-p4em {
+  height: 0.4em;
+}
+
+.trending-table {
+  font-size: 0.7em;
+  border-spacing: 1.2em;
+}
+
+.trending-block {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.trending-row {
+  background-color: #eee;
+}
+
+.stocksdb-table {
+  font-size: 0.7em;
+  border-spacing: 1.2em;
+}
+
+.stocksdb-block {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.arrow-up {
+  width: 0.8em;
+  height: 0.8em;
+  border-right: 0.3em solid green;
+  border-top: 0.3em solid green;
+  transform: rotate(-45deg);
+}
+
+.arrow-down {
+  width: 0.8em;
+  height: 0.8em;
+  border-right: 0.3em solid red;
+  border-bottom: 0.3em solid red;
+  transform: rotate(45deg);
+}
+
+.account-table {
+  margin-left: auto;
+  margin-right: auto;
+  font-size: 0.8em;
+  border-spacing: 1.2em;
+}
+
+.account-block {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.otherplayer-table {
+  font-size: 0.8em;
+  width: 1em;
+}
+
+.tdspace {
+  padding: 0em 1em 0 1em;
+}
+
+.spaceunder {
+  margin-bottom: 1em;
+}
+
+.otherplayer-block {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.subheader {
+  background-color: #1976d2;
+  height: 1.5em;
+  font-size: 0.7em;
+  color: white;
+  display: flex;
+  align-items: center;
+  text-align: center;
+  justify-content: center;
+}
+
+.card-header {
+  text-align: center;
+  font-family:sans-serif;
+}
+.waiting-area{
+  color: lightgrey;
+  height: 100%;
+  overflow:hidden;
+
+
+
+}
+.waiting-text {
+  color: lightgray;
+  font-size: 4em;
+  align-items: center;
+  text-align: center;
+  justify-content: center;
+
+}
+.sk-cube-grid {
+  width: 300px;
+  height: 300px;
+  margin: 100px auto;
+}
+
+.sk-cube-grid .sk-cube {
+  width: 33%;
+  height: 33%;
+  background-color: lightgray;
+  float: left;
+  -webkit-animation: sk-cubeGridScaleDelay 1.3s infinite ease-in-out;
+  animation: sk-cubeGridScaleDelay 1.3s infinite ease-in-out;
+}
+.sk-cube-grid .sk-cube1 {
+  -webkit-animation-delay: 0.2s;
+  animation-delay: 0.2s;
+}
+.sk-cube-grid .sk-cube2 {
+  -webkit-animation-delay: 0.3s;
+  animation-delay: 0.3s;
+}
+.sk-cube-grid .sk-cube3 {
+  -webkit-animation-delay: 0.4s;
+  animation-delay: 0.4s;
+}
+.sk-cube-grid .sk-cube4 {
+  -webkit-animation-delay: 0.1s;
+  animation-delay: 0.1s;
+}
+.sk-cube-grid .sk-cube5 {
+  -webkit-animation-delay: 0.2s;
+  animation-delay: 0.2s;
+}
+.sk-cube-grid .sk-cube6 {
+  -webkit-animation-delay: 0.3s;
+  animation-delay: 0.3s;
+}
+.sk-cube-grid .sk-cube7 {
+  -webkit-animation-delay: 0s;
+  animation-delay: 0s;
+}
+.sk-cube-grid .sk-cube8 {
+  -webkit-animation-delay: 0.1s;
+  animation-delay: 0.1s;
+}
+.sk-cube-grid .sk-cube9 {
+  -webkit-animation-delay: 0.2s;
+  animation-delay: 0.2s;
+}
+
+@-webkit-keyframes sk-cubeGridScaleDelay {
+  0%, 70%, 100% {
+    -webkit-transform: scale3D(1, 1, 1);
+    transform: scale3D(1, 1, 1);
+  } 35% {
+    -webkit-transform: scale3D(0, 0, 1);
+    transform: scale3D(0, 0, 1);
+  }
+}
+
+@keyframes sk-cubeGridScaleDelay {
+  0%, 70%, 100% {
+    -webkit-transform: scale3D(1, 1, 1);
+    transform: scale3D(1, 1, 1);
+  } 35% {
+    -webkit-transform: scale3D(0, 0, 1);
+    transform: scale3D(0, 0, 1);
+  }
+}
+
+.blink {
+  -webkit-animation: blinker 1s infinite;
+  -moz-animation: blinker 1s infinite;
+  -o-animation: blinker 1s infinite;
+  animation: blinker 1s infinite;
+}
+
+@keyframes blinker {
+  0%    {opacity: 1;}
+  50%   {opacity: 0;}
+  100%  {opacity: 1;}
+}
+
+@-o-keyframes blinker {
+  0%    {opacity: 1;}
+  50%   {opacity: 0;}
+  100%  {opacity: 1;}
+}
+@-webkit-keyframes blinker {
+  0%    {opacity: 1;}
+  50%   {opacity: 0;}
+  100%  {opacity: 1;}
+}
+@-moz-keyframes blinker {
+  0%    {opacity: 1;}
+  50%   {opacity: 0;}
+  100%  {opacity: 1;}
+}
 
 .grid {
   display: grid;
@@ -805,15 +831,11 @@ tr:hover {
 }
 
 .waiting-area{
-  background-color: grey;
-  margin-top: 10%;
-  height: 100%;
-
 
 }
 .waiting-text {
-  color: white;
-  font-size: 4em;
+  font-size: 2em;
+  color: lightgray;
   align-items: center;
   text-align: center;
   justify-content: center;
@@ -828,7 +850,7 @@ tr:hover {
 .sk-cube-grid .sk-cube {
   width: 33%;
   height: 33%;
-  background-color: white;
+  background-color: lightgrey;
   float: left;
   -webkit-animation: sk-cubeGridScaleDelay 1.3s infinite ease-in-out;
   animation: sk-cubeGridScaleDelay 1.3s infinite ease-in-out;
