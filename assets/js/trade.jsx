@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import Timer from './timer';
 
 export default class Trade extends React.Component {
   constructor(props) {
@@ -173,7 +174,10 @@ export default class Trade extends React.Component {
   render() {
     return(<div className="trade">
     <div className="trade-grid">
-      <div className="trade-operations"></div>
+      <div className="timer-wallet">
+      <div className="wallet-status">Money Left : ${this.props.playerNumber === 1 ? this.props.player1.wallet : this.props.player2.wallet}</div>
+      <div><Timer channel={this.channel}/></div>
+      </div>
       <div className="trade-operations">
         <form onSubmit={this.buyStock}>
           <div className="input-group">

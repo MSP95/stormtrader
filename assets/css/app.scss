@@ -17,7 +17,7 @@ body { font-size: 20pt;}
     height: 2.3em;
     border-bottom: 1px solid lightgray;
     background-color: white;
-    margin-bottom: 5px;
+    //margin-bottom: 5px;
 
 
   }
@@ -205,6 +205,11 @@ body { font-size: 20pt;}
   .trade-grid {
     display: grid;
     grid-template-rows: 0.5fr 1fr 0.5fr 0.5fr 1fr 0.5fr 0.5fr;
+  }
+
+  .timer-wallet {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
   }
 
   .buy-error {
@@ -465,10 +470,6 @@ body { font-size: 20pt;}
     50%   {opacity: 0;}
     100%  {opacity: 1;}
   }
-.headbar {
-  box-shadow: 0 4px 2px -2px gray;
-  background-color: white;
-}
 
 .grid {
   display: grid;

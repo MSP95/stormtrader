@@ -26,7 +26,7 @@
   </div>
   <% end %>
 
-<div class=" mt-2 container-fluid">
+<div class=" container-fluid">
   <%= if get_flash(@conn, :info) do %>
   <p class="alert alert-info" role="alert"><%= get_flash(@conn, :info) %></p>
   <% end %>
