@@ -8,7 +8,8 @@ defmodule StormtraderWeb.PageController do
   end
   def home(conn, _params) do
     state = ChannelMonitor.games_list()
-    render(conn, "home.html", game_list: state)
+    leaderboard = Stormtrader.Accounts.get_leaders()
+    render(conn, "home.html", game_list: state, leaderboard: leaderboard)
   end
   def create(conn, _params) do
     current_user = conn.assigns[:current_user]

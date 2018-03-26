@@ -2,7 +2,10 @@
 <div class="row login justify-content-center">
   <div class="col-md-3">
     <div class="card">
-      <h2 class="card-header">Log In</h2>
+      <!-- <img class="card-img" src="" alt="Card image"> -->
+  <!-- <div class="card-img-overlay"> -->
+    <h2 class="card-header">Log In</h2>
+  <!-- </div></img> -->
 
       <%= form_tag("/session", method: :post) do %>
       <div class="card-body">

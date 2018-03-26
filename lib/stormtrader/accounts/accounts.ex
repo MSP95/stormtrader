@@ -17,8 +17,18 @@ defmodule Stormtrader.Accounts do
   [%User{}, ...]
 
   """
+
   def list_users do
     Repo.all(User)
+  end
+
+  def get_leaders do
+    Repo.all(User)
+    |> Enum.map(fn(user) -> %{id: user.id, name: user.name, highscore: user.highscore} end)
+    |> Enum.sort_by(fn(p) -> p.highscore end)
+    |> Enum.take(-10)
+    |> Enum.reverse
+
   end
 
   def get_user_by_name(name) do
@@ -58,6 +68,13 @@ defmodule Stormtrader.Accounts do
     %User{}
     |> User.changeset(attrs)
     |> Repo.insert()
+  end
+
+  def update_highscore(id, score) do
+    user = get_user!(id)
+    if user.highscore <= score do
+      update_user(user, %{highscore: score})
+    end
   end
 
   @doc """

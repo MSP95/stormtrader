@@ -50,17 +50,16 @@ defmodule StormtraderWeb.GameChannel do
     game_id0 = String.to_atom(game_id)
     is_there = GenServer.whereis(game_id0)
     if is_there != nil do
-      IO.inspect "***********call terminate function***********"
+
       user_id = socket.assigns.current_user.id
       if game_id != "lobby" do
         old_state = GameServer.get_state(game_id)
-        IO.inspect "********old state***********"
-        IO.inspect old_state.users
+
         users = ChannelMonitor.user_left("games:" <> game_id, user_id)["games:" <> game_id]
         state = GameServer.user_left(get_usernames(users), user_id, game_id)
         IO.inspect state.state.users
         if length(state.state.users) == 0 do
-          IO.inspect "***********end genserver***********"
+
           GameServer.stopp(game_id)
         end
         if state.winner != nil || state.state.status == "stopped" do
@@ -83,8 +82,20 @@ defmodule StormtraderWeb.GameChannel do
   end
 
   defp state_update(socket, users, game_id, result) do
+    IO.inspect result.state
+    winner = result.winner
+    if is_integer(result.winner) do
+      if result.winner == result.state.player1.user_id do
+        score = result.state.player1.wallet
+      else
+        score = result.state.player2.wallet
+      end
+      Stormtrader.Accounts.update_highscore(result.winner, score)
+      winner = Stormtrader.Accounts.get_user(result.winner)
+      winner = %{id: winner.id, name: winner.name}
+    end
 
-    broadcast! socket, "state_update", %{ gamestate: result.state, winner: result.winner}
+    broadcast! socket, "state_update", %{ gamestate: result.state, winner: winner}
 
   end
   def handle_info(:after_join_lobby, socket) do

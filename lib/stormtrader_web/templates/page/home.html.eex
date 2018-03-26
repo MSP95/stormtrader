@@ -6,9 +6,13 @@ window.current_user = "<%= @current_user.id %>";
 <div class="row mt-4">
   <div class="col-md-5 offset-md-1 col-sm-12">
     <h1> Welcome home <%= @current_user.name %>!</h1>
-    <h3> Instructions: </h3>
+    <h3> LeaderBoard: </h3>
+    <ol>
+      <%= for leaders <- @leaderboard do %>
+      <li><%= leaders.name %> &nbsp <%= leaders.highscore %> </li>
 
-
+      <% end %>
+    </ol>
   </div>
 
   <div class="col-md-5 col-sm-12">

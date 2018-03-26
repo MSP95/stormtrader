@@ -10,7 +10,7 @@ defmodule StormtraderWeb.GameServer do
       users: [],
       player1: nil,
       player2: nil,
-      timer: 300,
+      timer: 30,
       stocks_qty: Enum.take_random(1..100, 15),
     }
     game_id = String.to_atom(game_id)
@@ -188,11 +188,13 @@ defmodule StormtraderWeb.GameServer do
   end
   def handle_call({:user_joined,current_user, users, game_id}, _from, state) do
     new_state = Map.replace!(state, :users, users)
+    user = Stormtrader.Accounts.get_user(current_user)
+    username = user.name
     if new_state.player1 == nil do
-      new_state = Map.replace!(new_state, :player1, %{user_id: current_user, wallet: 10000, own: []})
+      new_state = Map.replace!(new_state, :player1, %{user_id: current_user, wallet: 10000, own: [], user_name: username})
     else
       if new_state.player2 == nil do
-        new_state = Map.replace!(new_state, :player2, %{user_id: current_user, wallet: 10000, own: []})
+        new_state = Map.replace!(new_state, :player2, %{user_id: current_user, wallet: 10000, own: [], user_name: username})
       end
     end
     {:reply, new_state, new_state}
@@ -246,6 +248,17 @@ defmodule StormtraderWeb.GameServer do
           winner = state.player2.user_id
         end
         if state.player1.wallet==state.player2.wallet, do: winner= "tie"
+        # winner = result.winner
+        if is_integer(winner) do
+          if winner == state.player1.user_id do
+            score = state.player1.wallet
+          else
+            score = state.player2.wallet
+          end
+          Stormtrader.Accounts.update_highscore(winner, score)
+          winner = Stormtrader.Accounts.get_user(winner)
+          winner = %{id: winner.id, name: winner.name}
+        end
         StormtraderWeb.Endpoint.broadcast! "games:"<>state.id, "state_update", %{ gamestate: state, winner: winner}
         # game_id_atom = String.to_atom(state.id)
         # Process.send_after(self(), {:stopp, game_id_atom},200)
