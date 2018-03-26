@@ -42,7 +42,7 @@ body { font-size: 20pt;}
   .grid {
     display: grid;
     grid-template-columns: 2fr 1fr 1fr 1fr;
-    height: 85vh;
+    // height: 100vh;
     grid-gap: 0.2em;
   }
 
