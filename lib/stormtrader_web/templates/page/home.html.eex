@@ -16,10 +16,10 @@ window.current_user = "<%= @current_user.id %>";
         <div class="game-list">
         </div>
         <hr>
-        <%= submit "Create Game", class: "btn btn-info btn-md btn-block create_game" %>
-        <%= link "Leader Board", to: page_path(@conn, :leaderboard), class: "btn btn-warning btn-md btn-block" %>
-
       </div>
+        <%= submit "Create a new game", class: "btn btn-info btn-md btn-block lobby-btns" %>
+        <%= link "Check out the leader board", to: page_path(@conn, :leaderboard), class: "bg-warning btn text-dark lobby-btns" %>
+
     </div>
   </div>
 </div>
