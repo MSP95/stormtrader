@@ -58,12 +58,6 @@ class Game extends React.Component {
 
   render() {
     return(<div>
-      {/*<div className="title-grid">
-        <div>Account</div>
-        <div className="win-status">{this.playerStatus}</div>
-        <div className="wallet-status">Money Left : ${this.props.playerNumber === 1 ? this.state.player1.wallet : this.state.player2.wallet}</div>
-        <Timer channel={this.channel}/>
-      </div>*/}
       <div className="padding"></div>
       <div className="grid">
         <Trade playerNumber={this.props.playerNumber} player={this.props.playerNumber === 1 ? this.state.player1 : this.state.player2} stocksNames={this.state.stocks_names} stocksPrice={this.state.stocks_price} stocksQty={this.state.stocks_qty} player1={this.state.player1} player2={this.state.player2} channel={this.channel}/>

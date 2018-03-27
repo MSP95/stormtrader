@@ -2,6 +2,11 @@
 @import "bootstrap";
 
 body { font-size: 20pt;}
+.lobby-btns{
+  border-radius: 0px;
+  // padding: 0px;
+  margin: 0px;
+}
 .login{
   padding-top: 10%;
 
@@ -624,8 +629,8 @@ body { font-size: 20pt;}
   background-color: #fbfbfb;
 }
 
-.graph {
-
+.graph-spectate {
+  grid-column: 3/5;
 }
 
 .graph-selector {

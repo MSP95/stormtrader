@@ -27,7 +27,7 @@ export default class Player2 extends React.Component {
   render() {
     return(<div className="account">
     <div className="header">
-      <h5>{this.state.player.user_name} Stocks</h5>
+      <h5>{this.props.player.user_name} Stocks</h5>
     </div>
     <div className="subheader">Current Market Worth : ${this.state.sum}</div>
     <div className="account-block">

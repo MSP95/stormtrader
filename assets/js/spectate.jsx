@@ -7,7 +7,7 @@ import Player2 from './player2';
 import Timer from './timer';
 import Trade from './trade';
 import Chat from './chat';
-import Graph from './graph';
+import GraphSpectate from './graphspectate';
 import Trending from './trending'
 
 export default function spectate_init(root, state, channel, users) {
@@ -58,10 +58,14 @@ class Spectate extends React.Component {
 
   render() {
     return(<div>
+      <div className="padding"></div>
+      
       <div className="title-grid">
+
         <Timer channel={this.channel}/>
         <div className="win-status">{this.state.player1.user_name} : ${this.state.player1.wallet}</div>
-        <div className="wallet-status">{this.state.player2.user_name} : ${this.state.player2.wallet}</div>
+        <div className="win-status">{this.state.player2.user_name} : ${this.state.player2.wallet}</div>
+        <div className="wallet-status">You are a spectator!</div>
       </div>
       <div className="padding"></div>
       <div className="spectate-grid">
@@ -70,7 +74,7 @@ class Spectate extends React.Component {
         <Player2 playerNumber={this.props.playerNumber} player={this.state.player2} stocksPrice={this.state.stocks_price} />
         <Trending stocksNames={this.state.stocks_names} stocksPrice={this.state.stocks_price} stocksQty={this.state.stocks_qty} stocksOldPrice={this.state.old_stocks_price}/>
         <Chat channel={this.channel} users={this.users}/>
-        <Graph channel={this.channel} />
+        <GraphSpectate channel={this.channel} />
       </div>
     </div>);
   }
