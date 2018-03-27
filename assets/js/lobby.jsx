@@ -37,9 +37,11 @@ class Games extends React.Component {
   // ///////////////////////////////////////////////////////////////////////
   render() {
     let torender = $.map(this.state.game_list, function(value, key){
-      var joinlink = <a href={key.slice(6)}>spectate</a>
+      let gameid = key.slice(6)
+      let game = "games/";
+      var joinlink = <a href={game.concat(gameid)}>spectate</a>
       if (value.length < 2){
-        joinlink = <a href={key.slice(6)}>Join</a>
+        joinlink = <a href={game.concat(gameid)}>Join</a>
       }
       return <li className="list-group-item" key={key}> {key} | Players: {value.toString()} | {joinlink} </li>
   })

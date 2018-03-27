@@ -1,0 +1,22 @@
+<div class="container">
+
+  <h1 class="text-center pt-2"> Leader Board </h1>
+  <table class="table text-center table-bordered">
+    <thead>
+      <tr class="text-center">
+        <th>Name</th>
+
+        <th>High Score</th>
+      </tr>
+    </thead>
+    <tbody>
+      <%= for leaders <- @leaderboard do %>
+      <tr>
+        <td><%= leaders.name %></td>
+        <td><%= leaders.highscore %> </td>
+      </tr>
+      <% end %>
+    </tbody>
+  </table>
+
+  </div>
