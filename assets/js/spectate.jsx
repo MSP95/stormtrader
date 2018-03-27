@@ -59,18 +59,18 @@ class Spectate extends React.Component {
   render() {
     return(<div>
       <div className="title-grid">
-        <div className="win-status">Player 1 : ${this.state.player1.wallet}</div>
-        <div className="wallet-status">Player 2 : ${this.state.player2.wallet}</div>
         <Timer channel={this.channel}/>
+        <div className="win-status">{this.state.player1.user_name} : ${this.state.player1.wallet}</div>
+        <div className="wallet-status">{this.state.player2.user_name} : ${this.state.player2.wallet}</div>
       </div>
       <div className="padding"></div>
-      <div className="grid">
+      <div className="spectate-grid">
         <Player1 playerNumber={this.props.playerNumber} player={this.state.player1} stocksPrice={this.state.stocks_price} />
         <StocksDB stocksNames={this.state.stocks_names} stocksPrice={this.state.stocks_price} stocksQty={this.state.stocks_qty} stocksOldPrice={this.state.old_stocks_price}/>
         <Player2 playerNumber={this.props.playerNumber} player={this.state.player2} stocksPrice={this.state.stocks_price} />
-        <Graph channel={this.channel} />
         <Trending stocksNames={this.state.stocks_names} stocksPrice={this.state.stocks_price} stocksQty={this.state.stocks_qty} stocksOldPrice={this.state.old_stocks_price}/>
         <Chat channel={this.channel} users={this.users}/>
+        <Graph channel={this.channel} />
       </div>
     </div>);
   }

@@ -97,7 +97,7 @@ export default class Trade extends React.Component {
 
   handleNameClick() {
     this.refs.stock_name.value = ""
-    this.setState({status: "", sell_status: ""})
+    this.setState({status: "", sell_status: "", stock_id: "", stock_name: ""})
   }
 
   handleQtyClick() {
@@ -178,11 +178,12 @@ export default class Trade extends React.Component {
       <div className="wallet-status">Money Left : ${this.props.playerNumber === 1 ? this.props.player1.wallet : this.props.player2.wallet}</div>
       <div><Timer channel={this.channel}/></div>
       </div>
+      <div></div>
       <div className="trade-operations">
         <form onSubmit={this.buyStock}>
           <div className="input-group">
             <input className="form-control" ref="stock_name" name="stock_name" type="text" placeholder="Stock Name" onClick={this.handleNameClick} onChange={this.handleStockName}></input>
-            <input className="form-control" ref="stock_quantity" name="stock_quantity" type="number" placeholder="Quantity" onClick={this.handleQtyClick} onChange={this.handleStockQty}></input>
+            <input className="form-control" ref="stock_quantity" name="stock_quantity" type="number" placeholder={this.state.stock_name != "" ? this.props.stocksQty[this.state.stock_id]+" stock(s) available" : "Quantity"} onClick={this.handleQtyClick} onChange={this.handleStockQty}></input>
           </div>
           <div className="height-p4em"></div>
           <input className="buy-btn btn-success" type="submit" value="BUY"></input>

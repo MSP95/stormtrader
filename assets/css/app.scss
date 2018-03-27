@@ -68,13 +68,18 @@ body { font-size: 20pt;}
 .grid {
   display: grid;
   grid-template-columns: 2fr 1fr 1fr 1fr;
-  // height: 100vh;
+  grid-gap: 0.2em;
+}
+
+.spectate-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr;
   grid-gap: 0.2em;
 }
 
 .title-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-template-columns: 1fr 1fr 1fr;
 }
 
 .account {
@@ -144,12 +149,52 @@ body { font-size: 20pt;}
   overflow-y: auto;
 }
 
-.trending {
+.result {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+}
+
+.result-block {
+  grid-column: 2/4;
+}
+
+.result-body {
+  display: grid;
+  grid-template-rows: 1fr 1fr 3fr 1fr;
+}
+
+.result-status {
 
 }
 
-.graph {
+.result-details {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-gap: 0.2em;
+}
 
+.player1-result {
+  text-align: center;
+  background-color: #fbfbfb;
+}
+
+.player2-result {
+  text-align: center;
+  background-color: #fbfbfb;
+}
+
+.player-name {
+  background-color: #8dd0f0;
+  height: 2em;
+  font-size: 1.0em;
+  display: flex;
+  align-items: center;
+  text-align: center;
+  justify-content: center;
+}
+
+.result-data {
+  margin-top: 1em;
 }
 
 .chat-block {
@@ -230,7 +275,7 @@ body { font-size: 20pt;}
 
 .trade-grid {
   display: grid;
-  grid-template-rows: 0.5fr 1fr 0.5fr 0.5fr 1fr 0.5fr 0.5fr;
+  grid-template-rows: 0.5fr 0.5fr 1fr 0.5fr 0.5fr 1fr 0.5fr 0.5fr;
 }
 
 .timer-wallet {
@@ -370,7 +415,6 @@ body { font-size: 20pt;}
   background-color: #1976d2;
   height: 1.5em;
   font-size: 0.7em;
-  color: white;
   display: flex;
   align-items: center;
   text-align: center;

@@ -30,7 +30,7 @@ class Game extends React.Component {
     this.state = {
       old_stocks_price: [],
       stocks_names: ["AMZN", "APPL", "BABA", "CSCO", "FB", "GOOG", "GPRO", "IBM", "INTC", "MSFT", "NVDA", "ORCL", "SNAP", "TSLA", "VZ"],
-      stocks_price: new Array(15).fill(0),
+      stocks_price: new Array(15).fill().map(() => Math.floor(Math.random() * (1000 - 1) + 1)),
       stocks_qty: this.serverState.stocks_qty,
       player1: this.serverState.player1,
       player2: this.serverState.player2,

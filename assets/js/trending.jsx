@@ -12,7 +12,7 @@ export default class Trending extends React.Component {
       obj.push({id: i, name: stocks_names[i], price: stocks_price[i], quantity: stocks_quantity, change: stocks_price[i] - old_stocks_price[i]})
     }
     obj.sort((a,b) => {
-      return a.price < b.price;
+      return a.price < b.price ? 1 : -1;
     })
     let topFive = obj.slice(0,5)
     return(<div className="trending">

@@ -62,7 +62,7 @@ export default class Graph extends React.Component {
     </div>
     <div>
       <select className="custom-select custom-select-sm graph-selector" onChange={this.getChart}>{this.state.names.map((data) => {
-          return(<option key={data.id} value={data.id}>{data.name}</option>)
+          return(<option key={data.id} options={{events: ['click']}} value={data.id}>{data.name}</option>)
         })}</select>
     </div>
     <div>
