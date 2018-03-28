@@ -1,73 +1,72 @@
 /* This file is for your main application css. */
 @import "bootstrap";
 
-body { font-size: 20pt;}
-.lobby-btns{
-  border-radius: 0px;
-  // padding: 0px;
-  margin: 0px;
+body {
+  font-size: 20pt;
 }
-.login{
-  padding-top: 10%;
 
+.lobby-btns {
+  border-radius: 0;
+  margin: 0;
 }
-.logo{
+
+.login {
+  padding-top: 5%;
+}
+
+.logo {
   line-height: 50px;
   font-size: 15pt;
   color: white;
+}
 
-}
-.player:hover
-{
+.player:hover {
   background-color: teal;
   transition: background-color 0.5s ease;
 }
-.logout:hover
-{
+
+.logout:hover {
   background-color: teal;
   transition: background-color 0.5s ease;
 }
-.home:hover
-{
+
+.home:hover {
   background-color: teal;
   transition: background-color 0.5s ease;
 }
+
 .headbar {
-
   font-size: 12pt;
   height: 50px;
-  // border-bottom: 1px solid lightgray;
 }
-.seperator{
+
+.seperator {
   padding-left: 5px;
   padding-right: 5px;
   line-height: 45px;
-
   font-size: 17pt;
   font-family: serif;
-
 }
-.player{
+
+.player {
   line-height: 50px;
   padding-left: 5px;
   padding-right: 5px;
   transition: background-color 0.5s ease;
-
 }
-.home{
+
+.home {
   line-height: 50px;
   padding-left: 5px;
   padding-right: 5px;
   transition: background-color 0.5s ease;
-
 }
-.logout{
 
+.logout {
   line-height: 50px;
   padding-left: 5px;
   padding-right: 5px;
   transition: background-color 0.5s ease;
-
 }
 
 .grid {
@@ -89,17 +88,17 @@ body { font-size: 20pt;}
 
 .account {
   background-color: #eee;
-  min-height: 0px;
-  min-width: 0px;
+  min-height: 0;
+  min-width: 0;
   overflow-y: auto;
 }
 
 .canbuy {
-  color: green
+  color: green;
 }
 
 .cannotbuy {
-  color: red
+  color: red;
 }
 
 .win-status {
@@ -138,8 +137,8 @@ body { font-size: 20pt;}
 .stocksdb {
   grid-row: 1/3;
   background-color: #fbfbfb;
-  min-height: 0px;
-  min-width: 0px;
+  min-height: 0;
+  min-width: 0;
   overflow-y: auto;
 }
 
@@ -149,8 +148,8 @@ body { font-size: 20pt;}
 
 .otherplayer {
   background-color: #eee;
-  min-height: 0px;
-  min-width: 0px;
+  min-height: 0;
+  min-width: 0;
   overflow-y: auto;
 }
 
@@ -168,9 +167,7 @@ body { font-size: 20pt;}
   grid-template-rows: 1fr 1fr 3fr 1fr;
 }
 
-.result-status {
-
-}
+.result-status {}
 
 .result-details {
   display: grid;
@@ -202,6 +199,11 @@ body { font-size: 20pt;}
   margin-top: 1em;
 }
 
+.spec-instr {
+  height: 20em;
+  background-color: #fbfbfb;
+}
+
 .chat-block {
   background-color: #fbfbfb;
   display: grid;
@@ -229,12 +231,11 @@ body { font-size: 20pt;}
 .chat-inputs {
   width: 95%;
   margin-left: 0.3em;
-  margin-top: 0.3em
+  margin-top: 0.3em;
 }
 
 .noglow {
   outline: none;
-  //border: none !important;
   -webkit-box-shadow: none !important;
   -moz-box-shadow: none !important;
   box-shadow: none !important;
@@ -403,7 +404,7 @@ body { font-size: 20pt;}
 }
 
 .tdspace {
-  padding: 0em 1em 0 1em;
+  padding: 0 1em;
 }
 
 .spaceunder {
@@ -428,24 +429,23 @@ body { font-size: 20pt;}
 
 .card-header {
   text-align: center;
-  font-family:sans-serif;
+  font-family: sans-serif;
 }
-.waiting-area{
+
+.waiting-area {
   color: lightgrey;
   height: 100%;
-  overflow:hidden;
-
-
-
+  overflow: hidden;
 }
+
 .waiting-text {
   color: lightgray;
   font-size: 4em;
   align-items: center;
   text-align: center;
   justify-content: center;
-
 }
+
 .sk-cube-grid {
   width: 300px;
   height: 300px;
@@ -460,58 +460,73 @@ body { font-size: 20pt;}
   -webkit-animation: sk-cubeGridScaleDelay 1.3s infinite ease-in-out;
   animation: sk-cubeGridScaleDelay 1.3s infinite ease-in-out;
 }
+
 .sk-cube-grid .sk-cube1 {
   -webkit-animation-delay: 0.2s;
   animation-delay: 0.2s;
 }
+
 .sk-cube-grid .sk-cube2 {
   -webkit-animation-delay: 0.3s;
   animation-delay: 0.3s;
 }
+
 .sk-cube-grid .sk-cube3 {
   -webkit-animation-delay: 0.4s;
   animation-delay: 0.4s;
 }
+
 .sk-cube-grid .sk-cube4 {
   -webkit-animation-delay: 0.1s;
   animation-delay: 0.1s;
 }
+
 .sk-cube-grid .sk-cube5 {
   -webkit-animation-delay: 0.2s;
   animation-delay: 0.2s;
 }
+
 .sk-cube-grid .sk-cube6 {
   -webkit-animation-delay: 0.3s;
   animation-delay: 0.3s;
 }
+
 .sk-cube-grid .sk-cube7 {
   -webkit-animation-delay: 0s;
   animation-delay: 0s;
 }
+
 .sk-cube-grid .sk-cube8 {
   -webkit-animation-delay: 0.1s;
   animation-delay: 0.1s;
 }
+
 .sk-cube-grid .sk-cube9 {
   -webkit-animation-delay: 0.2s;
   animation-delay: 0.2s;
 }
-
 @-webkit-keyframes sk-cubeGridScaleDelay {
-  0%, 70%, 100% {
+  0%,
+  100%,
+  70% {
     -webkit-transform: scale3D(1, 1, 1);
     transform: scale3D(1, 1, 1);
-  } 35% {
+  }
+
+  35% {
     -webkit-transform: scale3D(0, 0, 1);
     transform: scale3D(0, 0, 1);
   }
 }
-
 @keyframes sk-cubeGridScaleDelay {
-  0%, 70%, 100% {
+  0%,
+  100%,
+  70% {
     -webkit-transform: scale3D(1, 1, 1);
     transform: scale3D(1, 1, 1);
-  } 35% {
+  }
+
+  35% {
     -webkit-transform: scale3D(0, 0, 1);
     transform: scale3D(0, 0, 1);
   }
@@ -523,27 +538,57 @@ body { font-size: 20pt;}
   -o-animation: blinker 1s infinite;
   animation: blinker 1s infinite;
 }
-
 @keyframes blinker {
-  0%    {opacity: 1;}
-  50%   {opacity: 0;}
-  100%  {opacity: 1;}
-}
+  0% {
+    opacity: 1;
+  }
 
+  50% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
 @-o-keyframes blinker {
-  0%    {opacity: 1;}
-  50%   {opacity: 0;}
-  100%  {opacity: 1;}
+  0% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
 }
 @-webkit-keyframes blinker {
-  0%    {opacity: 1;}
-  50%   {opacity: 0;}
-  100%  {opacity: 1;}
+  0% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
 }
 @-moz-keyframes blinker {
-  0%    {opacity: 1;}
-  50%   {opacity: 0;}
-  100%  {opacity: 1;}
+  0% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
 }
 
 .grid {
@@ -560,17 +605,17 @@ body { font-size: 20pt;}
 
 .account {
   background-color: #fbfbfb;
-  min-height: 0px;
-  min-width: 0px;
+  min-height: 0;
+  min-width: 0;
   overflow-y: auto;
 }
 
 .canbuy {
-  color: green
+  color: green;
 }
 
 .cannotbuy {
-  color: red
+  color: red;
 }
 
 .win-status {
@@ -609,8 +654,8 @@ body { font-size: 20pt;}
 .stocksdb {
   grid-row: 1/3;
   background-color: #fbfbfb;
-  min-height: 0px;
-  min-width: 0px;
+  min-height: 0;
+  min-width: 0;
   overflow-y: auto;
 }
 
@@ -620,8 +665,8 @@ body { font-size: 20pt;}
 
 .otherplayer {
   background-color: #fbfbfb;
-  min-height: 0px;
-  min-width: 0px;
+  min-height: 0;
+  min-width: 0;
   overflow-y: auto;
 }
 
@@ -640,7 +685,6 @@ body { font-size: 20pt;}
   -o-appearance: none;
   appearance: none;
 }
-
 
 .chat-block {
   background-color: #fbfbfb;
@@ -669,7 +713,7 @@ body { font-size: 20pt;}
 .chat-inputs {
   width: 95%;
   margin-left: 0.3em;
-  margin-bottom: 0em
+  margin-bottom: 0;
 }
 
 .noglow {
@@ -722,6 +766,10 @@ body { font-size: 20pt;}
   grid-template-rows: 0.5fr 1fr 0.5fr 0.5fr 1fr 0.5fr 0.5fr;
 }
 
+.title {
+  padding: 70px;
+}
+
 .buy-error {
   width: 75%;
   font-size: 0.6em;
@@ -752,6 +800,10 @@ body { font-size: 20pt;}
   text-align: center;
   justify-content: center;
   color: #808080;
+}
+
+.invoice-width {
+  width: 20em;
 }
 
 .sell-invoice {
@@ -795,7 +847,6 @@ body { font-size: 20pt;}
   font-size: 0.7em;
   width: 100%;
   text-align: center;
-  //border-spacing: 1.2em;
 }
 
 .table-head {
@@ -804,8 +855,6 @@ body { font-size: 20pt;}
 
 .stocksdb-block {
   display: flex;
-  //align-items: center;
-  //justify-content: center;
 }
 
 .arrow-up {
@@ -832,8 +881,6 @@ body { font-size: 20pt;}
 
 .account-block {
   display: flex;
-  //align-items: center;
-  //justify-content: center;
 }
 
 .otherplayer-table {
@@ -843,7 +890,7 @@ body { font-size: 20pt;}
 }
 
 .tdspace {
-  padding: 0em 1em 0em 0em;
+  padding: 0 1em 0 0;
   vertical-align: middle;
 }
 
@@ -865,8 +912,6 @@ tr:hover {
 
 .otherplayer-block {
   display: flex;
-  //align-items: center;
-  //justify-content: center;
 }
 
 .subheader {
@@ -879,17 +924,14 @@ tr:hover {
   justify-content: center;
 }
 
-.waiting-area{
-
-}
 .waiting-text {
   font-size: 2em;
   color: lightgray;
   align-items: center;
   text-align: center;
   justify-content: center;
-
 }
+// spinner animation taken from http://tobiasahlin.com/spinkit/ by Tobias Ahlin
 .sk-cube-grid {
   width: 200px;
   height: 200px;
@@ -904,58 +946,73 @@ tr:hover {
   -webkit-animation: sk-cubeGridScaleDelay 1.3s infinite ease-in-out;
   animation: sk-cubeGridScaleDelay 1.3s infinite ease-in-out;
 }
+
 .sk-cube-grid .sk-cube1 {
   -webkit-animation-delay: 0.2s;
   animation-delay: 0.2s;
 }
+
 .sk-cube-grid .sk-cube2 {
   -webkit-animation-delay: 0.3s;
   animation-delay: 0.3s;
 }
+
 .sk-cube-grid .sk-cube3 {
   -webkit-animation-delay: 0.4s;
   animation-delay: 0.4s;
 }
+
 .sk-cube-grid .sk-cube4 {
   -webkit-animation-delay: 0.1s;
   animation-delay: 0.1s;
 }
+
 .sk-cube-grid .sk-cube5 {
   -webkit-animation-delay: 0.2s;
   animation-delay: 0.2s;
 }
+
 .sk-cube-grid .sk-cube6 {
   -webkit-animation-delay: 0.3s;
   animation-delay: 0.3s;
 }
+
 .sk-cube-grid .sk-cube7 {
   -webkit-animation-delay: 0s;
   animation-delay: 0s;
 }
+
 .sk-cube-grid .sk-cube8 {
   -webkit-animation-delay: 0.1s;
   animation-delay: 0.1s;
 }
+
 .sk-cube-grid .sk-cube9 {
   -webkit-animation-delay: 0.2s;
   animation-delay: 0.2s;
 }
-
 @-webkit-keyframes sk-cubeGridScaleDelay {
-  0%, 70%, 100% {
+  0%,
+  100%,
+  70% {
     -webkit-transform: scale3D(1, 1, 1);
     transform: scale3D(1, 1, 1);
-  } 35% {
+  }
+
+  35% {
     -webkit-transform: scale3D(0, 0, 1);
     transform: scale3D(0, 0, 1);
   }
 }
-
 @keyframes sk-cubeGridScaleDelay {
-  0%, 70%, 100% {
+  0%,
+  100%,
+  70% {
     -webkit-transform: scale3D(1, 1, 1);
     transform: scale3D(1, 1, 1);
-  } 35% {
+  }
+
+  35% {
     -webkit-transform: scale3D(0, 0, 1);
     transform: scale3D(0, 0, 1);
   }
@@ -967,25 +1024,55 @@ tr:hover {
   -o-animation: blinker 1s infinite;
   animation: blinker 1s infinite;
 }
-
 @keyframes blinker {
-  0%    {opacity: 1;}
-  50%   {opacity: 0;}
-  100%  {opacity: 1;}
-}
+  0% {
+    opacity: 1;
+  }
 
+  50% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
 @-o-keyframes blinker {
-  0%    {opacity: 1;}
-  50%   {opacity: 0;}
-  100%  {opacity: 1;}
+  0% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
 }
 @-webkit-keyframes blinker {
-  0%    {opacity: 1;}
-  50%   {opacity: 0;}
-  100%  {opacity: 1;}
+  0% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
 }
 @-moz-keyframes blinker {
-  0%    {opacity: 1;}
-  50%   {opacity: 0;}
-  100%  {opacity: 1;}
+  0% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
 }

@@ -4,7 +4,12 @@ defmodule StormtraderWeb.PageController do
   alias StormtraderWeb.ChannelMonitor
   alias StormtraderWeb.GameServer
   def index(conn, _params) do
-    render conn, "login.html"
+    current_user = conn.assigns[:current_user]
+    if current_user != nil do
+      redirect conn, to: "/home"
+    else
+      render conn, "login.html"
+    end
   end
   def home(conn, _params) do
     state = ChannelMonitor.games_list()

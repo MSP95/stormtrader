@@ -57,7 +57,6 @@ defmodule StormtraderWeb.GameChannel do
 
         users = ChannelMonitor.user_left("games:" <> game_id, user_id)["games:" <> game_id]
         state = GameServer.user_left(get_usernames(users), user_id, game_id)
-        IO.inspect state.state.users
         if length(state.state.users) == 0 do
 
           GameServer.stopp(game_id)
@@ -82,7 +81,6 @@ defmodule StormtraderWeb.GameChannel do
   end
 
   defp state_update(socket, users, game_id, result) do
-    IO.inspect result.state
     winner = result.winner
     if is_integer(result.winner) do
       if result.winner == result.state.player1.user_id do

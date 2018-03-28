@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-export default class Trending extends React.Component {
+export default class Lowest extends React.Component {
   render() {
     let stocks_names = this.props.stocksNames
     let stocks_price = this.props.stocksPrice
@@ -19,13 +19,13 @@ export default class Trending extends React.Component {
     }
     obj.sort((a, b) => {
       return a.price < b.price
-        ? 1
-        : -1;
+        ? -1
+        : 1;
     })
-    let topFive = obj.slice(0, 5)
+    let topFive = obj.slice(0, 10)
     return (<div className="trending">
       <div className="header">
-        <h5>Trending</h5>
+        <h5>Lowest Priced</h5>
       </div>
       <div className="trending-block">
         <table className="trending-table">

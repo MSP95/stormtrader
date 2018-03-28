@@ -1,11 +1,10 @@
 <div class="container-fluid">
 <div class="row login justify-content-center">
-  <div class="col-md-3">
+  <div class="col-md-4 col-sm-10">
     <div class="card">
-      <!-- <img class="card-img" src="" alt="Card image"> -->
-  <!-- <div class="card-img-overlay"> -->
-    <h2 class="card-header">Log In</h2>
-  <!-- </div></img> -->
+
+    <h1 class="text-center card-header header title p-6"> StormTrader </h1>
+    <h3 class="card-header">Log In</h3>
 
       <%= form_tag("/session", method: :post) do %>
       <div class="card-body">

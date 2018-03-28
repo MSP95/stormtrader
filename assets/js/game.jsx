@@ -12,10 +12,10 @@ import Trending from './trending'
 
 export default function game_init(root, state, channel, users) {
   let current_player = 0;
-  if(state.gamestate.player1.user_id === parseInt(current_user)) {
+  if (state.gamestate.player1.user_id === parseInt(current_user)) {
     current_player = 1
   }
-  if(state.gamestate.player2.user_id === parseInt(current_user)) {
+  if (state.gamestate.player2.user_id === parseInt(current_user)) {
     current_player = 2
   }
   ReactDOM.render(<Game playerNumber={current_player} serverState={state.gamestate} channel={channel} users={users}/>, root);
@@ -29,11 +29,27 @@ class Game extends React.Component {
     this.serverState = props.serverState;
     this.state = {
       old_stocks_price: [],
-      stocks_names: ["AMZN", "APPL", "BABA", "CSCO", "FB", "GOOG", "GPRO", "IBM", "INTC", "MSFT", "NVDA", "ORCL", "SNAP", "TSLA", "VZ"],
+      stocks_names: [
+        "AMZN",
+        "APPL",
+        "BABA",
+        "CSCO",
+        "FB",
+        "GOOG",
+        "GPRO",
+        "IBM",
+        "INTC",
+        "MSFT",
+        "NVDA",
+        "ORCL",
+        "SNAP",
+        "TSLA",
+        "VZ"
+      ],
       stocks_price: new Array(15).fill().map(() => Math.floor(Math.random() * (1000 - 1) + 1)),
       stocks_qty: this.serverState.stocks_qty,
       player1: this.serverState.player1,
-      player2: this.serverState.player2,
+      player2: this.serverState.player2
     }
   }
 
@@ -57,14 +73,20 @@ class Game extends React.Component {
   }
 
   render() {
-    return(<div>
+    return (<div>
       <div className="padding"></div>
       <div className="grid">
-        <Trade playerNumber={this.props.playerNumber} player={this.props.playerNumber === 1 ? this.state.player1 : this.state.player2} stocksNames={this.state.stocks_names} stocksPrice={this.state.stocks_price} stocksQty={this.state.stocks_qty} player1={this.state.player1} player2={this.state.player2} channel={this.channel}/>
-        <Account playerNumber={this.props.playerNumber} player={this.props.playerNumber === 1 ? this.state.player1 : this.state.player2} stocksPrice={this.state.stocks_price} />
+        <Trade playerNumber={this.props.playerNumber} player={this.props.playerNumber === 1
+            ? this.state.player1
+            : this.state.player2} stocksNames={this.state.stocks_names} stocksPrice={this.state.stocks_price} stocksQty={this.state.stocks_qty} player1={this.state.player1} player2={this.state.player2} channel={this.channel}/>
+        <Account playerNumber={this.props.playerNumber} player={this.props.playerNumber === 1
+            ? this.state.player1
+            : this.state.player2} stocksPrice={this.state.stocks_price}/>
         <StocksDB stocksNames={this.state.stocks_names} stocksPrice={this.state.stocks_price} stocksQty={this.state.stocks_qty} stocksOldPrice={this.state.old_stocks_price}/>
-        <OtherPlayer player={this.props.playerNumber === 1 ? this.state.player2 : this.state.player1}/>
-        <Graph channel={this.channel} />
+        <OtherPlayer player={this.props.playerNumber === 1
+            ? this.state.player2
+            : this.state.player1}/>
+        <Graph channel={this.channel}/>
         <Trending stocksNames={this.state.stocks_names} stocksPrice={this.state.stocks_price} stocksQty={this.state.stocks_qty} stocksOldPrice={this.state.old_stocks_price}/>
         <Chat channel={this.channel} users={this.users}/>
       </div>

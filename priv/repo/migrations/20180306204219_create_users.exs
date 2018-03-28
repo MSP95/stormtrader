@@ -4,6 +4,7 @@ defmodule Stormtrader.Repo.Migrations.CreateUsers do
   def change do
     create table(:users) do
       add :name, :string, null: false
+      add :highscore, :integer, default: 0
 
       timestamps()
     end

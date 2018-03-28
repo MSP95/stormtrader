@@ -5,17 +5,18 @@ import Player1 from './player1';
 import StocksDB from './stocksdb';
 import Player2 from './player2';
 import Timer from './timer';
-import Trade from './trade';
+import Games from './lobby';
 import Chat from './chat';
-import GraphSpectate from './graphspectate';
-import Trending from './trending'
+import Graph from './graph';
+import Trending from './trending';
+import Lowest from './lowest';
 
 export default function spectate_init(root, state, channel, users) {
   let current_player = 0;
-  if(state.gamestate.player1.user_id === parseInt(current_user)) {
+  if (state.gamestate.player1.user_id === parseInt(current_user)) {
     current_player = 1
   }
-  if(state.gamestate.player2.user_id === parseInt(current_user)) {
+  if (state.gamestate.player2.user_id === parseInt(current_user)) {
     current_player = 2
   }
   ReactDOM.render(<Spectate playerNumber={current_player} serverState={state.gamestate} channel={channel} users={users}/>, root);
@@ -29,11 +30,27 @@ class Spectate extends React.Component {
     this.serverState = props.serverState;
     this.state = {
       old_stocks_price: [],
-      stocks_names: ["AMZN", "APPL", "BABA", "CSCO", "FB", "GOOG", "GPRO", "IBM", "INTC", "MSFT", "NVDA", "ORCL", "SNAP", "TSLA", "VZ"],
-      stocks_price: new Array(15).fill(0),
+      stocks_names: [
+        "AMZN",
+        "APPL",
+        "BABA",
+        "CSCO",
+        "FB",
+        "GOOG",
+        "GPRO",
+        "IBM",
+        "INTC",
+        "MSFT",
+        "NVDA",
+        "ORCL",
+        "SNAP",
+        "TSLA",
+        "VZ"
+      ],
+      stocks_price: new Array(15).fill().map(() => Math.floor(Math.random() * (1000 - 1) + 1)),
       stocks_qty: this.serverState.stocks_qty,
       player1: this.serverState.player1,
-      player2: this.serverState.player2,
+      player2: this.serverState.player2
     }
   }
 
@@ -57,24 +74,27 @@ class Spectate extends React.Component {
   }
 
   render() {
-    return(<div>
+    return (<div>
       <div className="padding"></div>
-      
       <div className="title-grid">
-
         <Timer channel={this.channel}/>
-        <div className="win-status">{this.state.player1.user_name} : ${this.state.player1.wallet}</div>
-        <div className="win-status">{this.state.player2.user_name} : ${this.state.player2.wallet}</div>
+        <div className="win-status">{this.state.player1.user_name}
+          : ${this.state.player1.wallet}</div>
+        <div className="win-status">{this.state.player2.user_name}
+          : ${this.state.player2.wallet}</div>
         <div className="wallet-status">You are a spectator!</div>
       </div>
       <div className="padding"></div>
-      <div className="spectate-grid">
-        <Player1 playerNumber={this.props.playerNumber} player={this.state.player1} stocksPrice={this.state.stocks_price} />
+      <div className="grid">
+        <Player1 playerNumber={this.props.playerNumber} player={this.state.player1} stocksPrice={this.state.stocks_price}/>
         <StocksDB stocksNames={this.state.stocks_names} stocksPrice={this.state.stocks_price} stocksQty={this.state.stocks_qty} stocksOldPrice={this.state.old_stocks_price}/>
-        <Player2 playerNumber={this.props.playerNumber} player={this.state.player2} stocksPrice={this.state.stocks_price} />
+        <Player2 playerNumber={this.props.playerNumber} player={this.state.player2} stocksPrice={this.state.stocks_price}/>
+        <div className="spec-instr">
+          <Lowest stocksNames={this.state.stocks_names} stocksPrice={this.state.stocks_price} stocksQty={this.state.stocks_qty} stocksOldPrice={this.state.old_stocks_price}/>
+        </div>
+        <Graph channel={this.channel}/>
         <Trending stocksNames={this.state.stocks_names} stocksPrice={this.state.stocks_price} stocksQty={this.state.stocks_qty} stocksOldPrice={this.state.old_stocks_price}/>
         <Chat channel={this.channel} users={this.users}/>
-        <GraphSpectate channel={this.channel} />
       </div>
     </div>);
   }

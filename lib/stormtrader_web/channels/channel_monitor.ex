@@ -47,7 +47,7 @@ defmodule StormtraderWeb.ChannelMonitor do
     {:reply, state, state}
   end
   def handle_call({:send_stocks}, _from, state) do
-    Process.send_after(self(), {:generate_stocks}, 7000) # In 2 hours
+    Process.send_after(self(), {:generate_stocks}, 7000)
     {:reply, state, state}
   end
   def handle_info({:generate_stocks}, state) do

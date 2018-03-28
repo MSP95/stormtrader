@@ -62,8 +62,6 @@ defmodule StormtraderWeb.GameServer do
   # /////////////////////////////////////////////////////////////////////////////
 
   def handle_info({:stopp, game_id}, _from, state) do
-    # IO.inspect "***********stopped***********"
-    # GenServer.stop(game_id, :normal, :infinity)
     {:noreply, state}
   end
   # GenServer implementation
@@ -116,8 +114,6 @@ defmodule StormtraderWeb.GameServer do
           acc
         end
       end)
-      IO.inspect owned_quantity
-      IO.inspect sellQuant
       if owned_quantity >= sellQuant && sellQuant > 0 do
         shares = shares
         |> Enum.reduce(%{qty: sellQuant, s: []}, fn(own, acc)->

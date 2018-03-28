@@ -9,26 +9,31 @@ export default class Chat extends React.Component {
     this.handleChange = this.handleChange.bind(this);
     this.state = {
       msgs: [],
-      current_msg: "",
+      current_msg: ""
     }
   }
 
-  handleChange(event){
+  handleChange(event) {
     let input = event.target.value
     this.setState({current_msg: input})
   }
 
   handleSubmit(event) {
     this.refs.chatinput.value = "";
-    this.channel.push("new_chat_send", {body: this.state.current_msg, user: current_user })
+    this.channel.push("new_chat_send", {
+      body: this.state.current_msg,
+      user: current_user
+    })
     event.preventDefault();
   }
 
-  componentDidMount(){
+  componentDidMount() {
     let messagesContainer = $("#chatbox")
     this.channel.on("new_chat_receive", payload => {
       let messageItem = `${payload.user}: ${payload.body}`
-      this.setState({msgs: this.state.msgs.concat([messageItem])})
+      this.setState({
+        msgs: this.state.msgs.concat([messageItem])
+      })
     })
   }
 
@@ -38,22 +43,24 @@ export default class Chat extends React.Component {
   }
 
   render() {
-    return(
+    return (
       <div className="chat-block">
-        <div className="header"><h5>Chat</h5></div>
-          <div className="messages-box" ref="msg">
-            {this.state.msgs.map(function(comp,i){
-              return <div key={'msg' + i} className="chat-bubble">{comp}</div>
-            })}
-          </div>
-          <form onSubmit={this.handleSubmit} className="chat-inputs">
-          <div className="input-group">
-            <input type="text" ref="chatinput" onChange={this.handleChange} className="form-control noglow" id="input-box"
-              placeholder="Write something."
-              required />
-            <input type="submit" className="btn btn-info" value = "SEND"/>
-          </div>
-        </form>
-      </div>);
-    }
+      <div className="header">
+        <h5>Chat</h5>
+      </div>
+      <div className="messages-box" ref="msg">
+        {
+          this.state.msgs.map(function(comp, i) {
+            return <div key={'msg' + i} className="chat-bubble">{comp}</div>
+          })
+        }
+      </div>
+      <form onSubmit={this.handleSubmit} className="chat-inputs">
+        <div className="input-group">
+          <input type="text" ref="chatinput" onChange={this.handleChange} className="form-control noglow" id="input-box" placeholder="Write something." required="required"/>
+          <input type="submit" className="btn btn-info" value="SEND"/>
+        </div>
+      </form>
+    </div>);
   }
+}

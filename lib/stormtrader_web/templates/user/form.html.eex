@@ -6,13 +6,13 @@
 <% end %>
 
 <div class="form-group">
-  <%= label f, :name, class: "control-label" %>
+    <label for="user">User Name:</label>
   <%= text_input f, :name, class: "form-control" %>
   <%= error_tag f, :name %>
 </div>
 
 <div class="form-group">
-  <%= submit "Submit", class: "btn btn-primary btn-block" %>
+  <%= submit "Submit", class: "btn btn-info btn-block" %>
 </div>
 
 <% end %>

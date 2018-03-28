@@ -5,8 +5,7 @@ defmodule StormtraderWeb.UserController do
   alias Stormtrader.Accounts.User
 
   def index(conn, _params) do
-    users = Accounts.list_users()
-    render(conn, "index.html", users: users)
+    redirect(conn, to: page_path(conn, :index))
   end
 
   def new(conn, _params) do
@@ -27,7 +26,7 @@ defmodule StormtraderWeb.UserController do
 
   def show(conn, %{"id" => id}) do
     user = Accounts.get_user!(id)
-    render(conn, "show.html", user: user)
+    redirect(conn, to: page_path(conn, :index))
   end
 
   def edit(conn, %{"id" => id}) do

@@ -28,7 +28,6 @@ const game_id = window.game_id
 const current_user = window.current_user
 let classgamelist = document.getElementsByClassName("game-list")[0];
 const gamecontainer = document.getElementById('game-container');
-// const game_list = document.getElementById('game_list')
 // ///////////////////////////////////////////////////////////////////////////
 
 function start_game() {
@@ -37,52 +36,47 @@ function start_game() {
     const channel = socket.channel('games:' + game_id)
     // join channel
     channel.join()
-    .receive("ok", resp => {
-      console.log(current_user + ' Joined game ' + game_id, resp)
-      $(change_listener(channel))
-    })
-    .receive("error", resp => {
-      window.location="/home";
-    });
+      .receive("ok", resp => {
+        $(change_listener(channel))
+      })
+      .receive("error", resp => {
+        window.location = "/home";
+      });
   }
 }
-function join_lobby(){
+
+function join_lobby() {
   if (current_user) {
     socket.connect()
     let lobby = socket.channel('games:lobby')
-    if (classgamelist){
+    if (classgamelist) {
       lobby_init(classgamelist, lobby);
     }
   }
 }
+
 function change_listener(channel) {
   if (game_id && current_user) {
     channel.on('state_update', function(response) {
       let p1 = response.gamestate.player1;
       let p2 = response.gamestate.player2;
-      if (response.winner != null){
-        // setTimeout(() => {
-          result_init(gamecontainer, response.winner, response.gamestate);
-        // }, 1000);
-
-      }
-      else{
-        // console.log(JSON.stringify(response));
-        if (p1!=null && p2!=null) {
-          if (p1.user_id==current_user || p2.user_id==current_user){
+      if (response.winner != null) {
+        result_init(gamecontainer, response.winner, response.gamestate);
+      } else {
+        if (p1 != null && p2 != null) {
+          if (p1.user_id == current_user || p2.user_id == current_user) {
             $(get_state(channel, response.gamestate.users))
-          }
-          else{
+          } else {
             $(spectate(channel, response.gamestate.users))
           }
-        }
-        else {
+        } else {
           wait_init(gamecontainer);
         }
       }
     });
   }
 }
+
 function spectate(channel, users) {
   channel.push("get_state", {
     game_id: game_id,
@@ -92,6 +86,7 @@ function spectate(channel, users) {
     }
   });
 }
+
 function get_state(channel, users) {
   channel.push("get_state", {
     game_id: game_id,
@@ -103,5 +98,4 @@ function get_state(channel, users) {
 }
 // ///////////////////////////////////////////////////////////////////////////
 
-// ///////////////////////////////////////////////////////////////////////////
 $(start_game)

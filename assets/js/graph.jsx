@@ -46,28 +46,28 @@ export default class Graph extends React.Component {
       });
     }
 
-  getChart(event) {
-    event.preventDefault();
-    let value = parseInt(event.target.value)
-    let data = this.state.names[value]
-    let chartData = {labels: this.state.labels, datasets: [{data: this.state.historic[value], label: this.state.names[value].name}]}
-    this.setState({stocks: chartData})
-  }
+    getChart(event) {
+      event.preventDefault();
+      let value = parseInt(event.target.value)
+      let data = this.state.names[value]
+      let chartData = {labels: this.state.labels, datasets: [{data: this.state.historic[value], label: this.state.names[value].name}]}
+      this.setState({stocks: chartData})
+    }
 
 
-  render() {
-    return(<div className="graph">
-    <div className="header">
-      <h5>Graph</h5>
-    </div>
-    <div>
-      <select className="custom-select custom-select-sm graph-selector" onChange={this.getChart}>{this.state.names.map((data) => {
-          return(<option key={data.id} options={{events: ['click']}} value={data.id}>{data.name}</option>)
-        })}</select>
-    </div>
-    <div>
-    <Line data={this.state.stocks} />
-    </div>
-    </div>)
+    render() {
+      return(<div className="graph">
+      <div className="header">
+        <h5>Graph</h5>
+      </div>
+      <div>
+        <select className="custom-select custom-select-sm graph-selector" onChange={this.getChart}>{this.state.names.map((data) => {
+            return(<option key={data.id} options={{events: ['click']}} value={data.id}>{data.name}</option>)
+          })}</select>
+        </div>
+        <div>
+          <Line data={this.state.stocks} />
+        </div>
+      </div>)
+    }
   }
-}
