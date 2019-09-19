@@ -15,8 +15,11 @@ use Mix.Config
 # which you typically run after static files are built.
 config :stormtrader, StormtraderWeb.Endpoint,
   load_from_system_env: true,
-  url: [host: "example.com", port: 80],
-  cache_static_manifest: "priv/static/cache_manifest.json"
+  url: [host: "localhost", port: System.get_env("PORT")],
+  cache_static_manifest: "priv/static/cache_manifest.json",
+  server: true,
+  root: ".",
+  version: Application.spec(:stormtrader, :vsn)
 
 # Do not print debug messages in production
 config :logger, level: :info
@@ -56,7 +59,7 @@ config :logger, level: :info
 # Alternatively, you can configure exactly which server to
 # start per endpoint:
 #
-    config :stormtrader, StormtraderWeb.Endpoint, server: true
+#    config :stormtrader, StormtraderWeb.Endpoint, server: true
 #
 
 # Finally import the config/prod.secret.exs

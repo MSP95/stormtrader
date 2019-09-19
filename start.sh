@@ -1,6 +1,6 @@
 #!/bin/bash
 
-export PORT=5123
+export PORT=5100
 
 cd ~/www/stormtrader
 ./bin/stormtrader stop || true

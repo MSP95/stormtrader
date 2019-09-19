@@ -19,9 +19,9 @@ fi
 
 mix deps.get
 (cd assets && npm install)
-(cd assets && ./node_modules/brunch/bin/brunch b -p)
+(cd assets && ./node_modules/brunch/bin/brunch build)
 mix phx.digest
-mix release --env=prod
+MIX_ENV=prod mix release
 
 mkdir -p ~/www
 mkdir -p ~/old
