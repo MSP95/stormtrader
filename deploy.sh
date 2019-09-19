@@ -1,8 +1,8 @@
 #!/bin/bash
 
-export PORT=5123
+export PORT=5100
 export MIX_ENV=prod
-export GIT_PATH=/home/stormtrader/src/stormtrader
+export GIT_PATH=/home/stormtrader/stormtrader
 
 PWD=`pwd`
 if [ $PWD != $GIT_PATH ]; then
@@ -33,11 +33,11 @@ if [ -d ~/www/stormtrader ]; then
 fi
 
 mkdir -p ~/www/stormtrader
-REL_TAR=~/src/stormtrader/_build/prod/rel/stormtrader/releases/0.0.1/stormtrader.tar.gz
+REL_TAR=~/stormtrader/_build/prod/rel/stormtrader/releases/0.0.1/stormtrader.tar.gz
 (cd ~/www/stormtrader && tar xzvf $REL_TAR)
 
 crontab - <<CRONTAB
-@reboot bash /home/stormtrader/src/stormtrader/start.sh
+@reboot bash /home/stormtrader/stormtrader/start.sh
 CRONTAB
 
 #. start.sh
