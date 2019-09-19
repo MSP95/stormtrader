@@ -68,6 +68,7 @@ defmodule StormtraderWeb.GameServer do
   def handle_call({:buy, payload}, _from, state) do
     amount = payload["own"]["bought_at"]*payload["own"]["qty"]
     available_qty = Enum.at(state.stocks_qty, payload["own"]["stock_id"])
+    status = "successfull"
     if payload["own"]["qty"] <= available_qty &&  payload["own"]["qty"] > 0 do
       #////////////////////////////////////////////////////////////////////////
       if payload["player"] == 1 do
@@ -197,6 +198,7 @@ defmodule StormtraderWeb.GameServer do
   end
 
   def handle_call({:user_left,users, user_id, game_id}, _from, state) do
+    winner = "no one"
     state = Map.replace!(state, :users, users)
     if state.player1 == nil || state.player2 == nil do
       # Process.send_after(self(), {:stopp, game_id}, 800)
@@ -226,6 +228,7 @@ defmodule StormtraderWeb.GameServer do
   end
 
   def handle_info({:work}, state) do
+    time = 0
     if (state.timer == 0) do
       if (state.status != "stopped") do
         state = Map.replace!(state, :status, "stopped")
@@ -238,6 +241,8 @@ defmodule StormtraderWeb.GameServer do
         |> Enum.into(%{})
 
         StormtraderWeb.Endpoint.broadcast "games:lobby", "lobby_update", %{game_list: gamelist}
+        winner = ""
+        score = 0
         if state.player1.wallet>state.player2.wallet do
           winner = state.player1.user_id
         else

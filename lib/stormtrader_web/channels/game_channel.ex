@@ -82,6 +82,7 @@ defmodule StormtraderWeb.GameChannel do
 
   defp state_update(socket, users, game_id, result) do
     winner = result.winner
+    score = 0
     if is_integer(result.winner) do
       if result.winner == result.state.player1.user_id do
         score = result.state.player1.wallet
