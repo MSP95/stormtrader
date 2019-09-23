@@ -1,11 +1,30 @@
-## Customize flags given to the VM: http://erlang.org/doc/man/erl.html
-## -mode/-name/-sname/-setcookie are configured via env vars, do not set them here
+## This file provide the arguments provided to the VM at startup
+## You can find a full list of flags and their behaviours at
+## http://erlang.org/doc/man/erl.html
 
-## Number of dirty schedulers doing IO work (file, sockets, etc)
+## Name of the node
+-name stormtrader@127.0.0.1
+
+## Cookie for distributed erlang
+-setcookie a!S&K_CO5e<}*hPk6GVGn2PE@z5a0{[Fu{TBed/6dF4q.3[>~9zvE(^Vk)NCJ/AX
+
+## Heartbeat management; auto-restarts VM if it dies or becomes unresponsive
+## (Disabled by default..use with caution!)
+##-heart
+
+## Enable kernel poll and a few async threads
+##+K true
+##+A 5
+## For OTP21+, the +A flag is not used anymore,
+## +SDio replace it to use dirty schedulers
 ##+SDio 5
 
 ## Increase number of concurrent ports/sockets
-##+Q 65536
+##-env ERL_MAX_PORTS 4096
 
 ## Tweak GC to run more often
 ##-env ERL_FULLSWEEP_AFTER 10
+
+# Enable SMP automatically based on availability
+# On OTP21+, this is not needed anymore.
+-smp auto
