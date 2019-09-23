@@ -1,5 +1,5 @@
 <component name="libraryTable">
-  <library name="phoenix_pubsub" type="mix">
+  <library name="phoenix_pubsub">
     <CLASSES />
     <SOURCES />
   </library>

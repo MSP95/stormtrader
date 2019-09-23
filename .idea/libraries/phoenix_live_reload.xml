@@ -1,5 +1,5 @@
 <component name="libraryTable">
-  <library name="phoenix_live_reload" type="mix">
+  <library name="phoenix_live_reload">
     <CLASSES />
     <SOURCES />
   </library>
