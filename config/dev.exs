@@ -51,8 +51,8 @@ config :phoenix, :stacktrace_depth, 20
 # Configure your database
 config :stormtrader, Stormtrader.Repo,
   adapter: Ecto.Adapters.Postgres,
-  username: "stormtrader",
-  password: "12345",
+  username: "manish",
+  password: "postgres",
   database: "stormtrader_dev",
-  hostname: "localhost",
+  hostname: "postgres",
   pool_size: 10

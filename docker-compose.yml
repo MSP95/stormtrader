@@ -1,0 +1,28 @@
+version: '2'
+services:
+  phoenix:
+    # tell docker-compose which Dockerfile it needs to build
+    build: .
+    # map the port of phoenix to the local dev port
+    ports:
+      - "4000:4000"
+    # mount the code folder inside the running container for easy development
+    volumes:
+      - .:/app
+    # make sure we start postgres when we start this service
+    image: manishpatil95/stormtrader_phoenix:0.0.1
+    depends_on:
+      - postgres
+  postgres:
+    # use postgres 9.3.17
+    image: postgres:9.3.17-alpine
+    # map the data volume, this is the way to keep our data persisitent
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    # set the user and password for postgres
+    environment:
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_USER=manish
+# create a named datavolume
+volumes:
+  db_data:

@@ -1,6 +1,11 @@
 <component name="libraryTable">
   <library name="decimal">
-    <CLASSES />
-    <SOURCES />
+    <CLASSES>
+      <root url="file://$PROJECT_DIR$/_build/prod/lib/decimal/ebin" />
+      <root url="file://$PROJECT_DIR$/_build/dev/lib/decimal/ebin" />
+    </CLASSES>
+    <SOURCES>
+      <root url="file://$PROJECT_DIR$/deps/decimal/lib" />
+    </SOURCES>
   </library>
 </component>

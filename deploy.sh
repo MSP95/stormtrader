@@ -17,7 +17,8 @@ if [ $USER != "manish" ]; then
 	exit 2
 fi
 
-mix deps.get
+mix deps.get --only prod
+MIX_ENV=prod mix compile
 (cd assets && npm install)
 (cd assets && ./node_modules/brunch/bin/brunch build)
 MIX_ENV=prod mix phx.digest

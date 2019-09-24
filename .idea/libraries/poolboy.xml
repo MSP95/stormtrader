@@ -1,6 +1,11 @@
 <component name="libraryTable">
   <library name="poolboy">
-    <CLASSES />
-    <SOURCES />
+    <CLASSES>
+      <root url="file://$PROJECT_DIR$/_build/prod/lib/poolboy/ebin" />
+      <root url="file://$PROJECT_DIR$/_build/dev/lib/poolboy/ebin" />
+    </CLASSES>
+    <SOURCES>
+      <root url="file://$PROJECT_DIR$/deps/poolboy/src" />
+    </SOURCES>
   </library>
 </component>
